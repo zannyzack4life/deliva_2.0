@@ -2152,6 +2152,7 @@ bottom: 0; /* Slide up to cover half of the pop-up */
 
 .giftfprm{
 padding: 5%;
+padding-bottom: 50%;
 box-sizing: border-box;
 overflow: scroll;
 overflow-x: hidden;
