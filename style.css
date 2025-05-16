@@ -963,7 +963,7 @@ display: flex;
     left: 0;
     margin: 0;
     padding: 5% 8%;
-    padding-top: 5%;
+    padding-top: 10%;
     box-sizing: border-box;
     z-index: 10;
     background: transparent;
@@ -6055,6 +6055,7 @@ padding: 10px;
     align-items: center;
     justify-content: space-between;
     padding: 5px 5%;
+    padding-top: 10%;
     position: absolute;
     top: 0;
     left: 0;
@@ -6123,7 +6124,7 @@ line-height: 15px;
 }
 
 .games{
-margin-top: 22%;
+margin-top: 33%;
 }
 .delgm{
 width: 100%;
