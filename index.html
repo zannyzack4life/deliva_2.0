@@ -477,46 +477,48 @@
                                 <div class="profiledisconts">
                                     <form action="">
                                         <div class="proheidiscontdet">
-                                            <div class="profiledetail-container toppsfoodsadd prof">
+                                            <div class="profiledetail-container  prof">
                                                 <label for="name">Name</label>
                                                 <input type="text" id="name" value="Jeremiah" >
                                             </div>
-                                            <div class="profiledetail-container toppsfoodsadd prof">
+                                            <div class="profiledetail-container  prof">
                                                 <label for="email">Email</label>
                                                 <input type="email" id="email" value="www.jeremiahluis4life@gmail.com" >
                                             </div>
-                                            <div class="profiledetail-container toppsfoodsadd prof">
+                                            <div class="profiledetail-container  prof">
                                                 <label for="address">Delivery address</label>
                                                 <input type="text" id="address" value="1, Adisalawal Street off popoola junction, ago palace way, Okota">
                                             </div>
-                                            <div class="profiledetail-container toppsfoodsadd prof">
+                                            <div class="profiledetail-container  prof">
                                                 <label for="Password">Password</label>
                                                 <input type="password" class="password" id="password" value="jeremiahluis4life"><i  class="eye-icon"><span class="togglePassword material-icons">visibility</span></i>
                                             </div>
                         
                         
-                                            <div class="waletdis toppsfoodsadd prof ">
+                                            <div class="waletdis  prof ">
                                               <a href=""class="trigger wallet" data-target="popupitemsfod4">
                                                 <label>Wallet</label><i class="fa-solid fa-wallet fa-shake"></i>
                                               </a> 
                                             </div>
                         
-                                            <div class="theme-toggler toppsfoodsadd prof">
+                                            <div class="theme-toggler  prof">
                                                 <span class="material-icons-sharp active">light_mode</span>
                                                 <span class="material-icons-sharp">dark_mode</span>
                                             </div>
+
+                                             <footer>
+                                                <div class="footnav">
+                                                    <button type="submit">Update <i class="fa-solid fa-pen-to-square"></i></button>
+                                                    <a href="">Logout <i class="fa-solid fa-right-from-bracket"></i></a>
+                                        
+                                                </div>
+                                            </footer>
                                            
                                         </div>
                         
                         
                                         
-                            <footer>
-                                <div class="footnav">
-                                    <button type="submit">Update <i class="fa-solid fa-pen-to-square"></i></button>
-                                    <a href="">Logout <i class="fa-solid fa-right-from-bracket"></i></a>
-                        
-                                </div>
-                            </footer>
+                           
                                     </form>
                                 </div>
                             
@@ -1761,7 +1763,11 @@
     <!----------------------------------------------------------RE-ORDER SELECTED FOOD POPUP------------------------------------------------------------- -->
     <div id="popupitemsfod2" class="popupitemsfod">
         <div class="popupitemsfod-content">
-            <div class="popdesfood shimmer"><i class="close1 fa-regular fa-circle-xmark fa-spin"></i><a href="#"class=" carttrig"><span class="icon material-icons fa-shake">shopping_cart</span></a></div>
+            <div class="popdesfood shimmer">
+                <i class="close1 fa-regular fa-circle-xmark fa-spin"></i>
+                <div class="foodtotprc"><span class="tomorrowfontss">N 3500</span></div>
+                <a href="#"class=" carttrig"><span class="icon material-icons fa-shake">shopping_cart</span></a>
+            </div>
             <div class="prodimgpop">
                 <div class="foodpopcir"><img src="img/foodim.webp" alt=""></div>
             </div>
@@ -2218,9 +2224,9 @@
 
 
     <script src="foodcourt.js"></script>
-    <script src="script.js"></script>
     <script src="theme.js"></script>
     <script src="games.js"></script>
+    <script src="script.js"></script>
     <script>
         window.addEventListener('load', function () {
                   setTimeout(() => {
@@ -2258,7 +2264,9 @@
               { text: "Satisfy your\nhunger now!", highlight: "hunger" },
               { text: "Freshly cooked\nmeals made daily!", highlight: "meals" } ,
               { text: "Small chops, big \nhappiness!", highlight: "chops," },
-              { text: "Swallow dey\nwe no dey play!", highlight: "Swallow" }
+              { text: "Swallow dey\nwe no dey play!", highlight: "Swallow" },
+              { text: "Place your\nadverts here!", highlight: "adverts" }
+
       ];
       
       const h1 = document.querySelector('.disp-text');
@@ -2316,115 +2324,6 @@
       
     </script>
     <script>
-        const slidingDiv = document.getElementById('slidingDiv');
-        const header = slidingDiv.querySelector('.header');
-        const content = slidingDiv.querySelector('.content');
-        let startY = 0;
-        let currentY = 0;
-        let isDragging = false;
-
-        // Function to set the position of the sliding div
-        const setPosition = (y) => {
-            slidingDiv.style.transform = `translateY(${y}px)`;
-        };
-
-        // Function to get the current vertical translation of the sliding div
-        const getCurrentTranslateY = () => {
-            const transform = window.getComputedStyle(slidingDiv).transform;
-            return transform !== 'none' ? parseFloat(transform.split(',')[5]) : 0;
-        };
-
-        // Handle release of the drag to decide whether to expand or collapse
-        const handleRelease = (startY, endY) => {
-            const direction = endY - startY;
-            const threshold = window.innerHeight * 0.15; // Threshold for deciding the snap direction
-            const isExpanding = direction < -threshold;
-            const isCollapsing = direction > threshold;
-
-            if (isExpanding) {
-                // Expand the div fully
-                slidingDiv.style.transform = 'translateY(0)';
-                slidingDiv.classList.add('expanded');
-                slidingDiv.classList.remove('collapsed');
-            } else if (isCollapsing) {
-                // Collapse the div fully
-                slidingDiv.style.transform = `translateY(calc(100% - 130px))`;
-                slidingDiv.classList.add('collapsed');
-                slidingDiv.classList.remove('expanded');
-            } else {
-                // Snap to the nearest state based on current position
-                const currentTranslateY = getCurrentTranslateY();
-                if (currentTranslateY < window.innerHeight / 2) {
-                    slidingDiv.style.transform = 'translateY(0)';
-                    slidingDiv.classList.add('expanded');
-                    slidingDiv.classList.remove('collapsed');
-                } else {
-                    slidingDiv.style.transform = `translateY(calc(100% - 130px))`;
-                    slidingDiv.classList.add('collapsed');
-                    slidingDiv.classList.remove('expanded');
-                }
-            }
-        };
-
-        // Start dragging on mouse down (desktop)
-        header.addEventListener('mousedown', (e) => {
-            isDragging = true;
-            startY = e.clientY; // Record the starting Y position
-            currentY = getCurrentTranslateY(); // Get the current transform position
-            header.style.cursor = 'grabbing';
-        });
-
-        // Start dragging on touch start (mobile)
-        header.addEventListener('touchstart', (e) => {
-            isDragging = true;
-            startY = e.touches[0].clientY; // Record the starting Y position for touch
-            currentY = getCurrentTranslateY(); // Get the current transform position
-        });
-
-        // Dragging behavior for mouse move (desktop)
-        window.addEventListener('mousemove', (e) => {
-            if (!isDragging) return;
-            const deltaY = e.clientY - startY; // Calculate movement distance
-            let newY = currentY + deltaY; // Calculate new position
-            newY = Math.max(-window.innerHeight * 0.55, Math.min(newY, 0)); // Constrain the movement
-            setPosition(newY); // Update the div position
-            if (newY < 0) {
-                slidingDiv.classList.add('expanded');
-            } else {
-                slidingDiv.classList.remove('expanded');
-            }
-        });
-
-        // Dragging behavior for touch move (mobile)
-        window.addEventListener('touchmove', (e) => {
-            if (!isDragging) return;
-            const deltaY = e.touches[0].clientY - startY; // Calculate movement distance for touch
-            let newY = currentY + deltaY; // Calculate new position
-            newY = Math.max(-window.innerHeight * 0.55, Math.min(newY, 0)); // Constrain the movement
-            setPosition(newY); // Update the div position
-            if (newY < 0) {
-                slidingDiv.classList.add('expanded');
-            } else {
-                slidingDiv.classList.remove('expanded');
-            }
-        });
-
-        // End dragging and snap to the nearest state (desktop)
-        window.addEventListener('mouseup', (e) => {
-            if (!isDragging) return;
-            isDragging = false; // Stop dragging
-            header.style.cursor = 'grab';
-            handleRelease(startY, e.clientY); // Decide the final position
-        });
-
-        // End dragging and snap to the nearest state (mobile)
-        window.addEventListener('touchend', (e) => {
-            if (!isDragging) return;
-            isDragging = false; // Stop dragging
-            handleRelease(startY, e.changedTouches[0].clientY); // Decide the final position
-        });
-    </script>
-    <script>
         const togglePassword = document.querySelector('.togglePassword'); // Select by class
           const password = document.querySelector('.password'); // Select by class
   
@@ -2441,6 +2340,116 @@
               }
           });
     </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+        const slidingDiv = document.getElementById('slidingDiv');
+        const header = slidingDiv.querySelector('.header');
+
+        let startY = 0;
+        let currentY = 0;
+        let isDragging = false;
+
+        const getCurrentTranslateY = () => {
+            const transform = window.getComputedStyle(slidingDiv).transform;
+            return transform !== 'none' ? parseFloat(transform.split(',')[5]) : 0;
+        };
+
+        const setPosition = (y) => {
+            slidingDiv.style.transform = `translateY(${y}px)`;
+        };
+
+        const handleRelease = (startY, endY) => {
+            const direction = endY - startY;
+            const threshold = window.innerHeight * 0.15;
+            const isExpanding = direction < -threshold;
+            const isCollapsing = direction > threshold;
+
+            if (isExpanding) {
+            slidingDiv.style.transform = 'translateY(0)';
+            slidingDiv.classList.add('expanded');
+            slidingDiv.classList.remove('collapsed');
+            } else if (isCollapsing) {
+            slidingDiv.style.transform = 'translateY(calc(100% - 130px))';
+            slidingDiv.classList.add('collapsed');
+            slidingDiv.classList.remove('expanded');
+            } else {
+            const currentTranslateY = getCurrentTranslateY();
+            if (currentTranslateY < window.innerHeight / 2) {
+                slidingDiv.style.transform = 'translateY(0)';
+                slidingDiv.classList.add('expanded');
+                slidingDiv.classList.remove('collapsed');
+            } else {
+                slidingDiv.style.transform = 'translateY(calc(100% - 130px))';
+                slidingDiv.classList.add('collapsed');
+                slidingDiv.classList.remove('expanded');
+            }
+            }
+        };
+
+        // Mouse events
+        const onMouseDown = (e) => {
+            isDragging = true;
+            startY = e.clientY;
+            currentY = getCurrentTranslateY();
+            header.style.cursor = 'grabbing';
+
+            document.addEventListener('mousemove', onMouseMove);
+            document.addEventListener('mouseup', onMouseUp);
+        };
+
+        const onMouseMove = (e) => {
+            if (!isDragging) return;
+            const deltaY = e.clientY - startY;
+            let newY = currentY + deltaY;
+            newY = Math.max(-window.innerHeight * 0.55, Math.min(newY, 0));
+            setPosition(newY);
+        };
+
+        const onMouseUp = (e) => {
+            if (!isDragging) return;
+            isDragging = false;
+            header.style.cursor = 'grab';
+            handleRelease(startY, e.clientY);
+
+            document.removeEventListener('mousemove', onMouseMove);
+            document.removeEventListener('mouseup', onMouseUp);
+        };
+
+        // Touch events
+        const onTouchStart = (e) => {
+            isDragging = true;
+            startY = e.touches[0].clientY;
+            currentY = getCurrentTranslateY();
+
+            document.addEventListener('touchmove', onTouchMove, { passive: false });
+            document.addEventListener('touchend', onTouchEnd);
+        };
+
+        const onTouchMove = (e) => {
+            if (!isDragging) return;
+            e.preventDefault(); // stop scrolling
+            const deltaY = e.touches[0].clientY - startY;
+            let newY = currentY + deltaY;
+            newY = Math.max(-window.innerHeight * 0.55, Math.min(newY, 0));
+            setPosition(newY);
+        };
+
+        const onTouchEnd = (e) => {
+            if (!isDragging) return;
+            isDragging = false;
+            handleRelease(startY, e.changedTouches[0].clientY);
+
+            document.removeEventListener('touchmove', onTouchMove);
+            document.removeEventListener('touchend', onTouchEnd);
+        };
+
+        // Attach event listeners
+        header.addEventListener('mousedown', onMouseDown);
+        header.addEventListener('touchstart', onTouchStart);
+        });
+
+    </script>
+
 
 </body>
 </html>
