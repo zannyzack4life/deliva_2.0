@@ -960,7 +960,7 @@ overflow-y: scroll;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    position: sticky;
+    position: fixed;
     width: 100%;
     left: 0;
     margin: 0;
@@ -968,7 +968,7 @@ overflow-y: scroll;
     box-sizing: border-box;
     z-index: 10;
     background: transparent;
-    top: 0px;
+    top: 5px;
     backdrop-filter: blur(15px);
     border-radius: 80px;
 }
@@ -1194,6 +1194,7 @@ border:none;
 
 .welcm{
 margin:  10%;
+margin-top: 25%;
 margin-bottom: 5%;
 height: 100px;
 }
@@ -1813,6 +1814,195 @@ visibility: visible;
 position: relative;
 }
 
+.ordcontent{
+    width: 100%;
+    height: 80%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 5px;
+}
+.ordcontent a{
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    /* border-bottom: 1px solid var(--color-dark); */
+}
+
+.ordcontent .portionfood{
+    width: 100%;
+    height: fit-content;
+    gap: 3px;
+}
+
+.nesl{
+    padding: 0 !important;
+}
+
+
+.ordcontent .toppsfoodsadd{
+    padding: 0;
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    margin: 1% 0;
+    background: var(--color-background);
+}
+.ordcontent .notifs p {
+    font-weight: 600;
+    font-size: 13px;
+    display: flex;
+    width: max-content;
+    text-decoration: none;
+    color: var(--color-dark);
+}
+.ordcontent .portionfood span{
+    color: var(--color-dark);
+    font-size: 13px;
+    font-weight: 100;
+    line-height: 12px;
+}
+.ordcontent .portionfood p{
+    color: var(--color-dark);
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 16px;
+    margin: 0;
+}
+
+.ellipsisi {
+display: inline-block;
+max-width: 195px; /* Adjust the width as needed */
+white-space: normal;
+overflow: hidden;
+text-overflow: ellipsis;
+}
+
+.ordct.tottopfod p:nth-child(1) {
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    text-align: left;
+}
+
+.prodcust.prddel{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+}
+
+.ordcontent .fdclosefd{
+    align-items: flex-start;
+}
+.ordct.tottopfod{
+    padding: 0 5px;
+    box-sizing: border-box;
+    line-height: 14px;
+}
+.odcontdet{
+    margin-top: 15px;
+}
+.odcontdet .ordct.tottopfod{
+    line-height: 20px;
+    align-items: flex-start;
+}
+
+.ordcontent .topsadfdd{
+    width: 45px;
+    height: 36px;
+    background-image: url(img/fodprev.png);
+    background-size: cover;
+}
+
+.ordcontent .topsadfdd img{
+    width: 100%;
+    height: -webkit-fill-available;
+}
+
+.upgradeoption{
+    height: 85vh;
+}
+
+.upgdopt{
+    border: 1px solid var(--color-dark);
+    border-radius: 15px;
+    overflow-x: hidden;
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+    height: 100%;
+}
+
+.upgopt{
+    padding: 20px;
+    box-sizing: border-box;
+    border-bottom: 1px solid var(--color-dark);
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+}
+
+.upgopt:last-child{
+    border-bottom: none;
+}
+
+.topupgr{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+.topupgr h4{
+    font-size: 22px;
+    line-height: 14px;
+    color: var(--color-dark);
+}
+.topupgr p{
+    font-size: 16px;
+    line-height: 14px;
+    color: var(--color-dark);
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+
+.planbtn{
+    margin: 5% 0;
+    padding: 0 3%;
+    box-sizing: border-box;
+    width: 100%;
+}
+.planbtn a{
+    background: var(--color-darkwhite);
+    border: 1px solid var(--color-dark);
+    color: var(--color-dark);
+    padding: 10px;
+    font-weight: 100;
+    border-radius: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    width: 100%;
+}
+
+.planbtn.uppl a{
+    background: var(--color-primary);
+    border: 1px solid var(--color-primary);
+    color: var(--color-plain-white);
+}
+
+.planlist{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin-top: 20px;
+}
+
+.planlist li{
+    font-weight: 500;
+    font-size: 16px;
+    color: var(--color-dark);
+}
 .popupitemsfod-content .close {
 
 font-size: 18px;
@@ -2007,6 +2197,7 @@ gap: 5px;
         color: var(--color-dark);
         width: 85%;
         height: 93%;
+        max-width: 400px;
         color: #fff;
         padding: 20px;
         border-radius: 15px;
@@ -2111,6 +2302,19 @@ gap: 5px;
         .paynt a img{
         height: 100%;
         }
+        .ellipsisi {
+        display: inline-block;
+        max-width: 180px; /* Adjust the width as needed */
+        white-space: normal;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        }
+        .upgradeoption {
+            height: 80vh;
+        }
+        .planlist {
+            margin-top: 0px;
+        }
     
     }
 
@@ -2120,6 +2324,19 @@ gap: 5px;
         }
         .paynt a img{
             height: 200px;
+        }
+         .ellipsisi {
+        display: inline-block;
+        max-width: 150px; /* Adjust the width as needed */
+        white-space: normal;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        }
+        .planbtn a {
+            padding: 7px;
+        }
+        .planbtn {
+            margin: 3% 0;
         }
     }
 
@@ -2267,17 +2484,31 @@ color: var(--color-dark);
 }
 
 .dropdown {
-display: none;
-position: absolute;
-top: 60px;
-left: 0;
-background: var(--color-white);
-border: 1px solid  var(--color-dark);
-color: var(--color-dark);
-max-height: 200px;
-overflow-y: auto;
-z-index: 10;
-width: 100%;
+    display: none;
+    position: absolute;
+    top: 60px;
+    left: 0;
+    color: var(--color-dark);
+    max-height: 200px;
+    overflow-y: auto;
+    z-index: 10;
+    border-radius: 10px;
+    width: 100%;
+    border: none;
+    background: var(--color-background);
+}
+
+.dropdown::-webkit-scrollbar {
+width: 3px;
+cursor: pointer;
+height: 3px;
+background:  transparent;
+}
+
+.dropdown::-webkit-scrollbar-thumb {
+background:  var(--color-dark);
+border-radius: 18px;
+border: 2px solid  transparent;
 }
 .dropdown-item {
 display: flex;
@@ -2526,6 +2757,10 @@ bottom: 1%;
 left: 0;
 padding: 0 6%;
 box-sizing: border-box;
+gap: 10px;
+}
+.forsavecrt a:first-child{
+background: var(--color-primary);
 }
 .cartorder a{
 background: var(--slate-green);
@@ -2537,6 +2772,8 @@ justify-content: center;
 width: 100%;
 font-size: 12px;
 height: 36px;
+padding: 0;
+margin: auto;
 }
 .cartorder a span{
 color: var(--color-white);
@@ -2947,7 +3184,7 @@ margin: 0;
 margin-bottom: 5%;
 padding: 2% 5%;
 top: 0;
-position: sticky;
+position: fixed;
 border-radius: 80px;
 width: 100%;
 z-index: 10;
@@ -3534,7 +3771,7 @@ justify-content: center;
 gap: 10px;
 }
 
-.upgrade-popup button {
+.upgrade-popup a {
 background: var(--color-primary);
 color: white;
 border: none;
@@ -3854,7 +4091,7 @@ top: 0;
 }
 .serchresutsfoods.prodpgedis.vend{
 margin: 30% 0;
-margin-top: 45%;
+margin-top: 20%;
 margin-bottom: 0;
 height: -webkit-fill-available;
 overflow-y: scroll;
@@ -3871,7 +4108,7 @@ height: 75vh;
 
 @media (max-height: 610px){
 .serchresutsfoods.prodpgedis.vend{
-margin-top: 42%;
+margin-top: 20%;
 
 }
 
@@ -3992,6 +4229,14 @@ text-overflow: ellipsis;
 .ellipsisf {
 display: inline-block;
 max-width: 210px; /* Adjust the width as needed */
+white-space: nowrap;
+overflow: hidden;
+text-overflow: ellipsis;
+}
+
+.ellipsisy {
+display: inline-block;
+max-width: 240px; /* Adjust the width as needed */
 white-space: nowrap;
 overflow: hidden;
 text-overflow: ellipsis;
@@ -4164,6 +4409,7 @@ left: 20px;
 background:  var(--color-darkwhite);
 padding: 0 5px;
 font-size: 14px;
+font-weight: 100;
 color:  var(--color-dark);
 }
 
@@ -4214,6 +4460,10 @@ border-color:  var(--slate-green);
     display: flex;
     justify-content: center;
     height: -webkit-fill-available;
+}
+
+.togglePassword{
+    padding-right: 10px;
 }
 
 .order-history-container {
@@ -4282,6 +4532,8 @@ display: block;
 } 
 .profiledisconts .footnav{
     gap: 7px;
+    margin: 0;
+    padding-bottom: 3%;
 }
 
 .profiledisconts .footnav a{
@@ -4298,6 +4550,8 @@ gap:7px;
 margin: 0;
 color: var(--color-white);
 height: 42px;
+font-weight: 500;
+
 }
 .profiledisconts .footnav button{
 padding: 10px 15px;
@@ -4315,6 +4569,8 @@ margin: 0;
 color: var(--color-white);
 border: none;
 height: 42px;
+font-family: "Akaya Telivigala", serif;
+font-weight: 500;
 }
 .profiledisconts .footnav a:nth-child(2){
 background: var(--color-primary);
@@ -4404,7 +4660,7 @@ border-radius: 20px;
 transition: .3s;
 }
 .cardbalsdd a:hover{
-transform: scale(0.9);
+transform: scale(1.1);
 }
 .waltop{
 display: flex;
@@ -4417,6 +4673,8 @@ padding: 0 5%;
 box-sizing: border-box;
 width: 100%;
 }
+
+
 .bal{
 display: flex;
 align-items: center;
@@ -4434,7 +4692,7 @@ color: var(--color-plain-white);
 font-family: "Tomorrow", serif;
 }
 .fundwal{
-padding: 0 3%;
+padding: 0;
 width: 100%;
 box-sizing: border-box;
 margin: 5% 0;
@@ -4575,13 +4833,13 @@ font-size: 4vw;
 }
 
 .optss.ordeddd{
-margin-top: 1%;
+margin-top: 20%;
 }
 .optss.ordeddd.notify{
 height: 70vh;
 overflow-y: scroll;
 overflow-x: hidden;
-margin-top: 2%;
+margin-top: 22%;
 }
 .optss.ordeddd .seloptions {
 overflow: hidden;
@@ -4590,6 +4848,7 @@ box-sizing: border-box;
 scroll-snap-type: none;
 padding-bottom: 0;
 margin: 0;
+gap: 0;
 }
 .optss.ordeddd .seloptions .opta{
 box-sizing: border-box;
@@ -4718,10 +4977,10 @@ left: 0;
 top: 2px;
 }
 .bordmap{
-border-top: 5px solid var(--color-dark);
-height: 5px;
-width: 30%;
+height: 3px;
+width: 60%;
 border-radius: 10px;
+margin-top: 3px;
 }
 
 .sliding-div .header span{
@@ -5065,28 +5324,32 @@ position: relative;
     border-radius: 50%;
     top: -14px;
     right: -11px;
-    font-size: 15px;
+    font-size: 12px;
+    line-height: 8px;
     display: flex;
     justify-content: center;
     align-items: center;
     box-sizing: border-box;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
 .numamt-a{
     position: absolute;
     z-index: 1;
-    background: var(--color-darkwhite);
+    background: var(--color-white);
     bottom: 0;
     color: var(--color-primary);
     width: 15px;
     height: 15px;
-    padding: 5px;
+    padding: 2px;
     border-radius: 50%;
     top: 0px;
-    right: 12px;
-    font-size: 15px;
+    right: 18px;
+    font-size: 12px;
+    line-height: 8px;
     display: flex;
     justify-content: center;
     align-items: center;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
 
 
@@ -5834,7 +6097,7 @@ width: 100%;
 }
 .serchresutsfoods.prodpgedis.vend{
 height: 74vh;
-margin-top: 35%;
+margin-top: 25%;
 }
 }
 
@@ -5994,7 +6257,7 @@ margin-top: 55%;
 padding-top: 8%;
 }
 .serchresutsfoods.prodpgedis.vend {
-margin-top: 49%;
+margin-top: 20%;
 padding-top: 5%;
 }
 .serchresutsfoods a.trigger {
@@ -6060,8 +6323,8 @@ padding: 10px;
     align-items: center;
     justify-content: space-between;
     padding: 5px 5%;
-    position: sticky;
-    top: 0;
+    position: fixed;
+    top: 10px;
     left: 0;
     width: 100%;
     box-sizing: border-box;
@@ -6128,8 +6391,16 @@ color: var(--color-plain-white);
 line-height: 15px;
 }
 
+.walbal.balancefromgames{
+   background: transparent;
+    width: 100%;
+    padding: 5px;
+    margin-top: 1%;
+    border-radius: 10px;
+}
+
 .games{
-margin-top: 3%;
+margin-top: 25%;
 }
 .delgm{
 width: 100%;
@@ -6175,8 +6446,8 @@ grid-template-columns: 1fr 1fr;
 grid-template-rows: 0fr;
 width: 100%;
 box-sizing: border-box;
-padding: 10% 0;
-margin-top: 2%;
+padding: 5% 0;
+margin-top: 1%;
 padding-bottom: 50%;
 box-sizing: border-box;
 height: 86vh;
@@ -6296,12 +6567,13 @@ border-radius: 7px;
 
 
 .puzz_cont{
-height: 70vh;
+height: 79vh;
 overflow-y: scroll;
 overflow-x: hidden;
 padding-bottom: 5%;
 padding: 10px;
 box-sizing: border-box;
+margin-top: 18%;
 }
 .puzz_cont::-webkit-scrollbar {
 width: 3px;
@@ -6547,8 +6819,9 @@ font-size: 10px;
 
 
 .foradsdis{
-position: relative !important;
-top: 2%;
+position: absolute !important;
+top: auto;
+bottom: 10px;
 }
 .tomorrowfontss{
 font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
@@ -6875,7 +7148,11 @@ height: 230px;
 width: 130px;
 height: 130px;
 }
+
+.foradsdis{
+position: absolute !important;
+top: auto;
+bottom: 10px;
 }
 
-
-
+}
