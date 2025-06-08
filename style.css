@@ -435,7 +435,7 @@ border-color: transparent;
 
 
 
-    @media (max-height: 768px) {
+    @media (max-width: 768px) {
 .welcm h1{
 font-size: 25px;
 line-height: 35px;
