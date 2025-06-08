@@ -487,6 +487,7 @@ header p {
 
 .projimg img {
     width: 52%;
+    margin-left: -98px;
   }
   .project-card p {
     text-align: left;
