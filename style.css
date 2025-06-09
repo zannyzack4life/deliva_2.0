@@ -477,7 +477,7 @@ font-weight: 500;
 
 }
 .welcm h1 span{
-font-size: 35px;
+font-size: 30px;
 }
 .welcm{
     margin: 0;
@@ -512,6 +512,9 @@ header p {
       width: 45%;
         margin-left: -75px;
     }
+    .welcm h1 span{
+font-size: 25px;
+}
 }
 
 
