@@ -311,10 +311,11 @@ border-color: transparent;
     text-align: center;
     position: relative;
       z-index: 1;
+      padding: 5rem 2rem;
 }
 
     section {
-      padding: 5rem 2rem;
+      padding: 5rem 1rem;
       max-width: 1000px;
       margin: auto;
       position: relative;
@@ -486,8 +487,8 @@ header p {
 }
 
 .projimg img {
-    width: 45%;
-    margin-left: -77px;
+    width: 52%;
+        margin-left: -98px  ;
   }
   .project-card p {
     text-align: left;
@@ -504,3 +505,19 @@ header p {
     transform: scale(1.2);
 }
     }
+
+
+    @media (max-width: 670px) {
+    .projimg img {
+      width: 45%;
+        margin-left: -75px;
+    }
+}
+
+
+@media (max-height: 610px) {
+    .projimg img {
+        width: 47%;
+        margin-left: -65px;
+    }
+}
