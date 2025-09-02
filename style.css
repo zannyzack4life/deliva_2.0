@@ -816,7 +816,7 @@
                 padding: 0.5rem;
                 padding-bottom: 2rem;
                 position: absolute;
-                bottom: 0;
+                bottom: 2%;
                 width: 100%;
             }
             
@@ -937,4 +937,5 @@
             display: inline-block;
             margin-right: 5px;
             }
+
     
