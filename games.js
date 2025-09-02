@@ -189,3 +189,4 @@ document.querySelectorAll('.cylinder').forEach(cylinder => {
         claimNotification.classList.add('show');
     }, { once: true });
 }); 
+
