@@ -975,7 +975,7 @@
 
          .whatsapp-float-b {
             position: fixed;
-            width: 170px;
+            width: 120px;
             height: auto;
             bottom: 50px;
             right: 10px;
@@ -1056,3 +1056,4 @@
             display: inline-block;
             margin-right: 5px;
             }
+
