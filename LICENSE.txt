@@ -1,0 +1,48 @@
+MAMA TEE'S SAUCE - LICENSE AGREEMENT
+
+Project: Mama Tee's Sauce Website & Branding Materials
+Author: Mama Tee
+Date: 2025
+
+------------------------------------------------------------
+1. COPYRIGHT
+------------------------------------------------------------
+All content, graphics, images, designs, logos, text, and code contained in this project
+("Materials") are the intellectual property of Mama Tee. All rights are reserved.
+
+------------------------------------------------------------
+2. PERMITTED USE
+------------------------------------------------------------
+You are granted a limited, non-exclusive, non-transferable license to:
+- View, browse, and use the website for personal or educational purposes.
+- Share links to the website on social media or other platforms, provided attribution is given.
+- Reference the website or Materials in academic or professional work with proper credit.
+
+------------------------------------------------------------
+3. PROHIBITED USE
+------------------------------------------------------------
+You may NOT:
+- Copy, reproduce, distribute, or modify any part of the website or Materials for commercial purposes without explicit written consent.
+- Use any images, logos, or branding in your own projects without permission.
+- Claim ownership of any content, code, or designs from Mama Tee's Sauce.
+
+------------------------------------------------------------
+4. DISCLAIMER
+------------------------------------------------------------
+Mama Tee's Sauce provides Materials "as is" without warranties of any kind.
+Use of the website and Materials is at your own risk. Mama Tee is not liable for any
+direct or indirect damages arising from the use of the Materials.
+
+------------------------------------------------------------
+5. CONTACT
+------------------------------------------------------------
+For permissions, licensing requests, or questions, contact:
+Email: mamateesauce@example.com
+Website: https://zannyzack4life.github.io/deliva_2.0/
+
+------------------------------------------------------------
+6. ACCEPTANCE
+------------------------------------------------------------
+By using the website or Materials, you agree to comply with the terms of this License.
+
+© 2025 Mama Tee. All rights reserved.
