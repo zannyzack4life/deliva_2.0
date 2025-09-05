@@ -6,9 +6,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <!-- Title -->
-  <title>Mama Tee's Sauce</title>
+  <title>Mama Tee's Jollof Sauce</title>
 
-  <!-- Basic SEO -->
+    <!-- Basic SEO -->
   <meta name="description" content="Mama Tee's Sauce is the perfect companion for your rice, bringing rich spicy, mild, and original flavors to your meals. Order online via Shopify or WhatsApp.">
   <meta name="keywords" content="Mama Tee's Sauce, spicy sauce, mild sauce, original sauce, Nigerian sauce, rice sauce, African food">
   <meta name="author" content="Mama Tee">
@@ -16,17 +16,17 @@
   <link rel="canonical" href="https://zannyzack4life.github.io/deliva_2.0/">
 
   <!-- Open Graph (Social Sharing) -->
-  <meta property="og:title" content="Mama Tee's Sauce - The Sauce That Loves Your Rice">
-  <meta property="og:description" content="Discover spicy, mild & original sauces handmade to elevate your meals.">
-  <meta property="og:image" content="https://images.unsplash.com/photo-1546833999-b9f581a1996d?auto=format&fit=crop&w=1200&q=80">
+  <meta property="og:title" content="Mama Tee's Sauce - Your Shortcut To Legendary Jollof">
+  <meta property="og:description" content="Discover original sauces handmade to elevate your meals.">
+  <meta property="og:image" content="https://zannyzack4life.github.io/deliva_2.0/img/bg-1.jpg">
   <meta property="og:url" content="https://zannyzack4life.github.io/deliva_2.0/">
   <meta property="og:type" content="website">
 
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Mama Tee's Sauce - The Sauce That Loves Your Rice">
-  <meta name="twitter:description" content="Spicy, mild & original blends made to love your rice.">
-  <meta name="twitter:image" content="https://images.unsplash.com/photo-1546833999-b9f581a1996d?auto=format&fit=crop&w=1200&q=80">
+  <meta name="twitter:title" content="Mama Tee's Sauce - Your Shortcut To Legendary Jollof">
+  <meta name="twitter:description" content="Blends made to love your rice.">
+  <meta name="twitter:image" content="https://zannyzack4life.github.io/deliva_2.0/img/bg-1.jpg">
   <meta name="twitter:site" content="@MamaTeeSauce">
 
   <!-- Favicon -->
@@ -42,23 +42,85 @@
 
   <!-- Styles & Fonts (with cache-busting query) -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css?v=1.0">
 
   <!-- Tailwind Config -->
   <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          animation: {
-            'float': 'float 6s ease-in-out infinite',
-            'drip': 'drip 3s ease-in-out infinite',
-            'pulse-glow': 'pulseGlow 3s ease-in-out infinite',
-          }
-        }
-      }
-    }
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        'mama-red': '#A82925',
+        'mama-blue': '#165A99',
+        'mama-gold': '#ECB431',
+        'mama-cream': '#F2E4C7',
+        'mama-dark': '#182F3C',
+        'mama-orange': {
+          50: '#fff7ed',
+          100: '#ffedd5',
+          200: '#fed7aa',
+          300: '#fdba74',
+          400: '#fb923c',
+          500: '#f97316',
+          600: '#ea580c',
+          700: '#c2410c',
+          800: '#9a3412',
+          900: '#7c2d12',
+        },
+        'mama-green': {
+          50: '#f0fdf4',
+          100: '#dcfce7',
+          200: '#bbf7d0',
+          300: '#86efac',
+          400: '#4ade80',
+          500: '#22c55e',
+          600: '#16a34a',
+          700: '#15803d',
+          800: '#166534',
+          900: '#14532d',
+        },
+        'brand': {
+            50: '#fef7f0',
+            100: '#fdeee0',
+            200: '#fad9c0',
+            300: '#f6be95',
+            400: '#f19968',
+            500: '#ed7544',
+            600: '#de5a2a',
+            700: '#b84520',
+            800: '#933820',
+            900: '#76301e',
+        },
+        'accent': {
+            50: '#f8fafc',
+            100: '#f1f5f9',
+            200: '#e2e8f0',
+            300: '#cbd5e1',
+            400: '#94a3b8',
+            500: '#64748b',
+            600: '#475569',
+            700: '#334155',
+            800: '#1e293b',
+            900: '#0f172a',
+        },
+      },
+      fontFamily: {
+        'mama-display': ['Montserrat', 'Poppins', 'sans-serif'],
+        'mama-body': ['Poppins', 'system-ui', 'sans-serif'],
+      },
+      animation: {
+        'float': 'float 6s ease-in-out infinite',
+        'drip': 'drip 3s ease-in-out infinite',
+        'pulse-glow': 'pulseGlow 3s ease-in-out infinite',
+        'mama-bounce': 'mamaBounce 2s ease-in-out infinite',
+        'mama-glow': 'mamaGlow 3s ease-in-out infinite alternate',
+      },
+    },
+  },
+};
+
   </script>
 
   <!-- Schema.org (Product Example) -->
@@ -83,15 +145,11 @@
   }
   </script>
 </head>
-
-
-
-
 <body class="bg-gradient-to-br from-orange-50 to-red-50 smooth-scroll" style="scroll-behavior: smooth;">
     <!-- Loading Screen -->
     <div class="loading-screen" id="loadingScreen">
-        <div class="loading-logo font-display">Mama Tee's Sauce</div>
-        <div class="loading-spinner"></div>
+        <div class="loading-logo font-display"><img loading="lazy" src="img/Mama Tee now single.png" alt=""></div>
+        <!-- <div class="loading-spinner"></div> -->
         <div class="loading-text">Preparing your culinary journey...</div>
         <div class="loading-progress">
             <div class="loading-progress-bar"></div>
@@ -102,11 +160,12 @@
             <div class="loading-dot"></div>
         </div>
     </div>
+    
     <!-- Hero Section -->
     <section class="relative min-h-screen flex items-center justify-center overflow-hidden">
         <!-- Background with actual food imagery -->
         <div class="absolute inset-0">
-            <img src="https://images.unsplash.com/photo-1546833999-b9f581a1996d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80" 
+            <img loading="lazy" src="img/funne1 bg.jpg" 
                  alt="Mama Tee's Special Delicacy" 
                  class="w-full h-full object-cover"
                  onerror="this.src=''; this.alt='Background image failed to load'; this.style.background='linear-gradient(135deg, #dc2626, #ea580c, #d97706)';">
@@ -121,73 +180,75 @@
          -->
         <div class="relative z-10 text-center px-4 max-w-7xl mx-auto">
             <div class="slide-in-left">
-                <div class="mb-6 mt-6">
-                    <span class="inline-block bg-gradient-to-r from-yellow-400 to-orange-500 text-black font-bold px-6 py-2 rounded-full text-sm uppercase tracking-wider shadow-lg">
-                        🔥 Mama Tee's Sauce
+                <div class=" mt-3">
+                    <span class="mama-tee-top-tag inline-block px-2 py-2 text-sm uppercase tracking-wider">
+                        <img src="img/Mama Tee now single.png" alt="">
                     </span>
                 </div>
-                <h1 class="text-5xl md:text-8xl font-black text-white mb-8 leading-tight drop-shadow-2xl font-display">
-                    The Sauce That
-                    <span class="block bg-gradient-to-r from-yellow-400 via-orange-500 to-red-500 bg-clip-text text-transparent">
-                        Loves Your Rice
+                <h1 class="text-4xl md:text-7xl leading-tight md:leading-extra font-black text-white mb-8 drop-shadow-2xl font-display">
+                    Shortcut To
+                    <span class="block bg-gradient-to-r from-[#A82925] via-orange-400 to-[#ECB431] bg-clip-text text-transparent">
+                        Legendary Jollof
                     </span>
                 </h1>
-                <p class="text-xl md:text-3xl text-white/90 mb-12 max-w-3xl mx-auto font-light leading-relaxed drop-shadow-lg">
-                    Transform ordinary meals into extraordinary experiences with our premium collection of authentic Nigerian sauces
+                <p class="text-xl sm:text-2xl md:text-3xl text-white/90 mb-12 max-w-xs sm:max-w-2xl md:max-w-3xl mx-auto font-light leading-relaxed drop-shadow-lg">
+                Transform ordinary meals into extraordinary experiences with our premium collection of authentic Nigerian sauces
                 </p>
+
+
             </div>
             
             <!-- Enhanced Sauce Jars Display with real product imagery -->
             <div class="slide-in-right mb-16">
                 <div class="flex sm:flex-row justify-center items-center sm:items-end sm:space-y-0 sm:space-x-4 lg:space-x-8 mb-12" style="gap: 12px;">
                     <!-- Spicy Sauce -->
-                    <div class="sauce-drip group">
+                    <!-- <div class="sauce-drip group">
                         <div class="relative transform hover:scale-110 transition-all duration-500">
                             <img src="" 
                                  alt="Mama Tee's Spicy Sauce" 
                                  class="w-24 h-32 sm:w-28 sm:h-36 lg:w-32 lg:h-40 object-cover rounded-2xl shadow-2xl border-4 border-red-400"
                                  onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-                            <div class="w-24 h-32 sm:w-28 sm:h-36 lg:w-32 lg:h-40 bg-gradient-to-b from-red-500 to-red-700 rounded-2xl relative shadow-2xl border-4 border-red-400" style="display: none;">
+                            <div class="w-24 h-32 sm:w-28 sm:h-36 lg:w-32 lg:h-40 bg-gradient-to-b from-[#A82925] to-[#A82925] rounded-2xl relative shadow-2xl border-4 border-[#A82925]" style="display: none;">
                                 <div class="absolute top-2 sm:top-3 left-1/2 transform -translate-x-1/2 w-12 sm:w-16 h-3 sm:h-4 bg-yellow-400 rounded-full"></div>
                                 <div class="absolute bottom-4 sm:bottom-6 left-1/2 transform -translate-x-1/2 text-white font-bold text-xs">SPICY</div>
                             </div>
                             <div class="absolute -top-1 sm:-top-2 -right-1 sm:-right-2 bg-red-500 text-white text-xs font-bold px-1 sm:px-2 py-1 rounded-full"><i class="fa-solid fa-fire-flame-curved"></i></div>
                         </div>
-                    </div>
+                    </div> -->
                     
                     <!-- Original Sauce (Featured) -->
                     <div class="sauce-drip group" style="animation-delay: -1s;">
                         <div class="relative transform hover:scale-110 transition-all duration-500">
-                            <img src="" 
+                            <img src="img/mamakib white.png" 
                                  alt="Mama Tee's Original Sauce" 
-                                 class="w-28 h-36 sm:w-32 sm:h-40 lg:w-36 lg:h-44 object-cover rounded-2xl shadow-2xl border-4 border-orange-400"
+                                 class="w-44 h-44 sm:w-48 sm:h-48 lg:w-64 lg:h-72 object-cover rounded-2xl shadow-2xl border-4 border-orange-400"
                                  onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-                            <div class="w-28 h-36 sm:w-32 sm:h-40 lg:w-36 lg:h-44 bg-gradient-to-b from-orange-500 to-orange-700 rounded-2xl relative shadow-2xl border-4 border-orange-400" style="display: none;">
+                            <div class="w-28 h-36 sm:w-42 sm:h-50 lg:w-36 lg:h-44 bg-gradient-to-b from-[#ECB431] to-[#ECB431] rounded-2xl relative shadow-2xl border-4 border-[#ECB431]" style="display: none;">
                                 <div class="absolute top-3 sm:top-4 left-1/2 transform -translate-x-1/2 w-16 sm:w-20 h-4 sm:h-6 bg-yellow-400 rounded-full"></div>
                                 <div class="absolute bottom-6 sm:bottom-8 left-1/2 transform -translate-x-1/2 text-white font-bold text-xs sm:text-sm">ORIGINAL</div>
                             </div>
-                            <div class="absolute -top-2 sm:-top-3 -right-2 sm:-right-3 bg-gradient-to-r from-yellow-400 to-orange-500 text-black text-xs font-bold px-2 sm:px-3 py-1 sm:py-2 rounded-full animate-pulse"><i class="fa-solid fa-star"></i></div>
+                            <div class="absolute -top-2 sm:-top-3 -right-2 sm:-right-3 bg-gradient-to-r from-yellow-400 to-orange-500 text-black text-xs font-bold px-2 sm:px-3 py-1 sm:py-2 rounded-full animate-pulse">Original</div>
                         </div>
                     </div>
                     
                     <!-- Mild Sauce -->
-                    <div class="sauce-drip group" style="animation-delay: -2s;">
+                    <!-- <div class="sauce-drip group" style="animation-delay: -2s;">
                         <div class="relative transform hover:scale-110 transition-all duration-500">
                             <img src="" 
                                  alt="Mama Tee's Mild Sauce" 
                                  class="w-24 h-32 sm:w-28 sm:h-36 lg:w-32 lg:h-40 object-cover rounded-2xl shadow-2xl border-4 border-green-400"
                                  onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-                            <div class="w-24 h-32 sm:w-28 sm:h-36 lg:w-32 lg:h-40 bg-gradient-to-b from-green-500 to-green-700 rounded-2xl relative shadow-2xl border-4 border-green-400" style="display: none;">
+                            <div class="w-24 h-32 sm:w-28 sm:h-36 lg:w-32 lg:h-40 bg-gradient-to-b from-[#165A99] to-[#165A99] rounded-2xl relative shadow-2xl border-4 border-[#165A99]" style="display: none;">
                                 <div class="absolute top-2 sm:top-3 left-1/2 transform -translate-x-1/2 w-12 sm:w-16 h-3 sm:h-4 bg-yellow-400 rounded-full"></div>
                                 <div class="absolute bottom-4 sm:bottom-6 left-1/2 transform -translate-x-1/2 text-white font-bold text-xs">MILD</div>
                             </div>
                             <div class="absolute -top-1 sm:-top-2 -right-1 sm:-right-2 bg-blue-500 text-white text-xs font-bold px-1 sm:px-2 py-1 rounded-full"><i class="fa-brands fa-guilded"></i></div>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
                 
                 <!-- Product highlights -->
-                <div class="grid grid-cols-3 gap-4 max-w-2xl mx-auto mb-12 text-white">
+                <!-- <div class="grid grid-cols-3 gap-4 max-w-2xl mx-auto mb-12 text-white">
                     <div class="text-center bg-white/10 backdrop-blur-sm rounded-xl p-4">
                         <div class="text-2xl mb-2">🌿</div>
                         <div class="font-semibold text-sm">100% Natural</div>
@@ -200,12 +261,12 @@
                         <div class="text-2xl mb-2"><i class="fa-solid fa-bolt" style="color: #FFD43B;"></i></div>
                         <div class="font-semibold text-sm">Quick Delivery</div>
                     </div>
-                </div>
+                </div> -->
             </div>
             
             <div class="fade-in-up space-y-4">
-                <button class="bg-gradient-to-r from-red-600 via-orange-600 to-yellow-500 hover:from-red-700 hover:via-orange-700 hover:to-yellow-600 text-white font-bold py-5 px-8 rounded-full text-2xl shadow-2xl btn-hover pulse-glow transform hover:scale-105 transition-all duration-300 border-2 border-white/20">
-                    <img class="flutter-icon" src="img/Flutterwave_idDNMg52In_1.png" alt=""> Order Now
+                <button onclick="openModalA('deliveryModalA')" class="bg-gradient-to-r from-red-600 via-orange-600 to-yellow-500 hover:from-red-700 hover:via-orange-700 hover:to-yellow-600 text-white font-bold py-5 px-8 rounded-full text-2xl shadow-2xl btn-hover pulse-glow transform hover:scale-105 transition-all duration-300 border-2 border-white/20">
+                    <i class="fa-solid fa-box-open" style="color: #ffffff;"></i> Order Now
                 </button>
                 <div class="flex justify-center items-center text-white/80 text-sm" style="gap: 7px;">
                     <div class="flex items-center text-smer ">
@@ -259,7 +320,7 @@
                     </div>
                     
                     <!-- Stats -->
-                    <div class="grid grid-cols-3 gap-6 py-8">
+                    <!-- <div class="grid grid-cols-3 gap-6 py-8">
                         <div class="text-center">
                             <div class="text-3xl font-black text-red-600 mb-2">50+</div>
                             <div class="text-sm text-gray-600 font-medium">Years of Tradition</div>
@@ -272,7 +333,7 @@
                             <div class="text-3xl font-black text-yellow-600 mb-2">10K+</div>
                             <div class="text-sm text-gray-600 font-medium">Happy Families</div>
                         </div>
-                    </div>
+                    </div> -->
                     
                     <!-- Feature highlights -->
                     <div class="grid grid-cols-2 gap-4">
@@ -311,11 +372,11 @@
                     <div class="relative">
                         <!-- Main image -->
                         <div class="relative overflow-hidden rounded-3xl shadow-2xl">
-                            <img src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
+                            <img src="img/maT.jpg" 
                                  alt="Traditional Nigerian cooking" 
                                  class="w-full h-96 object-cover transform hover:scale-105 transition-transform duration-700"
                                  onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-                            <div class="w-full h-96 bg-gradient-to-br from-orange-300 via-red-300 to-yellow-300 flex items-center justify-center text-8xl" style="display: none;">
+                            <div class="w-full h-96 bg-gradient-to-br from-orange-300 to-red-300 flex items-center justify-center text-8xl" style="display: none;">
                                 👩🏾‍🍳
                             </div>
                             <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
@@ -330,17 +391,17 @@
                         </div> -->
                         
                         <!-- Testimonial overlay -->
-                        <div class="absolute bottom-6 left-6 right-6 bg-white/95 backdrop-blur-sm rounded-2xl p-6 shadow-xl">
+                        <div class="absolute bottom-6 left-6 right-6 bg-gradient-to-r from-white/95 to-white/0 rounded-2xl p-6 shadow-xl">
                             <div class="flex items-center mb-3">
                                 <div class="w-10 h-10 bg-gradient-to-br from-orange-400 to-red-500 rounded-full flex items-center justify-center text-white font-bold mr-3">
                                     MT
                                 </div>
                                 <div>
-                                    <div class="font-bold text-gray-800">Mama Tee</div>
-                                    <div class="text-sm text-gray-600">Founder & Head Chef</div>
+                                    <div class="font-bold text-gray-800">MamaTee</div>
+                                    <!-- <div class="text-sm text-gray-600">Founder & Producer</div> -->
                                 </div>
                             </div>
-                            <p class="text-sm text-gray-700 italic">
+                            <p class="text-sm text-gray-700 stroke-white italic">
                                 "Every bottle carries the love and tradition of my grandmother's kitchen. This is more than sauce - it's our heritage."
                             </p>
                         </div>
@@ -442,15 +503,15 @@
 
                         <!-- Step 3 -->
                         <div class="relative group">
-                            <div class="absolute inset-0 bg-gradient-to-br from-blue-400/20 to-purple-500/20 rounded-3xl blur-xl opacity-0 group-hover:opacity-100 transition-all duration-500"></div>
+                            <div class="absolute inset-0 bg-gradient-to-br from-blue-400/20 to-[#165A99]/20 rounded-3xl blur-xl opacity-0 group-hover:opacity-100 transition-all duration-500"></div>
                             <div class="relative bg-white/80 backdrop-blur-sm rounded-3xl p-8 shadow-lg border border-blue-100 hover:shadow-2xl transition-all duration-500 group-hover:transform group-hover:scale-105">
                                 <!-- Step Number -->
-                                <div class="absolute -top-4 -left-4 w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white font-black text-lg shadow-lg">
+                                <div class="absolute -top-4 -left-4 w-12 h-12 bg-gradient-to-br from-blue-500 to-[#165A99] rounded-full flex items-center justify-center text-white font-black text-lg shadow-lg">
                                     3
                                 </div>
                                 
                                 <!-- Icon -->
-                                <div class="w-20 h-20 bg-gradient-to-br from-blue-400 to-purple-500 rounded-3xl flex items-center justify-center text-white text-3xl mx-auto mb-6 group-hover:scale-110 transition-transform duration-300 shadow-lg">
+                                <div class="w-20 h-20 bg-gradient-to-br from-blue-400 to-[#165A99] rounded-3xl flex items-center justify-center text-white text-3xl mx-auto mb-6 group-hover:scale-110 transition-transform duration-300 shadow-lg">
                                     🧪
                                 </div>
                                 
@@ -462,7 +523,7 @@
                                 
                                 <!-- Progress Indicator -->
                                 <div class="w-full bg-blue-100 rounded-full h-2 mb-4">
-                                    <div class="bg-gradient-to-r from-blue-400 to-purple-500 h-2 rounded-full w-full"></div>
+                                    <div class="bg-gradient-to-r from-blue-400 to-[#165A99] h-2 rounded-full w-full"></div>
                                 </div>
                                 
                                 <!-- Details -->
@@ -491,7 +552,7 @@
                                 <!-- Content -->
                                 <h4 class="font-black text-xl text-gray-800 mb-4 text-center">Premium Packaging</h4>
                                 <p class="text-gray-600 text-center leading-relaxed mb-4">
-                                    Sealed in premium glass bottles with tamper-proof caps to lock in freshness and authentic flavors
+                                    Sealed in food graded plastic jars with tamper-proof caps to lock in freshness and authentic flavors
                                 </p>
                                 
                                 <!-- Progress Indicator -->
@@ -521,7 +582,7 @@
                     </div>
                     
                     <!-- Quality Guarantees -->
-                    <div class="grid md:grid-cols-3 gap-6">
+                    <!-- <div class="grid md:grid-cols-3 gap-6">
                         <div class="bg-gradient-to-br from-green-50 to-green-100 rounded-2xl p-6 border border-green-200">
                             <div class="flex items-center mb-3">
                                 <div class="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center text-white text-lg mr-3">
@@ -551,6 +612,117 @@
                             </div>
                             <p class="text-blue-700 text-sm">Every bottle meets our strict quality standards and comes with our satisfaction guarantee.</p>
                         </div>
+                    </div> -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    
+
+    <!-- Cooking Instructions Section -->
+    <section class="py-20 bg-gradient-to-br from-accent-900 via-accent-800 to-brand-900 text-white">
+        <div class="max-w-6xl mx-auto px-4">
+            <div class="text-center mb-16 fade-in">
+                <h2 class="font-display text-4xl md:text-5xl font-bold mb-6">
+                    Simple Cooking Method
+                </h2>
+                <p class="text-xl text-accent-200 max-w-3xl mx-auto">
+                    Experience the ease of authentic Nigerian cooking with our streamlined approach
+                </p>
+            </div>
+            
+            <div class="glass-card rounded-3xl p-8 md:p-12 fade-in">
+                <!-- Traditional vs Our Method -->
+                <div class="grid lg:grid-cols-2 gap-12 mb-12">
+                    <!-- Traditional Method -->
+                    <div class="bg-accent-50 rounded-2xl p-8">
+                        <h3 class="font-display text-2xl font-bold text-accent-800 mb-6 text-center">
+                            Traditional Method
+                        </h3>
+                        <div class="space-y-4">
+                            <div class="flex items-center text-accent-700">
+                                <div class="w-8 h-8 bg-accent-200 rounded-full flex items-center justify-center mr-4 text-sm font-bold">1</div>
+                                <span>Blend fresh tomatoes, peppers, onions</span>
+                            </div>
+                            <div class="flex items-center text-accent-700">
+                                <div class="w-8 h-8 bg-accent-200 rounded-full flex items-center justify-center mr-4 text-sm font-bold">2</div>
+                                <span>Heat oil and fry tomato paste</span>
+                            </div>
+                            <div class="flex items-center text-accent-700">
+                                <div class="w-8 h-8 bg-accent-200 rounded-full flex items-center justify-center mr-4 text-sm font-bold">3</div>
+                                <span>Add blended mixture and cook for 30+ minutes</span>
+                            </div>
+                            <div class="flex items-center text-accent-700">
+                                <div class="w-8 h-8 bg-accent-200 rounded-full flex items-center justify-center mr-4 text-sm font-bold">4</div>
+                                <span>Season with multiple spices and cubes</span>
+                            </div>
+                            <div class="flex items-center text-accent-700">
+                                <div class="w-8 h-8 bg-accent-200 rounded-full flex items-center justify-center mr-4 text-sm font-bold">5</div>
+                                <span>Add rice and monitor carefully</span>
+                            </div>
+                        </div>
+                        <div class="mt-6 text-center">
+                            <span class="text-accent-600 font-medium">Time: 1hr+</span>
+                        </div>
+                    </div>
+
+                    <!-- Our Method -->
+                    <div class="bg-gradient-to-br from-brand-50 to-brand-100 rounded-2xl p-8 border-2 border-brand-200">
+                        <h3 class="font-display text-2xl font-bold text-brand-800 mb-6 text-center">
+                            Mama Tee's Method
+                        </h3>
+                        <div class="space-y-4">
+                            <div class="flex items-center text-brand-700">
+                                <div class="w-8 h-8 bg-brand-500 text-white rounded-full flex items-center justify-center mr-4 text-sm font-bold">1</div>
+                                <span>Wash rice & drain. (Hot water)</span>
+                            </div>
+                            <div class="flex items-center text-brand-700">
+                                <div class="w-8 h-8 bg-brand-500 text-white rounded-full flex items-center justify-center mr-4 text-sm font-bold">2</div>
+                                <span>Combine rice, Mama Tee’s Sauce, water/stock & salt.</span>
+                            </div>
+                            <div class="flex items-center text-brand-700">
+                                <div class="w-8 h-8 bg-brand-500 text-white rounded-full flex items-center justify-center mr-4 text-sm font-bold">3</div>
+                                <span>Cover & cook on low heat 25–30 mins.</span>
+                            </div>
+                            <div class="flex items-center text-brand-700">
+                                <div class="w-8 h-8 bg-brand-500 text-white rounded-full flex items-center justify-center mr-4 text-sm font-bold">4</div>
+                                <span>Fluff, add butter/veggies (optional).</span>
+                            </div>
+                        </div>
+                        <div class="mt-6 text-center">
+                            <span class="text-brand-600 font-bold">Time: 45 minutes</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Key Benefits -->
+                <div class="bg-gradient-to-r from-brand-600 to-brand-700 rounded-2xl p-8 text-white text-center">
+                    <h3 class="font-display text-2xl font-bold mb-6">
+                        Why Choose Our Method?
+                    </h3>
+                    <div class="grid md:grid-cols-3 gap-8">
+                        <div>
+                            <div class="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <i class="fas fa-clock text-2xl"></i>
+                            </div>
+                            <h4 class="font-bold text-lg mb-2">Save Time</h4>
+                            <p class="text-brand-100">75% faster than traditional methods</p>
+                        </div>
+                        <div>
+                            <div class="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <i class="fas fa-leaf text-2xl"></i>
+                            </div>
+                            <h4 class="font-bold text-lg mb-2">Consistent Taste</h4>
+                            <p class="text-brand-100">Reliable flavors you can count on, every time.</p>
+                        </div>
+                        <div>
+                            <div class="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <i class="fas fa-utensils text-2xl"></i>
+                            </div>
+                            <h4 class="font-bold text-lg mb-2">Less Cleanup</h4>
+                            <p class="text-brand-100">Minimal pots and preparation</p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -577,7 +749,7 @@
                 </p>
                 
                 <!-- Recipe Stats -->
-                <div class="grid grid-cols-3 gap-8 max-w-2xl mx-auto mt-12">
+                <!-- <div class="grid grid-cols-3 gap-8 max-w-2xl mx-auto mt-12">
                     <div class="text-center">
                         <div class="text-4xl font-black text-orange-600 mb-2">50+</div>
                         <div class="text-sm text-gray-600 font-medium">Tested Recipes</div>
@@ -590,7 +762,7 @@
                         <div class="text-4xl font-black text-pink-600 mb-2">25K+</div>
                         <div class="text-sm text-gray-600 font-medium">Dishes Made</div>
                     </div>
-                </div>
+                </div> -->
             </div>
             
             <!-- Featured Recipe Spotlight -->
@@ -644,11 +816,11 @@
                             </div>
                             
                             <div class="flex flex-col sm:flex-row gap-4">
-                                <button onclick="openModal('jollof')" class="flex-1 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-bold py-4 px-8 rounded-2xl btn-hover shadow-2xl transform hover:scale-105 transition-all duration-300">
+                                <button onclick="openModal('jollof')" class="flex-1 bg-gradient-to-r from-blue-500 to-[#165A99] hover:from-blue-600 hover:to-purple-700 text-white font-bold py-4 px-8 rounded-2xl btn-hover shadow-2xl transform hover:scale-105 transition-all duration-300">
                                     <i class="fas fa-play mr-3"></i>Watch Tutorial
                                 </button>
-                                <button class="flex-1 bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white font-bold py-4 px-8 rounded-2xl btn-hover shadow-2xl transform hover:scale-105 transition-all duration-300">
-                                    <img class="flutter-icon" src="img/Flutterwave_idDNMg52In_1.png" alt=""> Order Sauce
+                                <button onclick="openModalA('deliveryModalA')" class="flex-1 bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white font-bold py-4 px-8 rounded-2xl btn-hover shadow-2xl transform hover:scale-105 transition-all duration-300">
+                                    <i class="fa-solid fa-box-open" style="color: #ffffff;"></i> Order Sauce
                                 </button>
                             </div>
                         </div>
@@ -658,7 +830,7 @@
                                 <img src="https://images.unsplash.com/photo-1603133872878-684f208fb84b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
                                      alt="Delicious Jollof Rice Supreme" 
                                      class="w-full h-96 object-cover transform hover:scale-105 transition-transform duration-700"
-                                     onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                     onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
                                 <div class="w-full h-96 bg-gradient-to-br from-orange-300 to-red-300 flex items-center justify-center text-8xl" style="display: none;">
                                     🍚
                                 </div>
@@ -724,11 +896,11 @@
                             
                             <!-- Enhanced Action Buttons -->
                             <div class="act-btn flex">
-                                <button onclick="openModal('chicken')" class="w-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-bold py-3 px-6 rounded-xl btn-hover shadow-lg transform hover:scale-105 transition-all duration-300">
+                                <button onclick="openModal('chicken')" class="w-full bg-gradient-to-r from-blue-500 to-[#165A99] hover:from-blue-600 hover:to-purple-700 text-white font-bold py-3 px-6 rounded-xl btn-hover shadow-lg transform hover:scale-105 transition-all duration-300">
                                     <i class="fas fa-play mr-2"></i>Tutorial
                                 </button>
-                                <button class="w-full bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white font-semibold py-2 px-6 rounded-xl btn-hover shadow-md">
-                                    <img class="flutter-iconb" src="img/Flutterwave_idDNMg52In_1.png" alt="">Order
+                                <button onclick="openModalA('deliveryModalA')" class="w-full bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white font-semibold py-2 px-6 rounded-xl btn-hover shadow-md">
+                                    <i class="fa-solid fa-box-open flutter-iconb" style="color: #ffffff;"></i>Order
                                 </button>
                             </div>
                         </div>
@@ -737,7 +909,7 @@
 
                 <!-- Recipe Card 3 - Noodle Fusion -->
                 <div class="group relative">
-                    <div class="absolute inset-0 bg-gradient-to-br from-purple-500/20 to-pink-500/20 rounded-3xl blur-xl opacity-0 group-hover:opacity-100 transition-all duration-500"></div>
+                    <div class="absolute inset-0 bg-gradient-to-br from-[#165A99]/20 to-pink-500/20 rounded-3xl blur-xl opacity-0 group-hover:opacity-100 transition-all duration-500"></div>
                     <div class="relative bg-white/90 backdrop-blur-sm rounded-3xl shadow-2xl overflow-hidden card-hover border-2 border-purple-100/50">
                         <div class="relative h-64 overflow-hidden">
                             <img src="https://images.unsplash.com/photo-1569718212165-3a8278d5f624?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
@@ -749,7 +921,7 @@
                             </div>
                             <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
                             
-                            <div class="absolute top-4 left-4 bg-gradient-to-r from-purple-500 to-pink-500 text-white px-4 py-2 rounded-full text-sm font-bold shadow-lg">
+                            <div class="absolute top-4 left-4 bg-gradient-to-r from-[#165A99] to-pink-500 text-white px-4 py-2 rounded-full text-sm font-bold shadow-lg">
                                 🌍 FUSION
                             </div>
                             <div class="absolute top-4 right-4 bg-white/20 backdrop-blur-sm text-white px-3 py-1 rounded-full text-xs font-bold border border-white/30">
@@ -774,15 +946,15 @@
                         </div>
                         
                         <div class="p-6">
-                            <h3 class="text-2xl font-bold text-gray-800 mb-3 group-hover:text-purple-600 transition-colors">Noodle Fusion</h3>
+                            <h3 class="text-2xl font-bold text-gray-800 mb-3 group-hover:text-[#165A99] transition-colors">Noodle Fusion</h3>
                             <p class="text-gray-600 mb-6 leading-relaxed">Asian-inspired noodles with Nigerian flavors from Mama Tee's sauce. A creative fusion that brings together the best of both culinary worlds.</p>
                             
                             <div class="act-btn flex">
-                                <button onclick="openModal('noodles')" class="w-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-bold py-3 px-6 rounded-xl btn-hover shadow-lg transform hover:scale-105 transition-all duration-300">
+                                <button onclick="openModal('noodles')" class="w-full bg-gradient-to-r from-blue-500 to-[#165A99] hover:from-blue-600 hover:to-purple-700 text-white font-bold py-3 px-6 rounded-xl btn-hover shadow-lg transform hover:scale-105 transition-all duration-300">
                                     <i class="fas fa-play mr-2"></i>Tutorial
                                 </button>
-                                <button class="w-full bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white font-semibold py-2 px-6 rounded-xl btn-hover shadow-md">
-                                    <img class="flutter-iconb" src="img/Flutterwave_idDNMg52In_1.png" alt="">Order
+                                <button onclick="openModalA('deliveryModalA')" class="w-full bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white font-semibold py-2 px-6 rounded-xl btn-hover shadow-md">
+                                    <i class="fa-solid fa-box-open flutter-iconb" style="color: #ffffff;"></i>Order
                                 </button>
                             </div>
                         </div>
@@ -832,11 +1004,11 @@
                             <p class="text-gray-600 mb-6 leading-relaxed">Rich Nigerian stew that brings comfort to every meal. A hearty, soul-warming dish that showcases the depth of Mama Tee's sauce flavors.</p>
                             
                             <div class="act-btn flex">
-                                <button onclick="openModal('stew')" class="w-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-bold py-3 px-6 rounded-xl btn-hover shadow-lg transform hover:scale-105 transition-all duration-300">
+                                <button onclick="openModal('stew')" class="w-full bg-gradient-to-r from-blue-500 to-[#165A99] hover:from-blue-600 hover:to-purple-700 text-white font-bold py-3 px-6 rounded-xl btn-hover shadow-lg transform hover:scale-105 transition-all duration-300">
                                     <i class="fas fa-play mr-2"></i>Tutorial
                                 </button>
-                                <button class="w-full bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white font-semibold py-2 px-6 rounded-xl btn-hover shadow-md">
-                                    <img class="flutter-iconb" src="img/Flutterwave_idDNMg52In_1.png" alt="">Order
+                                <button onclick="openModalA('deliveryModalA')" class="w-full bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white font-semibold py-2 px-6 rounded-xl btn-hover shadow-md">
+                                    <i class="fa-solid fa-box-open flutter-iconb" style="color: #ffffff;"></i>Order
                                 </button>
                             </div>
                         </div>
@@ -886,11 +1058,11 @@
                             <p class="text-gray-600 mb-6 leading-relaxed">Sweet plantains with a savory twist using Mama Tee's mild sauce. A perfect side dish that balances sweet and savory flavors beautifully.</p>
                             
                             <div class="space-y-3">
-                                <button onclick="openModal('plantain')" class="w-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-bold py-3 px-6 rounded-xl btn-hover shadow-lg transform hover:scale-105 transition-all duration-300">
+                                <button onclick="openModal('plantain')" class="w-full bg-gradient-to-r from-blue-500 to-[#165A99] hover:from-blue-600 hover:to-purple-700 text-white font-bold py-3 px-6 rounded-xl btn-hover shadow-lg transform hover:scale-105 transition-all duration-300">
                                     <i class="fas fa-play mr-2"></i>Tutorial
                                 </button>
                                 <button class="w-full bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white font-semibold py-2 px-6 rounded-xl btn-hover shadow-md">
-                                    <img class="flutter-iconb" src="img/Flutterwave_idDNMg52In_1.png" alt="">Order
+                                    <i class="fa-solid fa-box-open flutter-iconb" style="color: #ffffff;"></i>Order
                                 </button>
                             </div>
                         </div>
@@ -940,21 +1112,26 @@
                             <p class="text-gray-600 mb-6 leading-relaxed">Fresh seafood enhanced with the bold flavors of Mama Tee's sauce. A coastal-inspired dish that brings ocean freshness to Nigerian cuisine.</p>
                             
                             <div class="space-y-3">
-                                <button onclick="openModal('seafood')" class="w-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-bold py-3 px-6 rounded-xl btn-hover shadow-lg transform hover:scale-105 transition-all duration-300">
+                                <button onclick="openModal('seafood')" class="w-full bg-gradient-to-r from-blue-500 to-[#165A99] hover:from-blue-600 hover:to-purple-700 text-white font-bold py-3 px-6 rounded-xl btn-hover shadow-lg transform hover:scale-105 transition-all duration-300">
                                     <i class="fas fa-play mr-2"></i>Tutorial
                                 </button>
                                 <button class="w-full bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white font-semibold py-2 px-6 rounded-xl btn-hover shadow-md">
-                                    <img class="flutter-iconb" src="img/Flutterwave_idDNMg52In_1.png" alt="">Order
+                                    <i class="fa-solid fa-box-open flutter-iconb" style="color: #ffffff;"></i>Order
                                 </button>
                             </div>
                         </div>
                     </div>
-                </div> -->
+                </div>
             </div>
         </div>
     </section>
 
     <!-- Testimonials -->
+            </div>
+            
+        </div>
+    </section>
+
     <section class="py-32 bg-gradient-to-br from-slate-50 via-white to-orange-50 relative overflow-hidden">
         <!-- Background decorative elements -->
         <div class="absolute top-0 left-0 w-80 h-80 bg-gradient-to-br from-orange-200/10 to-red-200/10 rounded-full -translate-x-1/2 -translate-y-1/2 blur-3xl"></div>
@@ -973,7 +1150,7 @@
                 </p>
                 
                 <!-- Trust Indicators -->
-                <div class="grid grid-cols-4 gap-8 max-w-3xl mx-auto">
+                <!-- <div class="grid grid-cols-4 gap-8 max-w-3xl mx-auto">
                     <div class="text-center">
                         <div class="text-3xl font-black text-orange-600 mb-2">4.9★</div>
                         <div class="text-sm text-gray-600 font-medium">Average Rating</div>
@@ -990,7 +1167,7 @@
                         <div class="text-3xl font-black text-green-600 mb-2">5K+</div>
                         <div class="text-sm text-gray-600 font-medium">5-Star Reviews</div>
                     </div>
-                </div>
+                </div> -->
             </div>
             
             <!-- Featured Testimonial -->
@@ -1018,12 +1195,8 @@
                                 A
                             </div>
                             <div class="text-right">
-                                <h4 class="text-2xl font-bold text-gray-800">Adunni Okafor</h4>
-                                <p class="text-gray-600">Food Blogger & Mother of 3</p>
-                                <div class="flex items-center mt-2">
-                                    <span class="text-yellow-400 text-xl">⭐⭐⭐⭐⭐</span>
-                                    <span class="text-gray-500 ml-2 text-sm">Verified Purchase</span>
-                                </div>
+                                <div class="font-bold text-gray-800">Adunni Okafor</div>
+                                <div class="text-sm text-gray-600">Food Blogger & Mother of 3</div>
                             </div>
                         </div>
                         
@@ -1093,7 +1266,7 @@
 
                 <!-- Testimonial 3 -->
                 <div class="group relative">
-                    <div class="absolute inset-0 bg-gradient-to-br from-purple-500/20 to-pink-500/20 rounded-3xl blur-xl opacity-0 group-hover:opacity-100 transition-all duration-500"></div>
+                    <div class="absolute inset-0 bg-gradient-to-br from-[#165A99]/20 to-pink-500/20 rounded-3xl blur-xl opacity-0 group-hover:opacity-100 transition-all duration-500"></div>
                     <div class="relative bg-white/90 backdrop-blur-sm rounded-3xl shadow-2xl p-8 card-hover border-2 border-purple-100/50">
                         <div class="flex items-center mb-6">
                             <div class="w-16 h-16 bg-gradient-to-br from-purple-400 to-pink-400 rounded-full flex items-center justify-center text-white font-bold text-2xl shadow-lg">S</div>
@@ -1119,12 +1292,12 @@
             </div>
             
             <!-- Additional Testimonials Row -->
-            <div class="grid md:grid-cols-2 gap-8">
+            <div class="grid md:grid-cols-2 gap-8 ">
                 <!-- Video Testimonial -->
                 <div class="group relative">
-                    <div class="absolute inset-0 bg-gradient-to-br from-blue-500/20 to-purple-500/20 rounded-3xl blur-xl opacity-0 group-hover:opacity-100 transition-all duration-500"></div>
+                    <div class="absolute inset-0 bg-gradient-to-br from-[#165A99]/20 to-[#165A99]/20 rounded-3xl blur-xl opacity-0 group-hover:opacity-100 transition-all duration-500"></div>
                     <div class="relative bg-white/90 backdrop-blur-sm rounded-3xl shadow-2xl overflow-hidden card-hover border-2 border-blue-100/50">
-                        <div class="relative h-48 bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center">
+                        <div class="relative h-48 bg-gradient-to-br from-blue-400 to-[#165A99] flex items-center justify-center">
                             <div class="text-center text-white">
                                 <div class="w-20 h-20 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center text-4xl mb-4 mx-auto">
                                     <i class="fa-solid fa-circle-play"></i>
@@ -1139,7 +1312,7 @@
                                     <h5 class="font-bold text-gray-800 text-x1">Video Testimonials</h5>
                                     <p class="text-sm text-gray-600">12 customer stories</p>
                                 </div>
-                                <button class="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-4 py-2 rounded-lg font-semibold hover:scale-105 transition-transform duration-300">
+                                <button class="bg-gradient-to-r from-[#A82925] to-[#165A99] text-white px-4 py-2 rounded-lg font-semibold hover:scale-105 transition-transform duration-300">
                                     Watch Now
                                 </button>
                             </div>
@@ -1153,14 +1326,18 @@
                     <div class="relative bg-white/90 backdrop-blur-sm rounded-3xl shadow-2xl p-8 card-hover border-2 border-yellow-100/50">
                         <div class="text-center mb-6">
                             <h4 class="text-2xl font-bold text-gray-800 mb-4">Join Our Community</h4>
-                            <div class="grid grid-cols-2 gap-4 mb-6">
-                                <div class="bg-gradient-to-br from-orange-50 to-red-50 rounded-2xl p-4">
+                            <div class="grid gap-3 mb-6 grid-cols-1 sm:grid-cols-2 sm:place-items-center">
+                                <div class="w-full bg-gradient-to-br from-orange-50 to-red-50 rounded-2xl p-4">
                                     <div class="text-2xl font-black text-orange-600">15K+</div>
                                     <div class="text-sm text-gray-600">Instagram Followers</div>
                                 </div>
-                                <div class="bg-gradient-to-br from-blue-50 to-purple-50 rounded-2xl p-4">
+                                <div class="w-full bg-gradient-to-br from-blue-50 to-purple-50 rounded-2xl p-4">
                                     <div class="text-2xl font-black text-blue-600">8K+</div>
                                     <div class="text-sm text-gray-600">Facebook Community</div>
+                                </div>
+                                <div class="w-full inset-0 bg-gradient-to-br from-gray-800 to-red-400 sm:col-span-2 sm:justify-self-center rounded-2xl p-4">
+                                    <div class="text-2xl font-black text-white">8K+</div>
+                                    <div class="text-sm text-white">Tiktok Followers</div>
                                 </div>
                             </div>
                             <p class="text-gray-600 mb-6">Share your recipes, get cooking tips, and connect with fellow food lovers!</p>
@@ -1182,12 +1359,86 @@
         </div>
     </section>
 
+    <!-- Storage Section -->
+    <section class="py-20 bg-accent-100">
+        <div class="max-w-4xl mx-auto px-4">
+            <div class="text-center mb-12 fade-in">
+                <h2 class="font-display text-3xl md:text-4xl font-bold text-accent-900 mb-4">
+                    Storage Instructions
+                </h2>
+                <p class="text-lg text-accent-700">
+                    Keep your Mama Tee's Sauce fresh and flavorful with proper storage
+                </p>
+            </div>
+            
+            <div class="bg-white rounded-2xl shadow-lg p-8 md:p-12 fade-in">
+                <div class="grid md:grid-cols-3 gap-8">
+                    <!-- After Opening -->
+                    <div class="text-center">
+                        <div class="w-20 h-20 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                            <i class="fas fa-snowflake text-3xl text-blue-600"></i>
+                        </div>
+                        <h3 class="font-display text-xl font-bold text-accent-900 mb-3">After Opening</h3>
+                        <p class="text-accent-700 text-lg font-medium mb-2">Refrigerate immediately</p>
+                        <p class="text-accent-600 text-sm">Keep chilled to maintain freshness and quality</p>
+                    </div>
+
+                    <!-- Consumption Timeline -->
+                    <div class="text-center">
+                        <div class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                            <i class="fas fa-calendar-check text-3xl text-green-600"></i>
+                        </div>
+                        <h3 class="font-display text-xl font-bold text-accent-900 mb-3">Best Consumed</h3>
+                        <p class="text-accent-700 text-lg font-medium mb-2">Within 10 days</p>
+                        <p class="text-accent-600 text-sm">For optimal taste and food safety</p>
+                    </div>
+
+                    <!-- Shelf Life -->
+                    <div class="text-center">
+                        <div class="w-20 h-20 bg-brand-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                            <i class="fas fa-shield-alt text-3xl text-brand-600"></i>
+                        </div>
+                        <h3 class="font-display text-xl font-bold text-accent-900 mb-3">Shelf Life</h3>
+                        <p class="text-accent-700 text-lg font-medium mb-2">3 months unopened</p>
+                        <p class="text-accent-600 text-sm">Store in a cool, dry place before opening</p>
+                    </div>
+                </div>
+                
+                <!-- Additional Tips -->
+                <div class="mt-12 bg-accent-50 rounded-xl p-6">
+                    <h4 class="font-display text-lg font-bold text-accent-900 mb-4 text-center">
+                        <i class="fas fa-lightbulb text-brand-600 mr-2"></i>
+                        Storage Tips
+                    </h4>
+                    <div class="grid md:grid-cols-2 gap-4 text-sm text-accent-700">
+                        <div class="flex items-center">
+                            <i class="fas fa-check-circle text-green-500 mr-3"></i>
+                            <span>Always use clean utensils when serving</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-check-circle text-green-500 mr-3"></i>
+                            <span>Ensure lid is tightly sealed after each use</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-check-circle text-green-500 mr-3"></i>
+                            <span>Check expiration date before consuming</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-check-circle text-green-500 mr-3"></i>
+                            <span>Store away from direct sunlight</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>    
+
     <!-- Shop Section -->
     <section class="py-24 bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 relative overflow-hidden">
         <!-- Animated Background Elements -->
         <div class="absolute inset-0">
             <div class="absolute top-20 left-10 w-72 h-72 bg-gradient-to-br from-orange-500/20 to-red-500/20 rounded-full blur-3xl animate-pulse"></div>
-            <div class="absolute bottom-20 right-10 w-96 h-96 bg-gradient-to-tl from-purple-500/20 to-pink-500/20 rounded-full blur-3xl animate-pulse" style="animation-delay: -2s;"></div>
+            <div class="absolute bottom-20 right-10 w-96 h-96 bg-gradient-to-tl from-[#165A99]/20 to-pink-500/20 rounded-full blur-3xl animate-pulse" style="animation-delay: -2s;"></div>
             <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-gradient-to-br from-yellow-500/10 to-orange-500/10 rounded-full blur-3xl animate-pulse" style="animation-delay: -4s;"></div>
         </div>
         
@@ -1208,97 +1459,6 @@
             </div>
             
             <div class="grid lg:grid-cols-3 gap-8 mb-20">
-                <!-- Original Sauce - Premium Card -->
-                <div class="group relative">
-                    <div class="absolute inset-0 bg-gradient-to-br from-orange-500 to-red-500 rounded-3xl blur-xl opacity-25 group-hover:opacity-40 transition-all duration-500"></div>
-                    <div class="relative bg-white/10 backdrop-blur-xl border border-white/20 rounded-3xl overflow-hidden card-hover">
-                        <!-- Product Image Section -->
-                        <div class="relative h-80 bg-gradient-to-br from-orange-400 via-red-400 to-pink-400 overflow-hidden">
-                            <div class="absolute inset-0 bg-black/20"></div>
-                            <img src="https://images.unsplash.com/photo-1571197119282-7c4e99e6e2c6?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" 
-                                 alt="Mama Tee's Original Sauce" 
-                                 class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-                                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                            <div class="w-full h-full bg-gradient-to-br from-orange-400 to-red-500 flex items-center justify-center text-8xl" style="display: none;">
-                                🍯
-                            </div>
-                            
-                            <!-- Floating Badges -->
-                            <div class="absolute top-6 left-6 bg-gradient-to-r from-yellow-400 to-orange-500 text-black px-4 py-2 rounded-full text-sm font-bold shadow-xl animate-bounce">
-                                ⭐ BESTSELLER
-                            </div>
-                            <div class="absolute top-6 right-6 bg-white/20 backdrop-blur-sm text-white px-4 py-2 rounded-full text-sm font-bold border border-white/30">
-                                🔥 TRENDING
-                            </div>
-                            
-                            <!-- Product Preview -->
-                            <div class="absolute bottom-6 left-1/2 transform -translate-x-1/2">
-                                <div class="w-24 h-32 bg-gradient-to-b from-orange-500 to-orange-700 rounded-2xl relative shadow-2xl sauce-drip border-4 border-white/30">
-                                    <div class="absolute top-3 left-1/2 transform -translate-x-1/2 w-16 h-6 bg-yellow-400 rounded-full"></div>
-                                    <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2 text-white font-bold text-xs">ORIGINAL</div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- Product Details -->
-                        <div class="p-8 text-white">
-                            <div class="flex items-center justify-between mb-4">
-                                <h3 class="text-xl font-bold">Original Sauce</h3>
-                                <div class="flex items-center space-x-1">
-                                    <span class="text-yellow-400">⭐⭐⭐⭐⭐</span>
-                                    <span class="text-sm text-gray-300">(4.9)</span>
-                                </div>
-                            </div>
-                            
-                            <p class="text-gray-300 mb-6 leading-relaxed">
-                                The legendary flavor that started our journey. A perfect harmony of traditional Nigerian spices and herbs, delivering authentic taste in every drop.
-                            </p>
-                            
-                            <!-- Features -->
-                            <div class="grid grid-cols-2 gap-4 mb-6">
-                                <div class="flex items-center space-x-2 text-sm">
-                                    <div class="w-2 h-2 bg-green-400 rounded-full"></div>
-                                    <span class="text-gray-300">100% Natural</span>
-                                </div>
-                                <div class="flex items-center space-x-2 text-sm">
-                                    <div class="w-2 h-2 bg-orange-400 rounded-full"></div>
-                                    <span class="text-gray-300">Gluten Free</span>
-                                </div>
-                                <div class="flex items-center space-x-2 text-sm">
-                                    <div class="w-2 h-2 bg-red-400 rounded-full"></div>
-                                    <span class="text-gray-300">No Preservatives</span>
-                                </div>
-                                <div class="flex items-center space-x-2 text-sm">
-                                    <div class="w-2 h-2 bg-purple-400 rounded-full"></div>
-                                    <span class="text-gray-300">Family Recipe</span>
-                                </div>
-                            </div>
-                            
-                            <!-- Pricing -->
-                            <div class="flex items-center justify-between mb-6">
-                                <div>
-                                    <div class="text-3xl font-black bg-gradient-to-r from-orange-400 to-red-400 bg-clip-text text-transparent">$12.99</div>
-                                    <div class="text-sm text-gray-400">Free shipping over $50</div>
-                                </div>
-                                <div class="text-right">
-                                    <div class="text-sm text-gray-400">Size</div>
-                                    <div class="text-white font-semibold">450g</div>
-                                </div>
-                            </div>
-                            
-                            <!-- Action Buttons -->
-                            <div class="space-y-3">
-                                <button class="w-full bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white font-bold py-4 px-6 rounded-2xl btn-hover shadow-2xl transform hover:scale-105 transition-all duration-300">
-                                    <img class="flutter-icon" src="img/Flutterwave_idDNMg52In_1.png" alt="">  Order - $12.99
-                                </button>
-                                <!-- <button class="w-full bg-white/10 hover:bg-white/20 backdrop-blur-sm border border-white/30 text-white font-semibold py-3 px-6 rounded-2xl transition-all duration-300">
-                                    <i class="fas fa-heart mr-2"></i>Add to Wishlist
-                                </button> -->
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
                 <!-- Spicy Sauce - Premium Card -->
                 <div class="group relative">
                     <div class="absolute inset-0 bg-gradient-to-br from-red-500 to-pink-500 rounded-3xl blur-xl opacity-25 group-hover:opacity-40 transition-all duration-500"></div>
@@ -1306,7 +1466,7 @@
                         <!-- Product Image Section -->
                         <div class="relative h-80 bg-gradient-to-br from-red-500 via-pink-500 to-red-600 overflow-hidden">
                             <div class="absolute inset-0 bg-black/20"></div>
-                            <img src="https://images.unsplash.com/photo-1594736797933-d0401ba2fe65?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" 
+                            <img src="img/mamakib white.png" 
                                  alt="Mama Tee's Spicy Sauce" 
                                  class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                                  onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
@@ -1316,17 +1476,17 @@
                             
                             <!-- Floating Badges -->
                             <div class="absolute top-6 left-6 bg-gradient-to-r from-red-500 to-pink-500 text-white px-4 py-2 rounded-full text-sm font-bold shadow-xl animate-pulse">
-                                🔥 EXTRA HOT
+                                🔥 2 Jars
                             </div>
                             <div class="absolute top-6 right-6 bg-white/20 backdrop-blur-sm text-white px-4 py-2 rounded-full text-sm font-bold border border-white/30">
-                                🌶️ SPICY
+                                🌶️ NORMAL
                             </div>
                             
                             <!-- Product Preview -->
                             <div class="absolute bottom-6 left-1/2 transform -translate-x-1/2">
                                 <div class="w-24 h-32 bg-gradient-to-b from-red-500 to-red-700 rounded-2xl relative shadow-2xl sauce-drip border-4 border-white/30">
                                     <div class="absolute top-3 left-1/2 transform -translate-x-1/2 w-16 h-6 bg-yellow-400 rounded-full"></div>
-                                    <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2 text-white font-bold text-xs">SPICY</div>
+                                    <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2 text-white font-bold text-xs">ORIGINAL</div>
                                 </div>
                             </div>
                         </div>
@@ -1334,26 +1494,26 @@
                         <!-- Product Details -->
                         <div class="p-8 text-white">
                             <div class="flex items-center justify-between mb-4">
-                                <h3 class="text-xl font-bold">Spicy Sauce</h3>
+                                <h3 class="text-xl font-bold">Starter Pack (2 Jars)</h3>
                                 <div class="flex items-center space-x-1">
-                                    <span class="text-yellow-400">⭐⭐⭐⭐⭐</span>
+                                    <span class="text-yellow-400">⭐</span>
                                     <span class="text-sm text-gray-300">(4.8)</span>
                                 </div>
                             </div>
                             
                             <p class="text-gray-300 mb-6 leading-relaxed">
-                                For the bold and adventurous! Packed with premium scotch bonnet peppers and aromatic spices that deliver an unforgettable heat experience.
+                               Double the fire, double the flavor—two jars of Mamatee’s sauce for an unforgettable experience.
                             </p>
                             
                             <!-- Features -->
                             <div class="grid grid-cols-2 gap-4 mb-6">
                                 <div class="flex items-center space-x-2 text-sm">
                                     <div class="w-2 h-2 bg-red-500 rounded-full"></div>
-                                    <span class="text-gray-300">Extra Hot</span>
+                                    <span class="text-gray-300">Original Taste</span>
                                 </div>
                                 <div class="flex items-center space-x-2 text-sm">
                                     <div class="w-2 h-2 bg-orange-400 rounded-full"></div>
-                                    <span class="text-gray-300">Scotch Bonnet</span>
+                                    <span class="text-gray-300">Sealed fresh</span>
                                 </div>
                                 <div class="flex items-center space-x-2 text-sm">
                                     <div class="w-2 h-2 bg-yellow-400 rounded-full"></div>
@@ -1368,19 +1528,113 @@
                             <!-- Pricing -->
                             <div class="flex items-center justify-between mb-6">
                                 <div>
-                                    <div class="text-3xl font-black bg-gradient-to-r from-red-400 to-pink-400 bg-clip-text text-transparent">$13.99</div>
-                                    <div class="text-sm text-gray-400">Free shipping over $50</div>
+                                    <div class="text-3xl font-black bg-gradient-to-r from-red-400 to-pink-400 bg-clip-text text-transparent">₦11,500</div>
+                                    <!-- <div class="text-sm text-gray-400">Free shipping over $50</div> -->
                                 </div>
                                 <div class="text-right">
                                     <div class="text-sm text-gray-400">Size</div>
-                                    <div class="text-white font-semibold">400g</div>
+                                    <div class="text-white font-semibold">800g</div>
                                 </div>
                             </div>
                             
                             <!-- Action Buttons -->
                             <div class="space-y-3">
-                                <button class="w-full bg-gradient-to-r from-red-500 to-pink-500 hover:from-red-600 hover:to-pink-600 text-white font-bold py-4 px-6 rounded-2xl btn-hover shadow-2xl transform hover:scale-105 transition-all duration-300">
-                                    <img class="flutter-icon" src="img/Flutterwave_idDNMg52In_1.png" alt="">  Order - $13.99
+                                <button onclick="openModalA('deliveryModalA')" class="w-full bg-gradient-to-r from-red-500 to-pink-500 hover:from-red-600 hover:to-pink-600 text-white font-bold py-4 px-6 rounded-2xl btn-hover shadow-2xl transform hover:scale-105 transition-all duration-300">
+                                    <i class="fa-solid fa-box-open" style="color: #ffffff;"></i>  Order - ₦11,500
+                                </button>
+                                <!-- <button class="w-full bg-white/10 hover:bg-white/20 backdrop-blur-sm border border-white/30 text-white font-semibold py-3 px-6 rounded-2xl transition-all duration-300">
+                                    <i class="fas fa-heart mr-2"></i>Add to Wishlist
+                                </button> -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Original Sauce - Premium Card -->
+                <div class="group relative">
+                    <div class="absolute inset-0 bg-gradient-to-br from-orange-500 to-red-500 rounded-3xl blur-xl opacity-25 group-hover:opacity-40 transition-all duration-500"></div>
+                    <div class="relative bg-white/10 backdrop-blur-xl border border-white/20 rounded-3xl overflow-hidden card-hover">
+                        <!-- Product Image Section -->
+                        <div class="relative h-80 bg-gradient-to-br from-orange-400 via-red-400 to-pink-400 overflow-hidden">
+                            <div class="absolute inset-0 bg-black/20"></div>
+                            <img src="img/mamakib white.png" 
+                                 alt="Mama Tee's Original Sauce" 
+                                 class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                            <div class="w-full h-full bg-gradient-to-br from-orange-400 to-red-500 flex items-center justify-center text-8xl" style="display: none;">
+                                🍯
+                            </div>
+                            
+                            <!-- Floating Badges -->
+                            <div class="absolute top-6 left-6 bg-gradient-to-r from-yellow-400 to-orange-500 text-black px-4 py-2 rounded-full text-sm font-bold shadow-xl animate-bounce">
+                                ⭐ 4 Jars
+                            </div>
+                            <div class="absolute top-6 right-6 bg-white/20 backdrop-blur-sm text-white px-4 py-2 rounded-full text-sm font-bold border border-white/30">
+                                🔥 TRENDING
+                            </div>
+                            
+                            <!-- Product Preview -->
+                            <div class="absolute bottom-6 left-1/2 transform -translate-x-1/2">
+                                <div class="w-24 h-32 bg-gradient-to-b from-[#ECB431] to-[#ECB431] rounded-2xl relative shadow-2xl sauce-drip border-4 border-white/30">
+                                    <div class="absolute top-3 left-1/2 transform -translate-x-1/2 w-16 h-6 bg-yellow-400 rounded-full"></div>
+                                    <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2 text-white font-bold text-xs">ORIGINAL</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Product Details -->
+                        <div class="p-8 text-white">
+                            <div class="flex items-center justify-between mb-4">
+                                <h3 class="text-xl font-bold">Family Pack (4 Jars)</h3>
+                                <div class="flex items-center space-x-1">
+                                    <span class="text-yellow-400">⭐</span>
+                                    <span class="text-sm text-gray-300">(4.9)</span>
+                                </div>
+                            </div>
+                            
+                            <p class="text-gray-300 mb-6 leading-relaxed">
+                                Six jars of family-flavor—authentic Nigerian taste with gentle heat everyone can enjoy.
+                            </p>
+                            
+                            <!-- Features -->
+                            <div class="grid grid-cols-2 gap-4 mb-6">
+                                <div class="flex items-center space-x-2 text-sm">
+                                    <div class="w-2 h-2 bg-green-400 rounded-full"></div>
+                                    <span class="text-gray-300">100% Natural</span>
+                                </div>
+                                <div class="flex items-center space-x-2 text-sm">
+                                    <div class="w-2 h-2 bg-orange-400 rounded-full"></div>
+                                    <span class="text-gray-300">Fam & Friends</span>
+                                </div>
+                                <div class="flex items-center space-x-2 text-sm">
+                                    <div class="w-2 h-2 bg-red-400 rounded-full"></div>
+                                    <span class="text-gray-300">No Preservatives</span>
+                                </div>
+                                <div class="flex items-center space-x-2 text-sm">
+                                    <div class="w-2 h-2 bg-purple-400 rounded-full"></div>
+                                    <span class="text-gray-300">Family Recipe</span>
+                                </div>
+                            </div>
+                            
+                            <!-- Pricing -->
+                            <div class="flex items-center justify-between mb-6">
+                                <div>
+                                    <div class="flex items-center gap-2" >
+                                        <div class="line-through decoration-red-500 decoration-2 text-2xl font-black bg-gradient-to-r from-red-400 to-blue-400 bg-clip-text text-transparent">₦22,000</div>
+                                        <div class="text-2xl font-black bg-gradient-to-r from-yellow-400 to-red-400 bg-clip-text text-transparent">₦19,500</div>
+                                    </div>
+                                    <!-- <div class="text-sm text-gray-400">Free shipping over $50</div> -->
+                                </div>
+                                <div class="text-right">
+                                    <div class="text-sm text-gray-400">Size</div>
+                                    <div class="text-white font-semibold">800g</div>
+                                </div>
+                            </div>
+                            
+                            <!-- Action Buttons -->
+                            <div class="space-y-3">
+                                <button onclick="openModalA('deliveryModalA')" class="w-full bg-gradient-to-r from-[#ECB431] to-[#ECB431] hover:from-orange-600 hover:to-red-600 text-white font-bold py-4 px-6 rounded-2xl btn-hover shadow-2xl transform hover:scale-105 transition-all duration-300">
+                                    <i class="fa-solid fa-box-open" style="color: #ffffff;"></i>  Order - ₦19,500
                                 </button>
                                 <!-- <button class="w-full bg-white/10 hover:bg-white/20 backdrop-blur-sm border border-white/30 text-white font-semibold py-3 px-6 rounded-2xl transition-all duration-300">
                                     <i class="fas fa-heart mr-2"></i>Add to Wishlist
@@ -1392,12 +1646,12 @@
 
                 <!-- Mild Sauce - Premium Card -->
                 <div class="group relative">
-                    <div class="absolute inset-0 bg-gradient-to-br from-green-500 to-blue-500 rounded-3xl blur-xl opacity-25 group-hover:opacity-40 transition-all duration-500"></div>
+                    <div class="absolute inset-0 bg-gradient-to-br from-[#165A9] to-blue-500 rounded-3xl blur-xl opacity-25 group-hover:opacity-40 transition-all duration-500"></div>
                     <div class="relative bg-white/10 backdrop-blur-xl border border-white/20 rounded-3xl overflow-hidden card-hover">
                         <!-- Product Image Section -->
-                        <div class="relative h-80 bg-gradient-to-br from-green-400 via-blue-400 to-teal-400 overflow-hidden">
+                        <div class="relative h-80 bg-gradient-to-br from-blue-400 via-blue-400 to-teal-400 overflow-hidden">
                             <div class="absolute inset-0 bg-black/20"></div>
-                            <img src="https://images.unsplash.com/photo-1599599810769-bcde5a160d32?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" 
+                            <img src="img/mamakib white.png" 
                                  alt="Mama Tee's Mild Sauce" 
                                  class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                                  onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
@@ -1407,17 +1661,17 @@
                             
                             <!-- Floating Badges -->
                             <div class="absolute top-6 left-6 bg-gradient-to-r from-green-500 to-blue-500 text-white px-4 py-2 rounded-full text-sm font-bold shadow-xl">
-                                👨‍👩‍👧‍👦 FAMILY FRIENDLY
+                                👨‍👩‍👧‍👦 6 Jars
                             </div>
                             <div class="absolute top-6 right-6 bg-white/20 backdrop-blur-sm text-white px-4 py-2 rounded-full text-sm font-bold border border-white/30">
-                                🌱 MILD
+                                🌱 Family
                             </div>
                             
                             <!-- Product Preview -->
                             <div class="absolute bottom-6 left-1/2 transform -translate-x-1/2">
-                                <div class="w-24 h-32 bg-gradient-to-b from-green-500 to-green-700 rounded-2xl relative shadow-2xl sauce-drip border-4 border-white/30">
+                                <div class="w-24 h-32 bg-gradient-to-b from-[#165A99] to-[#165A99] rounded-2xl relative shadow-2xl sauce-drip border-4 border-white/30">
                                     <div class="absolute top-3 left-1/2 transform -translate-x-1/2 w-16 h-6 bg-yellow-400 rounded-full"></div>
-                                    <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2 text-white font-bold text-xs">MILD</div>
+                                    <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2 text-white font-bold text-xs">ORIGINAL</div>
                                 </div>
                             </div>
                         </div>
@@ -1425,26 +1679,26 @@
                         <!-- Product Details -->
                         <div class="p-8 text-white">
                             <div class="flex items-center justify-between mb-4">
-                                <h3 class="text-xl font-bold">Mild Sauce</h3>
+                                <h3 class="text-xl font-bold">Gift & Party Pack (6 Jars)</h3>
                                 <div class="flex items-center space-x-1">
-                                    <span class="text-yellow-400">⭐⭐⭐⭐⭐</span>
+                                    <span class="text-yellow-400">⭐</span>
                                     <span class="text-sm text-gray-300">(4.7)</span>
                                 </div>
                             </div>
                             
                             <p class="text-gray-300 mb-6 leading-relaxed">
-                                Perfect for the whole family! Gentle yet flavorful, this sauce brings authentic Nigerian taste without overwhelming heat. Kids love it too!
+                                Six jars of celebration—authentic Nigerian flavor with a gentle kick, perfect for gifts, gatherings, and parties.
                             </p>
                             
                             <!-- Features -->
                             <div class="grid grid-cols-2 gap-4 mb-6">
                                 <div class="flex items-center space-x-2 text-sm">
                                     <div class="w-2 h-2 bg-green-400 rounded-full"></div>
-                                    <span class="text-gray-300">Kid Friendly</span>
+                                    <span class="text-gray-300">For families</span>
                                 </div>
                                 <div class="flex items-center space-x-2 text-sm">
                                     <div class="w-2 h-2 bg-blue-400 rounded-full"></div>
-                                    <span class="text-gray-300">Gentle Heat</span>
+                                    <span class="text-gray-300">Exclusive Pack</span>
                                 </div>
                                 <div class="flex items-center space-x-2 text-sm">
                                     <div class="w-2 h-2 bg-teal-400 rounded-full"></div>
@@ -1459,19 +1713,22 @@
                             <!-- Pricing -->
                             <div class="flex items-center justify-between mb-6">
                                 <div>
-                                    <div class="text-3xl font-black bg-gradient-to-r from-green-400 to-blue-400 bg-clip-text text-transparent">$11.99</div>
-                                    <div class="text-sm text-gray-400">Free shipping over $50</div>
+                                    <div class="flex items-center gap-2" >
+                                        <div class="line-through decoration-red-500 decoration-2 text-2xl font-black bg-gradient-to-r from-red-400 to-blue-400 bg-clip-text text-transparent">₦32,000</div>
+                                        <div class="text-2xl font-black bg-gradient-to-r from-green-400 to-blue-400 bg-clip-text text-transparent">₦30,500</div>
+                                    </div>
+                                    <div class="text-sm text-gray-400">Free Lagos delivery</div>
                                 </div>
                                 <div class="text-right">
                                     <div class="text-sm text-gray-400">Size</div>
-                                    <div class="text-white font-semibold">500g</div>
+                                    <div class="text-white font-semibold">800g</div>
                                 </div>
                             </div>
                             
                             <!-- Action Buttons -->
                             <div class="space-y-3">
-                                <button class="w-full bg-gradient-to-r from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600 text-white font-bold py-4 px-6 rounded-2xl btn-hover shadow-2xl transform hover:scale-105 transition-all duration-300">
-                                    <img class="flutter-icon" src="img/Flutterwave_idDNMg52In_1.png" alt="">  Order - $11.99
+                                <button onclick="openModalA('deliveryModalA')" class="w-full bg-gradient-to-r from-[#165A99] to-blue-500 hover:from-[#165A99] hover:to-blue-600 text-white font-bold py-4 px-6 rounded-2xl btn-hover shadow-2xl transform hover:scale-105 transition-all duration-300">
+                                    <i class="fa-solid fa-box-open" style="color: #ffffff;"></i>  Order - ₦30,500
                                 </button>
                                 <!-- <button class="w-full bg-white/10 hover:bg-white/20 backdrop-blur-sm border border-white/30 text-white font-semibold py-3 px-6 rounded-2xl transition-all duration-300">
                                     <i class="fas fa-heart mr-2"></i>Add to Wishlist
@@ -1482,72 +1739,7 @@
                 </div>
             </div>
             
-            <!-- Premium Bundle Offer -->
-            <div class="relative group">
-                <div class="absolute inset-0 bg-gradient-to-r from-yellow-500 via-orange-500 to-red-500 rounded-3xl blur-2xl opacity-30 group-hover:opacity-50 transition-all duration-500"></div>
-                <div class="relative bg-gradient-to-r from-yellow-500/20 via-orange-500/20 to-red-500/20 backdrop-blur-xl border border-white/30 rounded-3xl p-12 px-6 text-center text-white overflow-hidden">
-                    <!-- Background Pattern -->
-                    <div class="absolute inset-0 opacity-10">
-                        <div class="absolute top-10 left-10 text-6xl">🎁</div>
-                        <div class="absolute top-20 right-20 text-4xl">⭐</div>
-                        <div class="absolute bottom-10 left-20 text-5xl">🔥</div>
-                        <div class="absolute bottom-20 right-10 text-3xl">💎</div>
-                    </div>
-                    
-                    <div class="relative z-10">
-                        <div class="inline-block bg-gradient-to-r from-yellow-400 to-orange-500 text-black px-6 py-3 rounded-full text-sm font-bold mb-6 animate-bounce">
-                            🎉 LIMITED TIME OFFER
-                        </div>
-                        
-                        <h3 class="text-3xl md:text-5xl font-black mb-6 text-shadow-glow">
-                            Complete Flavor
-                            <span class="block bg-gradient-to-r from-yellow-400 via-orange-400 to-red-400 bg-clip-text text-transparent">
-                                Experience Bundle
-                            </span>
-                        </h3>
-                        
-                        <p class="text-xl text-gray-200 mb-8 max-w-3xl mx-auto leading-relaxed">
-                            Get all three premium sauces and discover your perfect flavor match. Perfect for gifting or exploring the full Mama Tee's experience.
-                        </p>
-                        
-                        <!-- Bundle Benefits -->
-                        <div class="grid md:grid-cols-3 gap-6 mb-10">
-                            <div class="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20">
-                                <div class="text-3xl mb-3">💰</div>
-                                <div class="font-bold text-lg mb-2">Save $5.00</div>
-                                <div class="text-sm text-gray-300">Best value for money</div>
-                            </div>
-                            <div class="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20">
-                                <div class="text-3xl mb-3">🚚</div>
-                                <div class="font-bold text-lg mb-2">Free Shipping</div>
-                                <div class="text-sm text-gray-300">Delivered to your door</div>
-                            </div>
-                            <div class="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20">
-                                <div class="text-3xl mb-3">🎁</div>
-                                <div class="font-bold text-lg mb-2">Gift Ready</div>
-                                <div class="text-sm text-gray-300">Beautiful packaging included</div>
-                            </div>
-                        </div>
-                        
-                        <!-- Pricing -->
-                        <div class="mb-8">
-                            <div class="text-2xl text-gray-300 mb-2">Individual Price: <span class="line-through">$38.97</span></div>
-                            <div class="text-6xl font-black bg-gradient-to-r from-yellow-400 to-orange-400 bg-clip-text text-transparent mb-2">$33.97</div>
-                            <div class="text-lg text-green-400 font-semibold">You Save $5.00!</div>
-                        </div>
-                        
-                        <!-- CTA Button -->
-                        <button class="bg-gradient-to-r from-yellow-500 via-orange-500 to-red-500 hover:from-yellow-600 hover:via-orange-600 hover:to-red-600 text-white font-black py-6 px-6 rounded-full text-smar shadow-2xl btn-hover transform hover:scale-105 transition-all duration-300 pulse-glow">
-                            <i class="fas fa-gift mr-2"></i>Order Complete Bundle Now
-                            <span class="ml-1 text-xl">→</span>
-                        </button>
-                        
-                        <div class="mt-6 text-sm text-gray-300">
-                            <i class="fas fa-shield-alt mr-2"></i>30-day money-back guarantee • <i class="fas fa-lock mr-2"></i>Secure checkout
-                        </div>
-                    </div>
-                </div>
-            </div>
+            
         </div>
     </section>
 
@@ -1555,14 +1747,14 @@
     <section class="py-24 bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900 relative overflow-hidden">
         <!-- Animated Background Elements -->
         <div class="absolute inset-0">
-            <div class="absolute top-20 left-10 w-64 h-64 bg-gradient-to-br from-blue-500/10 to-purple-500/10 rounded-full blur-3xl animate-pulse"></div>
+            <div class="absolute top-20 left-10 w-64 h-64 bg-gradient-to-br from-blue-500/10 to-[#165A99]/10 rounded-full blur-3xl animate-pulse"></div>
             <div class="absolute bottom-20 right-10 w-80 h-80 bg-gradient-to-tl from-pink-500/10 to-indigo-500/10 rounded-full blur-3xl animate-pulse" style="animation-delay: -2s;"></div>
-            <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-gradient-to-br from-purple-500/5 to-blue-500/5 rounded-full blur-3xl animate-pulse" style="animation-delay: -4s;"></div>
+            <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-gradient-to-br from-[#165A99]/5 to-blue-500/5 rounded-full blur-3xl animate-pulse" style="animation-delay: -4s;"></div>
         </div>
         
         <div class="max-w-7xl mx-auto px-4 relative z-10" id="contact">
             <div class="text-center mb-20 fade-in-up">
-                <div class="inline-block bg-gradient-to-r from-blue-500/20 to-purple-500/20 backdrop-blur-sm border border-blue-500/30 px-8 py-4 rounded-full mb-8">
+                <div class="inline-block bg-gradient-to-r from-blue-500/20 to-[#165A99]/20 backdrop-blur-sm border border-blue-500/30 px-8 py-4 rounded-full mb-8">
                     <span class="text-blue-300 font-semibold text-sm uppercase tracking-wider">💬 We're Here to Help</span>
                 </div>
                 <h2 class="text-4xl md:text-7xl font-black text-white mb-8 leading-tight text-shadow-glow">
@@ -1628,10 +1820,10 @@
 
                 <!-- Instagram -->
                 <div class="group relative">
-                    <div class="absolute inset-0 bg-gradient-to-br from-pink-500 to-purple-600 rounded-3xl blur-xl opacity-25 group-hover:opacity-40 transition-all duration-500"></div>
+                    <div class="absolute inset-0 bg-gradient-to-br from-pink-500 to-[#165A99] rounded-3xl blur-xl opacity-25 group-hover:opacity-40 transition-all duration-500"></div>
                     <a href="https://instagram.com/mamateessauce" target="_blank" class="relative block bg-white/10 backdrop-blur-xl border border-white/20 rounded-3xl p-8 hover:bg-white/15 transition-all duration-500 card-hover">
                         <!-- Icon -->
-                        <div class="w-20 h-20 bg-gradient-to-br from-pink-400 via-purple-500 to-indigo-600 rounded-3xl flex items-center justify-center text-white text-4xl mx-auto mb-6 group-hover:scale-110 transition-transform duration-300 shadow-2xl">
+                        <div class="w-20 h-20 bg-gradient-to-br from-pink-400 via-[#165A99] to-indigo-600 rounded-3xl flex items-center justify-center text-white text-4xl mx-auto mb-6 group-hover:scale-110 transition-transform duration-300 shadow-2xl">
                             <i class="fab fa-instagram"></i>
                         </div>
                         
@@ -1659,7 +1851,7 @@
                         
                         <!-- CTA -->
                         <div class="text-center">
-                            <div class="inline-flex items-center bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white font-bold py-3 px-6 rounded-full transition-all duration-300 group-hover:scale-105">
+                            <div class="inline-flex items-center bg-gradient-to-r from-pink-500 to-[#165A99] hover:from-pink-600 hover:to-purple-700 text-white font-bold py-3 px-6 rounded-full transition-all duration-300 group-hover:scale-105">
                                 <i class="fab fa-instagram mr-2"></i>
                                 Follow & DM
                                 <i class="fas fa-arrow-right ml-2"></i>
@@ -1786,9 +1978,9 @@
                                 <p class="text-gray-300 text-sm">For detailed inquiries and business matters</p>
                             </div>
                         </div>
-                        <a href="mailto:hello@mamateessauce.com" class="inline-flex items-center bg-orange-500 hover:bg-orange-600 text-white font-semibold py-2 px-4 rounded-lg transition-all duration-300">
+                        <a href="mailto:MamaTeeSauces@gmail.com" class="inline-flex items-center bg-orange-500 hover:bg-orange-600 text-white font-semibold py-2 px-4 rounded-lg transition-all duration-300">
                             <i class="fas fa-paper-plane mr-2"></i>
-                            hello@mamateessauce.com
+                            MamaTeeSauces@gmail.com
                         </a>
                     </div>
                 </div>
@@ -1806,9 +1998,9 @@
                                 <p class="text-gray-300 text-sm">Mon-Fri 9AM-6PM EST</p>
                             </div>
                         </div>
-                        <a href="tel:+15551234567" class="inline-flex items-center bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded-lg transition-all duration-300">
+                        <a href="tel:+08134029007" class="inline-flex items-center bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded-lg transition-all duration-300">
                             <i class="fas fa-phone mr-2"></i>
-                            +1 (555) 123-4567
+                            Call Now
                         </a>
                     </div>
                 </div>
@@ -1844,7 +2036,7 @@
                     
                     <div class="bg-white/10 rounded-2xl p-6 hover:bg-white/15 transition-all duration-300 cursor-pointer group">
                         <div class="text-center">
-                            <div class="w-12 h-12 bg-purple-500 rounded-full flex items-center justify-center text-white text-xl mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
+                            <div class="w-12 h-12 bg-[#165A99] rounded-full flex items-center justify-center text-white text-xl mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
                                 🍽️
                             </div>
                             <h4 class="font-bold text-white mb-2">Recipe Help</h4>
@@ -1866,7 +2058,7 @@
                     <div class="flex space-x-4">
                         <a href="#" class="text-2xl hover:text-red-400 transition-colors duration-300"><i class="fab fa-facebook"></i></a>
                         <a href="#" class="text-2xl hover:text-red-400 transition-colors duration-300"><i class="fab fa-instagram"></i></a>
-                        <a href="#" class="text-2xl hover:text-red-400 transition-colors duration-300"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="text-2xl hover:text-red-400 transition-colors duration-300"><i class="fab fa-x-twitter"></i></a>
                         <a href="#" class="text-2xl hover:text-red-400 transition-colors duration-300"><i class="fab fa-youtube"></i></a>
                     </div>
                 </div>
@@ -1894,8 +2086,8 @@
                 <div>
                     <h4 class="text-lg font-semibold mb-4">Contact Info</h4>
                     <div class="space-y-2 text-gray-400">
-                        <p><i class="fas fa-envelope mr-2"></i>hello@mamateessauce.com</p>
-                        <p><i class="fas fa-phone mr-2"></i>+1 (555) 123-4567</p>
+                        <p><i class="fas fa-envelope mr-2"></i>MamaTeeSauces@gmail.com</p>
+                        <p><i class="fas fa-phone mr-2"></i>08134029007</p>
                         <p><i class="fas fa-map-marker-alt mr-2"></i>Lagos, Nigeria</p>
                     </div>
                 </div>
@@ -1908,9 +2100,14 @@
     </footer>
 
     <!-- WhatsApp Float Button -->
-    <a href="https://wa.me/1234567890" class="whatsapp-float" target="_blank">
+    <!-- <a href="https://wa.me/1234567890" class="whatsapp-float" target="_blank">
         <i class="fab fa-whatsapp" style="margin-top: 16px;"></i>
-    </a>
+    </a> -->
+
+     <!-- WhatsApp Float Button -->
+    <div class="whatsapp-float-b" target="_blank">
+        <img src="img/Mama Tee now single.png" alt="">
+    </div>
 
     <!-- Recipe Modals -->
     <div id="jollofModal" class="modal">
@@ -1959,7 +2156,7 @@
                         <!-- Chef Tips -->
                         <div class="bg-gradient-to-br from-blue-50 to-purple-50 rounded-2xl p-6 border-2 border-blue-100 mt-6">
                             <div class="flex items-start gap-4">
-                                <div class="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center text-white text-xl flex-shrink-0">
+                                <div class="w-12 h-12 bg-gradient-to-br from-blue-500 to-[#165A99] rounded-xl flex items-center justify-center text-white text-xl flex-shrink-0">
                                     👩‍🍳
                                 </div>
                                 <div>
@@ -2061,8 +2258,8 @@
             
             <div class="modal-actions">
                 <div class="action-buttons">
-                    <button class="action-button primary">
-                        <img class="flutter-icon" src="img/Flutterwave_idDNMg52In_1.png" alt="">
+                    <button onclick="openModalA('deliveryModalA')" class="action-button primary">
+                        <i class="fa-solid fa-box-open" style="color: #ffffff;"></i>
                         Order
                     </button>
                     <button class="action-button secondary">
@@ -2218,8 +2415,8 @@
             
             <div class="modal-actions">
                 <div class="action-buttons">
-                    <button class="action-button primary">
-                        <img class="flutter-icon" src="img/Flutterwave_idDNMg52In_1.png" alt="">
+                    <button onclick="openModalA('deliveryModalA')" class="action-button primary">
+                        <i class="fa-solid fa-box-open" style="color: #ffffff;"></i>
                         Order
                     </button>
                     <button class="action-button secondary">
@@ -2371,8 +2568,8 @@
             
             <div class="modal-actions">
                 <div class="action-buttons">
-                    <button class="action-button primary">
-                        <img class="flutter-icon" src="img/Flutterwave_idDNMg52In_1.png" alt="">
+                    <button onclick="openModalA('deliveryModalA')" class="action-button primary">
+                        <i class="fa-solid fa-box-open" style="color: #ffffff;"></i>
                         Order
                     </button>
                     <button class="action-button secondary">
@@ -2431,7 +2628,7 @@
                         <!-- Chef Tips -->
                         <div class="bg-gradient-to-br from-purple-50 to-pink-50 rounded-2xl p-6 border-2 border-purple-100 mt-6">
                             <div class="flex items-start gap-4">
-                                <div class="w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-600 rounded-xl flex items-center justify-center text-white text-xl flex-shrink-0">
+                                <div class="w-12 h-12 bg-gradient-to-br from-[#165A99] to-pink-600 rounded-xl flex items-center justify-center text-white text-xl flex-shrink-0">
                                     🌍
                                 </div>
                                 <div>
@@ -2524,8 +2721,8 @@
             
             <div class="modal-actions">
                 <div class="action-buttons">
-                    <button class="action-button primary">
-                        <img class="flutter-icon" src="img/Flutterwave_idDNMg52In_1.png" alt="">
+                    <button onclick="openModalA('deliveryModalA')" class="action-button primary">
+                        <i class="fa-solid fa-box-open" style="color: #ffffff;"></i>
                         Order
                     </button>
                     <button class="action-button secondary">
@@ -2681,8 +2878,8 @@
             
             <div class="modal-actions">
                 <div class="action-buttons">
-                    <button class="action-button primary">
-                        <img class="flutter-icon" src="img/Flutterwave_idDNMg52In_1.png" alt="">
+                    <button onclick="openModalA('deliveryModalA')" class="action-button primary">
+                        <i class="fa-solid fa-box-open" style="color: #ffffff;"></i>
                         Order
                     </button>
                     <button class="action-button secondary">
@@ -2838,8 +3035,8 @@
             
             <div class="modal-actions">
                 <div class="action-buttons">
-                    <button class="action-button primary">
-                        <img class="flutter-icon" src="img/Flutterwave_idDNMg52In_1.png" alt="">
+                    <button onclick="openModalA('deliveryModalA')" class="action-button primary">
+                        <i class="fa-solid fa-box-open" style="color: #ffffff;"></i>
                         Order
                     </button>
                     <button class="action-button secondary">
@@ -2848,6 +3045,322 @@
                     </button>
                 </div>
             </div>
+        </div>
+    </div>
+
+    
+    <!-- Order Modal -->
+    <div id="deliveryModalA" class="modalA fixed inset-0 modal-backdrop bg-black bg-opacity-60 backdrop-blur-sm flex items-center justify-center z-50 opacity-0 invisible transition-all duration-300 p-2 sm:p-4">
+        <div class="modal-content bg-white rounded-2xl max-w-4xl w-full shadow-2xl max-h-[95vh] sm:max-h-[90vh] overflow-hidden flex flex-col">
+            <!-- Sticky Header -->
+            <div class="sticky top-0 z-10 modal-head px-4 sm:px-6 py-4 sm:py-5 rounded-t-2xl">
+                <div class="flex justify-between items-center">
+                    <div>
+                        <h3 class="font-display text-lg sm:text-xl font-bold text-white mb-1">Choose Your Package</h3>
+                    </div>
+                    <button onclick="closeModal()" class="w-8 h-8 sm:w-10 sm:h-10 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center transition-all duration-300 group">
+                        <i class="fas fa-times text-white text-sm sm:text-base group-hover:scale-110 transition-transform"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Scrollable Content -->
+            <div class="flex-1 overflow-y-auto del-areas">
+                <div class="p-4 sm:p-6">
+                    <!-- Package Selection -->
+                    <div class="space-y-3 sm:space-y-4 mb-6">
+                        <!-- Starter Pack -->
+                        <div class="bg-gradient-to-r from-[#ECB431] to-[#FEF9C3] package-card package-option border-2 border-gray-200 rounded-xl p-3 sm:p-4 cursor-pointer transition-all duration-300 hover:border-gray-300 hover:shadow-md" 
+                             onclick="selectPackage('starter', 11500, this)">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center gap-2 sm:gap-3 flex-1 min-w-0">
+                                    <div class="w-4 h-4 sm:w-5 sm:h-5 rounded-full border-2 border-gray-900 package-radio transition-all duration-300 flex items-center justify-center flex-shrink-0"></div>
+                                    <div class="flex-1 min-w-0">
+                                        <div class="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2 mb-1">
+                                            <h4 class="font-semibold text-gray-900 text-sm sm:text-base">Starter Pack</h4>
+                                            <span class="bg-gray-100 text-gray-700 px-2 py-1 rounded-md text-xs font-medium w-fit">2 Jars</span>
+                                        </div>
+                                        <p class="text-gray-800 text-xs sm:text-sm">Perfect for trying our flavors</p>
+                                    </div>
+                                </div>
+                                <div class="text-right flex-shrink-0 ml-2">
+                                    <div class="text-base sm:text-xl font-bold text-gray-900">₦11,500</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Family Pack -->
+                        <div class="bg-gradient-to-r from-[#165A99] to-[#93C5FD] package-card package-option border-2 border-gray-200 rounded-xl p-3 sm:p-4 cursor-pointer transition-all duration-300 hover:border-gray-300 hover:shadow-md relative" 
+                             onclick="selectPackage('family', 19500, this)">
+                            <!-- <div class="absolute -top-2 left-[0px] sm:left-4">
+                                <span class="bg-[#165A99] text-white px-1 sm:px-2 md:px-3 py-[1px] rounded-full text-[8px] font-bold shadow-lg">
+                                    POPULAR
+                                </span>
+                            </div> -->
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center gap-2 sm:gap-3 flex-1 min-w-0">
+                                    <div class="w-4 h-4 sm:w-5 sm:h-5 rounded-full border-2 border-gray-900 package-radio transition-all duration-300 flex items-center justify-center flex-shrink-0"></div>
+                                    <div class="flex-1 min-w-0">
+                                        <div class="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2 mb-1">
+                                            <h4 class="font-semibold text-white text-sm sm:text-base">Family Pack</h4>
+                                            <div class="flex gap-1 sm:gap-2 flex-wrap">
+                                                <span class="bg-gray-100 text-gray-700 px-2 py-1 rounded-md text-xs font-medium">4 Jars</span>
+                                                <span class="bg-green-100 text-green-700 px-2 py-1 rounded-md text-xs font-medium">Save ₦500</span>
+                                            </div>
+                                        </div>
+                                        <p class="text-white text-xs sm:text-sm">Great value for families</p>
+                                    </div>
+                                </div>
+                                <div class="text-right flex-shrink-0 ml-2">
+                                    <div class="text-xs text-gray-900 line-through">₦22,000</div>
+                                    <div class="text-base sm:text-xl font-bold text-gray-900">₦19,500</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Premium Pack -->
+                        <div class="bg-gradient-to-r from-[#A82925] to-[#FCA5A5] package-card package-option border-2 border-gray-200 rounded-xl p-3 sm:p-4 cursor-pointer transition-all duration-300 hover:border-gray-300 hover:shadow-md relative" 
+                             onclick="selectPackage('premium', 32000, this)">
+                            <!-- <div class="absolute -top-2 left-[0px] sm:left-4">
+                                <span class="bg-[#ECB431] text-gray-900 px-1 sm:px-2 md:px-3 py-[1px] rounded-full text-[8px] font-bold shadow-lg">
+                                    BEST VALUE
+                                </span>
+                            </div> -->
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center gap-2 sm:gap-3 flex-1 min-w-0">
+                                    <div class="w-4 h-4 sm:w-5 sm:h-5 rounded-full border-2 border-gray-900 package-radio transition-all duration-300 flex items-center justify-center flex-shrink-0"></div>
+                                    <div class="flex-1 min-w-0">
+                                        <div class="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2 mb-1">
+                                            <h4 class="font-semibold text-white text-sm sm:text-base">Premium Pack</h4>
+                                            <div class="flex gap-1 sm:gap-2 flex-wrap">
+                                                <span class="bg-gray-100 text-gray-700 px-2 py-1 rounded-md text-xs font-medium">6 Jars</span>
+                                                <span class="bg-green-100 text-green-700 px-2 py-1 rounded-md text-xs font-medium">Save ₦1,500</span>
+                                            </div>
+                                        </div>
+                                        <p class="text-white text-xs sm:text-sm">Perfect for events & gifting</p>
+                                    </div>
+                                </div>
+                                <div class="text-right flex-shrink-0 ml-2">
+                                    <div class="text-xs text-gray-900 line-through">₦32,000</div>
+                                    <div class="text-base sm:text-xl font-bold text-gray-900">₦30,500</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Delivery Areas -->
+                    <div class="mb-6">
+                        <h4 class="font-semibold text-gray-900 text-sm sm:text-base mb-3 flex items-center">
+                            <i class="fas fa-truck text-[#165A99] mr-2"></i>
+                            Delivery Areas
+                        </h4>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                            <!-- Lagos Island -->
+                            <div class="bg-gradient-to-br from-green-50 to-green-100/50 border border-green-200 rounded-lg p-3">
+                                <div class="flex items-center justify-between mb-2">
+                                    <h5 class="font-medium text-gray-900 text-xs sm:text-sm">Lagos Island</h5>
+                                    <span class="bg-green-500 text-white px-2 py-1 rounded-full text-xs font-medium">₦2,000</span>
+                                </div>
+                                <div class="text-xs text-gray-600 space-y-1">
+                                    <div>Victoria Island, Ikoyi, Lekki Phase 1</div>
+                                    <div class="flex items-center text-green-600">
+                                        <i class="fas fa-clock mr-1"></i>
+                                        <span class="font-medium">2-3 Hours</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Lagos Mainland -->
+                            <div class="bg-gradient-to-br from-blue-50 to-blue-100/50 border border-blue-200 rounded-lg p-3">
+                                <div class="flex items-center justify-between mb-2">
+                                    <h5 class="font-medium text-gray-900 text-xs sm:text-sm">Lagos Mainland</h5>
+                                    <span class="bg-green-500 text-white px-2 py-1 rounded-full text-xs font-medium">₦1,500</span>
+                                </div>
+                                <div class="text-xs text-gray-600 space-y-1">
+                                    <div>Ikeja, Surulere, Yaba, Maryland</div>
+                                    <div class="flex items-center text-blue-600">
+                                        <i class="fas fa-clock mr-1"></i>
+                                        <span class="font-medium">2-4 Hours</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Extended Areas -->
+                            <div class="bg-gradient-to-br from-yellow-50 to-yellow-100/50 border border-yellow-200 rounded-lg p-3 sm:col-span-2 lg:col-span-1">
+                                <div class="flex items-center justify-between mb-2">
+                                    <h5 class="font-medium text-gray-900 text-xs sm:text-sm">Extended Areas</h5>
+                                    <span class="bg-[#ECB431] text-gray-900 px-2 py-1 rounded-full text-xs font-medium">₦2,500</span>
+                                </div>
+                                <div class="text-xs text-gray-600 space-y-1">
+                                    <div>Lekki Phase 2, Ikorodu, Agege</div>
+                                    <div class="flex items-center text-yellow-600">
+                                        <i class="fas fa-clock mr-1"></i>
+                                        <span class="font-medium">3-5 Hours</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Selected Package Summary -->
+                    <div id="packageSummary" class="hidden p-3 sm:p-4 bg-gradient-to-r from-[#165A99]/10 to-[#165A99]/5 rounded-lg border border-[#165A99]/20 mb-6">
+                        <div class="flex justify-between items-center">
+                            <div class="flex items-center gap-2 sm:gap-3 flex-1 min-w-0">
+                                <div class="w-6 h-6 sm:w-8 sm:h-8 bg-[#165A99] rounded-full flex items-center justify-center flex-shrink-0">
+                                    <i class="fas fa-check text-white text-xs sm:text-sm"></i>
+                                </div>
+                                <div class="min-w-0">
+                                    <span class="text-gray-900 font-semibold text-sm sm:text-base block" id="selectedPackageName"></span>
+                                    <div class="text-gray-600 text-xs sm:text-sm" id="selectedPackageDetails"></div>
+                                </div>
+                            </div>
+                            <div class="text-right flex-shrink-0 ml-2">
+                                <div class="text-gray-900 font-bold text-base sm:text-lg" id="selectedPackagePrice"></div>
+                                <div class="text-gray-600 text-xs">Total Amount</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sticky Footer -->
+            <div class="sticky bottom-0 z-10 bg-white border-t border-gray-200 p-4 sm:p-6 rounded-b-2xl">
+                <!-- Action Buttons -->
+                <div class="flex flex-col sm:flex-row gap-3 mb-4">
+                    <button id="payNowBtn" disabled 
+                            class="flex-1 bg-gray-300 text-gray-500 py-3 px-4 sm:px-6 rounded-lg font-semibold text-sm cursor-not-allowed transition-all duration-300">
+                        <i class="fas fa-credit-card mr-2"></i>
+                        <span class="hidden sm:inline">Select Package First</span>
+                        <span class="sm:hidden">Select Package</span>
+                    </button>
+                    <button onclick="showPickupInfoA()" class="border-2 border-[#A82925] text-[#A82925] py-3 px-4 sm:px-6 rounded-lg font-semibold text-sm hover:bg-[#A82925] hover:text-white transition-all duration-300 sm:w-auto">
+                        <i class="fas fa-motorcycle mr-2"></i>
+                        <span class="hidden sm:inline">Send Pickup</span>
+                        <span class="sm:hidden">Send Pickup</span>
+                    </button>
+                </div>
+
+                <!-- Trust Indicators -->
+                <div class="flex justify-center items-center gap-3 sm:gap-6 pt-3 border-t border-gray-200">
+                    <div class="flex items-center gap-1 sm:gap-2 text-gray-600">
+                        <i class="fas fa-lock text-green-500 text-xs sm:text-sm"></i>
+                        <span class="text-xs font-medium">Secure</span>
+                    </div>
+                    <div class="flex items-center gap-1 sm:gap-2 text-gray-600">
+                        <i class="fas fa-star text-[#ECB431] text-xs sm:text-sm"></i>
+                        <span class="text-xs font-medium">4.9/5</span>
+                    </div>
+                    <div class="flex items-center gap-1 sm:gap-2 text-gray-600">
+                        <i class="fas fa-users text-[#165A99] text-xs sm:text-sm"></i>
+                        <span class="text-xs font-medium">15K+ Customers</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Terms & Conditions Modal -->
+    <div id="termsModalA" class="modalA fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50 opacity-0 invisible transition-all duration-300 backdrop-blur-sm">
+        <div class="bg-gradient-to-br from-white via-mama-cream to-white rounded-3xl p-8 max-w-2xl w-full mx-4 transform scale-95 transition-all duration-300 max-h-[90vh] overflow-y-auto shadow-2xl border-2 border-mama-gold">
+            <!-- Enhanced header -->
+            <div class="flex justify-between items-center mb-8">
+                <div>
+                    <h3 class="text-3xl font-black text-mama-dark mb-2">Terms & Conditions</h3>
+                    <p class="text-mama-blue text-sm font-medium">Please review our terms before proceeding</p>
+                </div>
+                <button onclick="closeModalA('termsModalA')" class="w-10 h-10 bg-mama-red text-white rounded-full flex items-center justify-center hover:bg-opacity-80 transition-all duration-300 text-xl font-bold shadow-lg">
+                    ×
+                </button>
+            </div>
+            
+            <!-- Enhanced terms content -->
+            <div class="bg-gradient-to-br from-mama-blue/5 to-mama-gold/5 border-2 border-mama-blue/20 rounded-2xl p-6 mb-8 max-h-64 overflow-y-auto">
+                <h4 class="font-black text-mama-dark mb-4 flex items-center">
+                    <i class="fas fa-file-contract mr-3 text-mama-blue"></i>
+                    Please read and accept our terms:
+                </h4>
+                <div class="space-y-4 text-sm text-mama-dark/80">
+                    <div class="flex items-start">
+                        <span class="w-6 h-6 bg-mama-blue text-white rounded-full flex items-center justify-center text-xs font-bold mr-3 mt-0.5">1</span>
+                        <p>All orders are subject to product availability and quality standards.</p>
+                    </div>
+                    <div class="flex items-start">
+                        <span class="w-6 h-6 bg-mama-red text-white rounded-full flex items-center justify-center text-xs font-bold mr-3 mt-0.5">2</span>
+                        <p>Delivery times are estimates and may vary based on location and traffic conditions.</p>
+                    </div>
+                    <div class="flex items-start">
+                        <span class="w-6 h-6 bg-mama-gold text-mama-dark rounded-full flex items-center justify-center text-xs font-bold mr-3 mt-0.5">3</span>
+                        <p>Payment must be completed before order processing begins.</p>
+                    </div>
+                    <div class="flex items-start">
+                        <span class="w-6 h-6 bg-mama-blue text-white rounded-full flex items-center justify-center text-xs font-bold mr-3 mt-0.5">4</span>
+                        <p>Refunds are available within 24 hours of delivery for unopened products only.</p>
+                    </div>
+                    <div class="flex items-start">
+                        <span class="w-6 h-6 bg-mama-red text-white rounded-full flex items-center justify-center text-xs font-bold mr-3 mt-0.5">5</span>
+                        <p>We reserve the right to cancel orders in case of pricing errors or stock issues.</p>
+                    </div>
+                    <div class="flex items-start">
+                        <span class="w-6 h-6 bg-mama-gold text-mama-dark rounded-full flex items-center justify-center text-xs font-bold mr-3 mt-0.5">6</span>
+                        <p>Customer information will be kept confidential and secure at all times.</p>
+                    </div>
+                    <div class="flex items-start">
+                        <span class="w-6 h-6 bg-mama-blue text-white rounded-full flex items-center justify-center text-xs font-bold mr-3 mt-0.5">7</span>
+                        <p>By placing an order, you agree to our privacy policy and data handling practices.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Enhanced checkbox section -->
+            <div class="bg-gradient-to-r from-mama-gold/10 to-mama-cream/50 border-2 border-mama-gold/30 rounded-2xl p-6 mb-6">
+                <div class="flex items-center">
+                    <div class="relative">
+                        <input type="checkbox" id="agreeTermsA" class="sr-only">
+                        <div class="w-6 h-6 bg-white border-2 border-mama-gold rounded-lg cursor-pointer transition-all duration-300 flex items-center justify-center" id="customCheckboxA" onclick="toggleCheckboxA()">
+                            <i class="fas fa-check text-white text-sm opacity-0 transition-opacity duration-300" id="checkIconA"></i>
+                        </div>
+                    </div>
+                    <label for="agreeTermsA" class="ml-4 text-mama-dark font-medium cursor-pointer select-none" onclick="toggleCheckboxA()">
+                        I have read and agree to the terms and conditions
+                    </label>
+                </div>
+            </div>
+            
+            <!-- Enhanced confirm button -->
+            <button id="confirmPaymentBtnA" onclick="confirmPaymentA()" disabled class="w-full group relative overflow-hidden bg-gradient-to-r from-gray-400 to-gray-500 text-white font-bold py-4 px-6 rounded-2xl transition-all duration-300 cursor-not-allowed">
+                <div class="absolute inset-0 bg-gradient-to-r from-mama-red to-mama-blue opacity-0 transition-opacity duration-300" id="buttonGradientA"></div>
+                <div class="relative flex items-center justify-center">
+                    <i class="fas fa-lock mr-3 text-lg" id="buttonIconA"></i>
+                    <span class="text-lg" id="buttonTextA">Please Accept Terms</span>
+                </div>
+            </button>
+        </div>
+    </div>
+
+
+
+    <!-- Pickup Modal -->
+    <div id="pickupModalA" class="modalA fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 opacity-0 invisible transition-all duration-300">
+        <div class="bg-white rounded-2xl p-8 max-w-md w-full mx-4 transform scale-95 transition-all duration-300">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-2xl font-bold text-mama-red-800">Pickup Address</h3>
+                <button onclick="closeModalA('pickupModalA')" class="w-10 h-10 bg-mama-red text-white rounded-full flex items-center justify-center hover:bg-opacity-80 transition-all duration-300 text-xl font-bold shadow-lg">&times;</button>
+            </div>
+            
+            <div class="bg-gradient-to-br from-mama-gold/20 via-mama-cream/80 to-mama-red/10 border-2 border-mama-gold rounded-2xl p-6 mb-6 shadow-lg">
+                <h4 class="font-bold text-mama-red-800 mb-3">Store Location:</h4>
+                <p id="storeAddressA" class="text-mama-dark text-base leading-relaxed font-semibold">
+                    Mama Tee's Kitchen<br>
+                    123 Sauce Street, Ikeja<br>
+                    Lagos State, Nigeria<br>
+                    <span class="text-mama-blue">Phone: +234 801 234 5678</span>
+                </p>
+            </div>
+            
+            <a href="" onclick="copyAddressA(event)" class="w-full bg-gradient-to-r from-mama-gold via-mama-red to-mama-blue text-white font-bold py-4 px-6 rounded-xl shadow-lg hover:scale-105 transition-all duration-300 flex items-center justify-center text-lg">
+                <i class="fas fa-copy mr-3"></i>Copy & proceed to pay
+            </a>
         </div>
     </div>
 
