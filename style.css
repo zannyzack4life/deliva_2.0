@@ -193,11 +193,33 @@
             }
         }
 
-        .mama-tee-top-tag{
-            overflow: hidden;
-            width: 600px;
-            height: auto;
-        }
+       .mama-tee-top-tag {
+    overflow: hidden;
+    width: 600px;
+    height: auto;
+}
+
+/* Medium devices (tablets, 768px and up) */
+@media (max-width: 768px) {
+    .mama-tee-top-tag {
+        width: 500px; /* smaller width for tablets */
+    }
+}
+
+/* Small devices (mobiles, 480px and up) */
+@media (max-width: 480px) {
+    .mama-tee-top-tag {
+        width: 450px; /* smaller width for small mobiles */
+    }
+}
+
+/* Extra small devices (<320px) */
+@media (max-width: 320px) {
+    .mama-tee-top-tag {
+        width: 200px; /* tiny phones */
+    }
+}
+
 
         .mama-tee-top-tagb{
             overflow: hidden;
