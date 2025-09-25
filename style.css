@@ -262,6 +262,13 @@
         #aiTab{
             display: none;
         }
+
+  #dashboardActionBar{
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            left: 0;
+    }
     @media (max-width: 767px) {
     .desktop-controls { display: none; }
     .mobile-controls { display: block; }
@@ -270,3 +277,4 @@
     .desktop-controls { display: block; }
     .mobile-controls { display: none; }
 }
+
