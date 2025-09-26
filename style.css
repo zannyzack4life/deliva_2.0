@@ -210,7 +210,14 @@
                 max-height: none !important;
                 border: none !important;
             }
+
+            header{
+                padding: 5px 10px !important;
+            }
             
+            .mobnav{
+                border: 1px solid var(--bg-tertiary);
+            }
           
             #mobileEditorTab {
                 overflow-y: scroll !important;
@@ -263,7 +270,7 @@
             display: none;
         }
 
-  #dashboardActionBar{
+        #dashboardActionBar{
             position: fixed;
             bottom: 0;
             width: 100%;
@@ -277,4 +284,3 @@
     .desktop-controls { display: block; }
     .mobile-controls { display: none; }
 }
-
