@@ -58,8 +58,8 @@ function showPopup(message, type = 'success') {
 
 // Unsplash image collections
 const unsplashCollections = [
-    'family', 'landscape', 'abstract', 'urban', 'business', 'lifestyle',
-    'mountain', 'ocean', 'sky', 'person', 'sunset', 'architecture'
+    'family', 'street', 'celebration', 'friends', 'business', 'lifestyle',
+    'festival', 'hug', 'sky', 'person', 'sunset', 'architecture'
 ];
 
 let backgroundIndex = 0;
@@ -385,8 +385,6 @@ function regenerateAIQuote() {
     // Set random background
     const backgrounds = [
         'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-        'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
-        'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
         'https://cdn.pixabay.com/photo/2017/02/01/22/02/mountain-landscape-2031539_640.jpg',
         'https://cdn.pixabay.com/photo/2015/12/01/20/28/road-1072823_640.jpg',
         'https://cdn.pixabay.com/photo/2016/08/09/21/54/lake-1581879_640.jpg'
@@ -422,9 +420,7 @@ function regenerateAIQuote() {
 
 function setAIBackground(type) {
     const backgrounds = {
-        'gradient1': 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-        'gradient2': 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
-        'gradient3': 'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)',
+        'gradient1': 'linear-gradient(135deg, #000000 0%, #000000 100%)',
         'image1': 'https://cdn.pixabay.com/photo/2017/02/01/22/02/mountain-landscape-2031539_640.jpg',
         'image2': 'https://cdn.pixabay.com/photo/2015/12/01/20/28/road-1072823_640.jpg',
         'image3': 'https://cdn.pixabay.com/photo/2016/08/09/21/54/lake-1581879_640.jpg'
@@ -896,9 +892,8 @@ async function initializeBackgrounds() {
     
     // Add gradient backgrounds
     const gradients = [
-        'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-        'linear-gradient(135deg, #fa709a 0%, #fee140 100%)',
-        'linear-gradient(135deg, #a8edea 0%, #fed6e3 100%)'
+        'linear-gradient(135deg, #000000ff 0%, #000000 100%)'
+,
     ];
     
     let backgroundImages = [];
@@ -999,12 +994,11 @@ async function loadMoreBackgrounds() {
     
     // Add more gradients
     const moreGradients = [
-        'linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%)',
-        'linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%)',
-        'linear-gradient(135deg, #fad0c4 0%, #ffd1ff 100%)',
-        'linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%)',
-        'linear-gradient(135deg, #ff8a80 0%, #ea80fc 100%)',
-        'linear-gradient(135deg, #8fd3f4 0%, #84fab0 100%)'
+        'linear-gradient(135deg, #000000 0%, #000000 100%)',
+        'linear-gradient(135deg, #ffffff 0%, #ffffff 100%)',
+
+
+,
     ];
     
     let moreImages = [];
@@ -1363,39 +1357,41 @@ function applyTextStyles(styles) {
     }
 }
 
-function downloadImage() {
+async function downloadImage() {
     const canvasElement = document.getElementById('canvas');
     const quote = document.getElementById('quoteInput').value || 'Your quote will appear here...';
-    
+
     if (!quote || quote === 'Your quote will appear here...') {
         showPopup('Please enter a quote first!', 'error');
         return;
     }
-    
-    // Show loading
+
     showPopup('Preparing download...', 'info');
-    
-    // Use html2canvas to capture the exact DOM canvas element as image
+
+    // Ensure fonts/images are loaded
+    if (document.fonts) await document.fonts.ready;
+
     html2canvas(canvasElement, {
-        scale: 4, // Increased scale for higher resolution
-        useCORS: true, // Handle cross-origin images (e.g., Unsplash)
-        allowTaint: true, // Allow tainted canvases for external images
-        backgroundColor: null, // Preserve any transparency (if applicable)
-        width: 1920, // Explicit high-resolution width
-        height: 1080 // Explicit high-resolution height
+        scale: window.devicePixelRatio * 3, // max sharpness
+        useCORS: true,
+        backgroundColor: window.getComputedStyle(canvasElement).backgroundColor || '#ffffff',
     }).then(canvas => {
+        // Disable smoothing for crisper edges
+        const ctx = canvas.getContext('2d');
+        ctx.imageSmoothingEnabled = false;
+
         canvas.toBlob((blob) => {
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = `inspireverse-quote-${Date.now()}.jpg`; // Changed to JPG for smaller size with high quality
+            a.download = `inspireverse-quote-${Date.now()}.png`; // PNG = best quality
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);
             URL.revokeObjectURL(url);
-            
+
             showPopup('Quote downloaded successfully!', 'success');
-            
+
             // Save to creations
             const creation = {
                 id: Date.now(),
@@ -1406,16 +1402,17 @@ function downloadImage() {
                 textStyles: getTextStyles(),
                 timestamp: new Date().toISOString()
             };
-            
+
             savedCreations.push(creation);
             localStorage.setItem('inspireverse_creations', JSON.stringify(savedCreations));
-            updateGalleryView(); // Refresh gallery after save
-        }, 'image/jpeg', 0.95); // Use JPEG with high quality
+            updateGalleryView();
+        }, 'image/png');
     }).catch(error => {
         console.error('Error capturing canvas:', error);
         showPopup('Failed to download image. Please try again.', 'error');
     });
 }
+
 
 function getCanvasBackground() {
     const canvas = document.getElementById('canvas');
@@ -1901,6 +1898,8 @@ document.addEventListener('click', (e) => {
         if (aiDropdownMobile) aiDropdownMobile.classList.remove('open');
     }
 });
+
+
 
 
 
