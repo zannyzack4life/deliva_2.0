@@ -151,10 +151,10 @@
                 <!-- Mobile Layout -->
                 <div class="lg:hidden flex-1 flex flex-col">
                     <!-- Canvas Section -->
-                    <div class="bg-primary p-4 flex items-center justify-center h-[400px]">
+                    <div class="bg-primary p-4 flex items-center justify-center ">
                         <div class="relative">
                             <div id="canvas" class="w-96 h-96 bg-gradient-to-br from-purple-600 to-pink-600 rounded-lg relative overflow-hidden shadow-2xl">
-                                <div id="canvasText" class="canvas-text text-white text-center w-full px-6 py-4" style="top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 28px;">
+                                <div id="canvasText" class="canvas-text text-white text-center w-full px-6 py-4" style="top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 18px;">
                                     Your quote will appear here...
                                 </div>
                                 <div id="brandText" class="brand-text text-white"></div>
@@ -164,7 +164,7 @@
 
                     <!-- Mobile Tab Navigation -->
                     <div class="bg-secondary border-t border-custom">
-                        <div class="flex">
+                        <div class="flex mobnav">
                             <button onclick="showMobileTab('editor')" id="editorTab" class="flex-1 p-4 text-center bg-purple-600 text-white border-r border-custom">
                                 <i class="fas fa-edit mb-1 block"></i>
                                 <span class="text-xs">Editor</span>
@@ -265,7 +265,7 @@
                             <!-- Font Size -->
                             <div>
                                 <label class="block text-sm font-medium mb-2">Font Size</label>
-                                <input type="range" id="fontSize" min="16" max="48" value="28" class="w-full" oninput="updateTextStyle()">
+                                <input type="range" id="fontSize" min="6" max="48" value="28" class="w-full" oninput="updateTextStyle()">
                                 <div class="flex justify-between text-xs text-secondary mt-1">
                                     <span>Small</span>
                                     <span id="fontSizeValue">28px</span>
@@ -754,11 +754,11 @@
                                 </div>
                                 <div class="flex items-center space-x-4">
                                     <span class="text-sm">Small</span>
-                                    <input type="range" id="interfaceFontSize" min="12" max="14" value="12" class="flex-1" oninput="updateInterfaceFontSize()">
+                                    <input type="range" id="interfaceFontSize" min="10" max="12" value="12" class="flex-1" oninput="updateInterfaceFontSize()">
                                     <span class="text-sm">Large</span>
                                 </div>
                                 <div class="text-center mt-2">
-                                    <span id="fontSizeDisplay" class="text-sm text-secondary">16px</span>
+                                    <span id="fontSizeDisplay" class="text-sm text-secondary">12px</span>
                                 </div>
                             </div>
                         </div>
@@ -867,4 +867,3 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'98442905a7b5dca6',t:'MTc1ODczNjYwNS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
-
