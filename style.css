@@ -2551,3 +2551,7 @@ html {
 
         
 
+
+    .balancePercentage, .balanceUnit{
+        color: var(--card-foreground);
+    }
