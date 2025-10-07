@@ -1,1903 +1,2024 @@
-let sidebarOpen = true;
-let sidebarCollapsed = false;
-let currentPage = 'dashboard';
-let isDragging = false;
-let dragOffset = { x: 0, y: 0 };
-let currentTextColor = '#ffffff';
-let currentTheme = 'dark';
-let savedCreations = JSON.parse(localStorage.getItem('inspireverse_creations') || '[]');
+// PowerUp Dashboard - JavaScript functionality
 
-const PIXABAY_API_KEY = '37298187-8e82cfbe6f0290745835f5f68';
+class PowerUpDashboard {
+    constructor() {
+        this.activeTab = 'dashboard';
+        this.isDarkMode = false;
+        this.walletBalance = 234.50;
+        this.currentUsage = 2.4;
+        this.energyUsage = {
+            current: 2.4,
+            daily: 18.7,
+            monthly: 542
+        };
 
+        // Initialize the Balance Module to handle all circular progress charts
+        this.balanceModule = new BalanceModule();
+
+        this.init();
+    }
+
+    init() {
+        this.setupEventListeners();
+        this.startRealTimeUpdates();
+        this.handleLoading();
+        this.initTheme();
+        this.animateChartOnLoad();
+        // Initialize the balance module
+        this.balanceModule.init();
+    }
+
+    setupEventListeners() {
+        // Theme toggle buttons
+        const themeToggle = document.getElementById('themeToggle');
+        const desktopThemeToggle = document.getElementById('desktopThemeToggle');
+
+        if (themeToggle) {
+            themeToggle.addEventListener('click', () => this.toggleTheme());
+        }
+        if (desktopThemeToggle) {
+            desktopThemeToggle.addEventListener('click', () => this.toggleTheme());
+        }
+
+        // Navigation
+        this.setupNavigation();
+
+        // Notifications
+        this.setupNotifications();
+
+        // Quick actions
+        this.setupQuickActions();
+
+        // Window resize handler
+        window.addEventListener('resize', () => this.handleResize());
+    }
+
+
+    setupNavigation() {
+        // Sidebar navigation
+        const sidebarLinks = document.querySelectorAll('.sidebar-link');
+        sidebarLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const tab = link.dataset.tab;
+                this.switchTab(tab);
+                this.updateSidebarActive(link);
+            });
+        });
+
+        // Bottom navigation
+        const bottomNavBtns = document.querySelectorAll('.bottom-nav-btn');
+        bottomNavBtns.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
+                const tab = btn.dataset.tab;
+                this.switchTab(tab);
+                this.updateBottomNavActive(btn);
+            });
+        });
+    }
+
+    setupNotifications() {
+        const notificationBtn = document.getElementById('notificationBtn');
+        const desktopNotificationBtn = document.getElementById('desktopNotificationBtn');
+        const notificationCenter = document.getElementById('notificationCenter');
+        const closeNotifications = document.getElementById('closeNotifications');
+
+        [notificationBtn, desktopNotificationBtn].forEach(btn => {
+            if (btn) {
+                btn.addEventListener('click', () => this.showNotifications());
+            }
+        });
+
+        if (closeNotifications) {
+            closeNotifications.addEventListener('click', () => this.hideNotifications());
+        }
+
+        // Close notifications when clicking backdrop
+        if (notificationCenter) {
+            notificationCenter.addEventListener('click', (e) => {
+                if (e.target === notificationCenter) {
+                    this.hideNotifications();
+                }
+            });
+        }
+    }
+
+    setupQuickActions() {
+        const quickActionBtns = document.querySelectorAll('.quick-action-btn');
+        quickActionBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const action = btn.dataset.action;
+                this.handleQuickAction(action);
+            });
+        });
+    }
+
+    switchTab(tab) {
+        this.activeTab = tab;
+
+        // Update page title
+        const pageTitle = document.getElementById('pageTitle');
+        if (pageTitle) pageTitle.textContent = tab.charAt(0).toUpperCase() + tab.slice(1);
+
+        // Hide all tab pages
+        document.querySelectorAll('.tab-page').forEach(section => {
+            section.classList.add('hidden');
+        });
+
+        // Show the selected tab
+        const activeSection = document.getElementById(tab);
+        if (activeSection) activeSection.classList.remove('hidden');
+
+        // Optional fade effect
+        const mainContent = document.querySelector('main');
+        if (mainContent) {
+            mainContent.style.opacity = '0.7';
+            setTimeout(() => mainContent.style.opacity = '1', 150);
+        }
+    }
+
+
+    updateSidebarActive(activeLink) {
+        const sidebarLinks = document.querySelectorAll('.sidebar-link');
+        sidebarLinks.forEach(link => link.classList.remove('active'));
+        activeLink.classList.add('active');
+    }
+
+    updateBottomNavActive(activeBtn) {
+        const bottomNavBtns = document.querySelectorAll('.bottom-nav-btn');
+        bottomNavBtns.forEach(btn => btn.classList.remove('active'));
+        activeBtn.classList.add('active');
+    }
+
+    showNotifications() {
+        const notificationCenter = document.getElementById('notificationCenter');
+        if (notificationCenter) {
+            notificationCenter.classList.remove('hidden');
+            notificationCenter.classList.add('show');
+
+            // Animate the panel in
+            setTimeout(() => {
+                const panel = notificationCenter.querySelector('.absolute');
+                if (panel) {
+                    panel.style.transform = 'translateX(0)';
+                }
+            }, 10);
+        }
+    }
+
+    hideNotifications() {
+        const notificationCenter = document.getElementById('notificationCenter');
+        if (notificationCenter) {
+            const panel = notificationCenter.querySelector('.absolute');
+            if (panel) {
+                panel.style.transform = 'translateX(100%)';
+            }
+
+            setTimeout(() => {
+                notificationCenter.classList.add('hidden');
+                notificationCenter.classList.remove('show');
+            }, 300);
+        }
+    }
+
+    handleQuickAction(action) {
+        // Add ripple effect
+        const btn = document.querySelector(`[data-action="${action}"]`);
+        if (btn) {
+            btn.style.transform = 'scale(0.95)';
+            setTimeout(() => {
+                btn.style.transform = 'scale(1)';
+            }, 150);
+        }
+
+        // Simulate action feedback
+        switch (action) {
+            case 'topup':
+                this.showToast('Opening top-up ...', 'info');
+                break;
+            case 'electricity':
+                this.showToast('Opening Electricity payment...', 'info');
+                break;
+            case 'tv':
+                this.showToast('Opening TV payment...', 'info');
+                break;
+            case 'data':
+                this.showToast('Opening Data payment...', 'info');
+                break;
+            case 'airtime':
+                this.showToast('Opening Airtime payment...', 'info');
+                break;
+            case 'transfers':
+                this.showToast('Opening Transfers payment...', 'info');
+                break;
+        }
+    }
+
+    toggleTheme() {
+        this.isDarkMode = !this.isDarkMode;
+        const html = document.documentElement;
+        const flipper = document.getElementById('themeFlipper'); // add this div in your button if not yet
+
+        // Flip animation
+        if (this.isDarkMode) {
+            html.classList.add('dark');
+            localStorage.setItem('theme', 'dark');
+            if (flipper) flipper.style.transform = 'rotateY(180deg)';
+        } else {
+            html.classList.remove('dark');
+            localStorage.setItem('theme', 'light');
+            if (flipper) flipper.style.transform = 'rotateY(0deg)';
+        }
+
+        this.updateThemeIcons();
+    }
+
+    initTheme() {
+        const savedTheme = localStorage.getItem('theme');
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        const flipper = document.getElementById('themeFlipper');
+
+        this.isDarkMode = savedTheme === 'dark' || (!savedTheme && prefersDark);
+
+        if (this.isDarkMode) {
+            document.documentElement.classList.add('dark');
+            if (flipper) flipper.style.transform = 'rotateY(180deg)';
+        } else {
+            if (flipper) flipper.style.transform = 'rotateY(0deg)';
+        }
+
+        this.updateThemeIcons();
+    }
+
+    updateThemeIcons() {
+        const lightIcons = document.querySelectorAll('#lightIcon, #desktopLightIcon');
+        const darkIcons = document.querySelectorAll('#darkIcon, #desktopDarkIcon');
+
+        // No visibility flicker — icons stay in sync with flip
+        if (this.isDarkMode) {
+            lightIcons.forEach(icon => icon.classList.add('hidden'));
+            darkIcons.forEach(icon => icon.classList.remove('hidden'));
+        } else {
+            lightIcons.forEach(icon => icon.classList.remove('hidden'));
+            darkIcons.forEach(icon => icon.classList.add('hidden'));
+        }
+    }
+
+
+    startRealTimeUpdates() {
+        // Update current usage every 5 seconds
+        setInterval(() => {
+            this.currentUsage = +(Math.random() * 2 + 1.5).toFixed(1);
+            this.energyUsage.current = this.currentUsage;
+            this.updateRealTimeDisplays();
+            this.updateEnergyChart();
+        }, 5000);
+
+        // Balance updates are now handled by BalanceModule
+    }
+
+    updateRealTimeDisplays() {
+        const currentUsageElements = document.querySelectorAll('#currentUsage, #liveUsage, #chartCurrentUsage');
+        currentUsageElements.forEach(element => {
+            element.textContent = this.currentUsage;
+        });
+    }
+
+    updateEnergyStats() {
+        // Update daily usage
+        const dailyElements = document.querySelectorAll('[data-stat="daily"]');
+        dailyElements.forEach(element => {
+            element.textContent = this.energyUsage.daily.toFixed(1);
+        });
+
+        // Update monthly usage
+        const monthlyElements = document.querySelectorAll('[data-stat="monthly"]');
+        monthlyElements.forEach(element => {
+            element.textContent = Math.round(this.energyUsage.monthly);
+        });
+    }
+
+    animateChartOnLoad() {
+        const chartPath = document.getElementById('energyChart');
+        if (chartPath) {
+            const pathLength = chartPath.getTotalLength();
+            chartPath.style.strokeDasharray = pathLength + ' ' + pathLength;
+            chartPath.style.strokeDashoffset = pathLength;
+
+            // Animate the path
+            setTimeout(() => {
+                chartPath.style.transition = 'stroke-dashoffset 2s ease-in-out';
+                chartPath.style.strokeDashoffset = '0';
+            }, 1000);
+        }
+    }
+
+    updateEnergyChart() {
+        // Animate chart data points
+        const dataPoints = document.querySelectorAll('#energyChart + defs + circle');
+        dataPoints.forEach((point, index) => {
+            setTimeout(() => {
+                point.style.transform = 'scale(1.2)';
+                setTimeout(() => {
+                    point.style.transform = 'scale(1)';
+                }, 200);
+            }, index * 100);
+        });
+    }
+
+    handleLoading() {
+        // Hide loading screen after 2 seconds with fade effect
+        setTimeout(() => {
+            const loadingScreen = document.getElementById('loadingScreen');
+            if (loadingScreen) {
+                loadingScreen.style.opacity = '0';
+                loadingScreen.style.transform = 'scale(0.9)';
+                setTimeout(() => {
+                    loadingScreen.classList.add('hidden');
+                }, 500);
+            }
+
+            // Trigger content animations
+            this.animateContentOnLoad();
+        }, 2000);
+    }
+
+    animateContentOnLoad() {
+        // Animate main content sections with stagger
+        const sections = document.querySelectorAll('.glass-card');
+        sections.forEach((section, index) => {
+            section.style.opacity = '0';
+            section.style.transform = 'translateY(20px)';
+
+            setTimeout(() => {
+                section.style.transition = 'all 0.6s ease-out';
+                section.style.opacity = '1';
+                section.style.transform = 'translateY(0)';
+            }, index * 100);
+        });
+    }
+
+    handleResize() {
+        // Handle responsive adjustments, including calling the BalanceModule's resize handler
+        this.balanceModule.updateAllCircularProgress();
+    }
+
+    showToast(message, type = 'info') {
+        // Create a simple toast notification
+        const toast = document.createElement('div');
+        toast.className = `fixed top-4 right-4 z-50 p-4 rounded-lg shadow-lg transform translate-x-full transition-transform duration-300 ${
+            type === 'info' ? 'bg-blue-500 text-white' :
+            type === 'success' ? 'bg-green-500 text-white' :
+            type === 'warning' ? 'bg-orange-500 text-white' :
+            'bg-red-500 text-white'
+        }`;
+        toast.textContent = message;
+
+        document.body.appendChild(toast);
+
+        // Animate in
+        setTimeout(() => {
+            toast.style.transform = 'translateX(0)';
+        }, 10);
+
+        // Remove after 3 seconds
+        setTimeout(() => {
+            toast.style.transform = 'translateX(100%)';
+            setTimeout(() => {
+                document.body.removeChild(toast);
+            }, 300);
+        }, 3000);
+    }
+}
+
+
+
+
+// ==========================================================
+// BALANCE MODULE (Handles all circular progress charts)
+// ==========================================================
+class BalanceModule {
+    constructor() {
+        this.balances = {
+            electricity: {
+                initialValue: 50, max: 100, unit: 'kWh',
+                colors: { high: '#fab005', medium: '#3498db', low: '#e74c3c' },
+                thresholds: { low: 20, medium: 50 },
+                statusTexts: { high: 'Good Balance', medium: 'Medium Balance', low: 'Low Balance!' },
+                tailwindMap: { high: { text: 'text-yellow-500', bg: 'bg-yellow-900' }, medium: { text: 'text-blue-500', bg: 'bg-blue-900' }, low: { text: 'text-red-500', bg: 'bg-red-900' } }
+            },
+            tv: {
+                initialValue: 25, max: 30, unit: 'days',
+                colors: { high: '#00bcd4', medium: '#8e44ad', low: '#e74c3c' },
+                thresholds: { low: 5, medium: 15 },
+                statusTexts: { high: 'Active Subscription', medium: 'Subscription Due Soon', low: 'Subscription Expiring!' },
+                tailwindMap: { high: { text: 'text-cyan-500', bg: 'bg-cyan-900' }, medium: { text: 'text-purple-500', bg: 'bg-purple-900' }, low: { text: 'text-red-500', bg: 'bg-red-900' } }
+            },
+            data: {
+                initialValue: 700, max: 1000, unit: 'MB',
+                colors: { high: '#4caf50', medium: '#f39c12', low: '#e74c3c' },
+                thresholds: { low: 200, medium: 500 },
+                statusTexts: { high: 'Ample Data', medium: 'Data Running Low', low: 'Data Critical!' },
+                tailwindMap: { high: { text: 'text-green-500', bg: 'bg-green-900' }, medium: { text: 'text-orange-500', bg: 'bg-orange-900' }, low: { text: 'text-red-500', bg: 'bg-red-900' } }
+            },
+            airtime: {
+                initialValue: 700, max: 1000, unit: 'NGN',
+                colors: { high: '#00ff88', medium: '#FFA500', low: '#8B0000' },
+                thresholds: { low: 100, medium: 300 },
+                statusTexts: { high: 'Good Airtime', medium: 'Airtime Low', low: 'Recharge Now!' },
+                tailwindMap: { high: { text: 'text-green-500', bg: 'bg-green-900' }, medium: { text: 'text-orange-500', bg: 'bg-orange-900' }, low: { text: 'text-red-700', bg: 'bg-red-900' } }
+            }
+        };
+
+        for (const type in this.balances) {
+            this.balances[type].currentValue = this.balances[type].initialValue;
+        }
+
+        this.radius = 95; 
+        this.circumference = 2 * Math.PI * this.radius;
+    }
+
+    init() {
+        this.updateAllCircularProgress();
+        this.startAllBalanceUpdates();
+    }
+
+    // This is the core function for updating the UI
+    updateCircularProgress(type, currentValue) {
+        // Use querySelectorAll to find ALL cards with the matching data-balance-type
+        const balanceCards = document.querySelectorAll(`.glass-card[data-balance-type="${type}"]`);
+        
+        if (balanceCards.length === 0) return;
+
+        const balanceConfig = this.balances[type];
+        let percentage = (currentValue / balanceConfig.max) * 100;
+        percentage = Math.max(0, Math.min(100, percentage)); // Clamp between 0 and 100
+
+        // 1. Pre-calculate values (done once)
+        const offset = this.circumference - (percentage / 100) * this.circumference;
+        const classesToRemove = ['text-yellow-500', 'text-blue-500', 'text-green-500', 'text-red-500', 'text-purple-500', 'text-orange-500', 'text-cyan-500', 'text-red-700', 'bg-yellow-900', 'bg-blue-900', 'bg-green-900', 'bg-red-900', 'bg-purple-900', 'bg-orange-900', 'bg-cyan-900'];
+
+        // 2. Determine status, color, text (done once)
+        let statusKey;
+        if (currentValue < balanceConfig.thresholds.low) {
+            statusKey = 'low';
+        } else if (currentValue < balanceConfig.thresholds.medium) {
+            statusKey = 'medium';
+        } else {
+            statusKey = 'high';
+        }
+        
+        const color = balanceConfig.colors[statusKey];
+        const statusText = balanceConfig.statusTexts[statusKey];
+        const tailwindClasses = balanceConfig.tailwindMap[statusKey];
+
+        // 3. Loop over ALL matching cards and apply updates
+        balanceCards.forEach((balanceCard) => {
+            const progressCircle = balanceCard.querySelector('.progressCircle');
+            const balancePercentageElement = balanceCard.querySelector('.balancePercentage');
+            const statusIndicator = balanceCard.querySelector('.balanceStatusIndicator');
+
+            // CRITICAL: Dynamically determine the unique gradient ID for this specific card
+            const svg = balanceCard.querySelector('svg');
+            const gradientId = svg.querySelector('linearGradient').id;
+            
+            // Use the specific ID to find the gradient stops inside this card's SVG
+            const gradientStop0 = balanceCard.querySelector(`#${gradientId} .stopColor_0`); 
+            const gradientStop100 = balanceCard.querySelector(`#${gradientId} .stopColor_100`);
+
+            
+            if (progressCircle && balancePercentageElement && gradientStop0 && gradientStop100) {
+
+                // Update the progress circle's dash offset
+                progressCircle.style.strokeDasharray = this.circumference;
+                progressCircle.style.strokeDashoffset = offset;
+
+                // Apply color to the progress circle (via gradient stops)
+                gradientStop0.style.stopColor = color;
+                gradientStop100.style.stopColor = color;
+
+                // Update the numerical text content
+                balancePercentageElement.textContent = Math.round(currentValue);
+                
+                // Update the status indicator text and colors
+                if (statusIndicator) {
+                    statusIndicator.textContent = statusText;
+                    
+                    statusIndicator.classList.remove(...classesToRemove);
+                    statusIndicator.classList.add(tailwindClasses.text, tailwindClasses.bg);
+                }
+            }
+        });
+    }
+
+    // Call this to update all balances on page load
+    updateAllCircularProgress() {
+        for (const type in this.balances) {
+            this.updateCircularProgress(type, this.balances[type].currentValue);
+        }
+    }
+
+    // This starts the live data simulation
+    startAllBalanceUpdates() {
+        // Electricity: Simulate usage/top-up every 2 seconds
+        setInterval(() => {
+            const bal = this.balances.electricity;
+            bal.currentValue += (Math.random() - 0.5) * 5; 
+            bal.currentValue = Math.max(0, Math.min(bal.max, bal.currentValue));
+            this.updateCircularProgress('electricity', bal.currentValue);
+        }, 2000);
+
+        // TV: Simulate day counting every 2 seconds
+        setInterval(() => {
+            const bal = this.balances.tv;
+            bal.currentValue += (Math.random() - 0.5) * 1.5;
+            bal.currentValue = Math.max(0, Math.min(bal.max, bal.currentValue));
+            this.updateCircularProgress('tv', bal.currentValue);
+        }, 2000);
+
+        // Data: Simulate data usage/top-up every 2 seconds
+        setInterval(() => {
+            const bal = this.balances.data;
+            bal.currentValue += (Math.random() - 0.5) * 100;
+            bal.currentValue = Math.max(0, Math.min(bal.max, bal.currentValue));
+            this.updateCircularProgress('data', bal.currentValue);
+        }, 2000);
+
+        // Airtime: Simulate airtime usage/top-up every 2 seconds
+        setInterval(() => {
+            const bal = this.balances.airtime;
+            bal.currentValue += (Math.random() - 0.5) * 100;
+            bal.currentValue = Math.max(0, Math.min(bal.max, bal.currentValue));
+            this.updateCircularProgress('airtime', bal.currentValue);
+        }, 2000);
+    }
+}
+
+// Initialize and start the module when the page loads
 document.addEventListener('DOMContentLoaded', () => {
-    const mobileTextShadow = document.getElementById('textShadow');
-    const desktopTextShadow = document.getElementById('textShadowDesktop');
-    if (mobileTextShadow) mobileTextShadow.addEventListener('input', updateTextShadow);
-    if (desktopTextShadow) desktopTextShadow.addEventListener('input', updateTextShadow);
-
-    const mobileLetterSpacing = document.getElementById('letterSpacing');
-    const desktopLetterSpacing = document.getElementById('letterSpacingDesktop');
-    if (mobileLetterSpacing) mobileLetterSpacing.addEventListener('input', updateLetterSpacing);
-    if (desktopLetterSpacing) desktopLetterSpacing.addEventListener('input', updateLetterSpacing);
-
-    const mobileLineHeight = document.getElementById('lineHeight');
-    const desktopLineHeight = document.getElementById('lineHeightDesktop');
-    if (mobileLineHeight) mobileLineHeight.addEventListener('input', updateLineHeight);
-    if (desktopLineHeight) desktopLineHeight.addEventListener('input', updateLineHeight);
+    const balanceModule = new BalanceModule();
+    balanceModule.init();
 });
 
-function showPopup(message, type = 'success') {
-    const popup = document.getElementById('popup');
-    const icon = document.getElementById('popupIcon');
-    const messageEl = document.getElementById('popupMessage');
-    
-    messageEl.textContent = message;
-    
-    // Set popup style based on type
-    popup.className = 'fixed top-4 right-[-7px] text-white px-6 py-3 rounded-lg shadow-lg z-50 transform transition-transform duration-300';
-    
-    if (type === 'success') {
-        popup.classList.add('bg-green-600');
-        icon.className = 'fas fa-check-circle mr-2';
-    } else if (type === 'error') {
-        popup.classList.add('bg-red-600');
-        icon.className = 'fas fa-exclamation-circle mr-2';
-    } else if (type === 'info') {
-        popup.classList.add('bg-blue-600');
-        icon.className = 'fas fa-info-circle mr-2';
-    }
-    
-    // Show popup
-    popup.classList.remove('translate-x-full');
-    
-    // Hide after 3 seconds
-    setTimeout(() => {
-        popup.classList.add('translate-x-full');
-    }, 3000);
-}
-
-// Unsplash image collections
-const unsplashCollections = [
-    'family', 'street', 'celebration', 'friends', 'business', 'lifestyle',
-    'festival', 'hug', 'sky', 'person', 'sunset', 'architecture'
-];
-
-let backgroundIndex = 0;
-
-// Sample AI quotes by mood
-const aiQuotes = {
-    'Inspirational': [
-        "The only way to do great work is to love what you do.",
-        "Believe you can and you're halfway there.",
-        "Your limitation—it's only your imagination.",
-        "Success is not final, failure is not fatal: it is the courage to continue that counts.",
-        "The future belongs to those who believe in the beauty of their dreams.",
-        "Act as if what you do makes a difference. It does.",
-        "Don’t wait for opportunity. Create it.",
-        "Start where you are. Use what you have. Do what you can.",
-        "With the new day comes new strength and new thoughts.",
-        "Do something today that your future self will thank you for.",
-        "Hardships often prepare ordinary people for an extraordinary destiny.",
-        "Turn your wounds into wisdom.",
-        "It always seems impossible until it’s done.",
-        "What lies behind us and what lies before us are tiny matters compared to what lies within us.",
-        "Keep your face always toward the sunshine—and shadows will fall behind you.",
-        "You are never too old to set another goal or to dream a new dream.",
-        "Great things are done by a series of small things brought together.",
-        "Perseverance is not a long race; it is many short races one after the other.",
-        "Don’t count the days, make the days count.",
-        "Fall seven times and stand up eight."
-    ],
-    'Motivational': [
-        "Push yourself, because no one else is going to do it for you.",
-        "Great things never come from comfort zones.",
-        "Dream it. Wish it. Do it.",
-        "Don't stop when you're tired. Stop when you're done.",
-        "Wake up with determination. Go to bed with satisfaction.",
-        "Do something today that your future self will thank you for.",
-        "Little things make big days.",
-        "It’s going to be hard, but hard does not mean impossible.",
-        "Don’t wait for the right opportunity: create it.",
-        "Your only limit is your mind.",
-        "Work while they sleep. Learn while they party. Save while they spend. Live like they dream.",
-        "Go the extra mile. It’s never crowded.",
-        "Success doesn’t just find you. You have to go out and get it.",
-        "Dream bigger. Do bigger.",
-        "Stay positive, work hard, make it happen.",
-        "Don’t wish for it. Work for it.",
-        "Be stronger than your excuses.",
-        "Discipline is choosing between what you want now and what you want most.",
-        "Success is what happens after you have survived all your mistakes.",
-        "Act like it’s impossible to fail."
-    ],
-    'Happy': [
-        "Happiness is not by chance, but by choice.",
-        "Every day is a good day when you paint.",
-        "Smile big, laugh often.",
-        "Choose joy every single day.",
-        "Life is beautiful when you find beauty in everything.",
-        "Happiness is not something ready made. It comes from your own actions.",
-        "Count your age by friends, not years. Count your life by smiles, not tears.",
-        "Happiness is the best makeup.",
-        "Do more things that make you forget to check your phone.",
-        "The purpose of our lives is to be happy.",
-        "A smile is happiness you’ll find right under your nose.",
-        "Enjoy the little things, for one day you may look back and realize they were the big things.",
-        "Happiness held is the seed; happiness shared is the flower.",
-        "Happiness depends upon ourselves.",
-        "Joy is not in things; it is in us.",
-        "The secret to happiness is freedom, and the secret to freedom is courage.",
-        "Wherever you go, no matter what the weather, always bring your own sunshine.",
-        "When you love what you have, you have everything you need.",
-        "Happiness is a warm puppy.",
-        "Happiness is a direction, not a place."
-    ],
-    'Peaceful': [
-        "Peace comes from within. Do not seek it without.",
-        "In the midst of chaos, find your calm.",
-        "Breathe in peace, breathe out stress.",
-        "Silence is the sleep that nourishes wisdom.",
-        "Find peace in the present moment.",
-        "Nothing can bring you peace but yourself.",
-        "Peace begins with a smile.",
-        "Do not let the behavior of others destroy your inner peace.",
-        "The life of inner peace, being harmonious and without stress, is the easiest type of existence.",
-        "When you find peace within yourself, you become the kind of person who can live at peace with others.",
-        "Peace is liberty in tranquility.",
-        "The less you respond to negativity, the more peaceful your life becomes.",
-        "Peace is not the absence of conflict, but the ability to cope with it.",
-        "Let go of the thoughts that don’t make you strong.",
-        "Calm mind brings inner strength and self-confidence.",
-        "Inner peace is the new success.",
-        "Within you, there is a stillness and a sanctuary.",
-        "Peace is always beautiful.",
-        "Walk in peace, live in harmony.",
-        "Choose peace over drama."
-    ],
-    'Thoughtful': [
-        "The mind is everything. What you think you become.",
-        "Wisdom is not a product of schooling but of the lifelong attempt to acquire it.",
-        "Think deeply, speak gently, love much.",
-        "The unexamined life is not worth living.",
-        "Knowledge speaks, but wisdom listens.",
-        "We are what we repeatedly do. Excellence, then, is not an act, but a habit.",
-        "The more I read, the more I acquire, the more certain I am that I know nothing.",
-        "An investment in knowledge pays the best interest.",
-        "All that we are is the result of what we have thought.",
-        "He who opens a school door, closes a prison.",
-        "Knowing yourself is the beginning of all wisdom.",
-        "We don’t see things as they are, we see them as we are.",
-        "Education is not the learning of facts, but the training of the mind to think.",
-        "Judge a man by his questions rather than his answers.",
-        "Not everything that can be counted counts, and not everything that counts can be counted.",
-        "The only true wisdom is in knowing you know nothing.",
-        "An intelligent mind is never bored.",
-        "Learn from yesterday, live for today, hope for tomorrow.",
-        "Curiosity is the beginning of wisdom.",
-        "A wise man learns more from his enemies than a fool from his friends."
-    ],
-    'Success': [
-        "Success is not final, failure is not fatal: it is the courage to continue that counts.",
-        "The way to get started is to quit talking and begin doing.",
-        "Don't be afraid to give up the good to go for the great.",
-        "Success is walking from failure to failure with no loss of enthusiasm.",
-        "The only impossible journey is the one you never begin.",
-        "Opportunities don’t happen. You create them.",
-        "Don’t be distracted by criticism. Remember—the only taste of success some people get is to take a bite out of you.",
-        "Success usually comes to those who are too busy to be looking for it.",
-        "The road to success and the road to failure are almost exactly the same.",
-        "I find that the harder I work, the more luck I seem to have.",
-        "There are no secrets to success. It is the result of preparation, hard work, and learning from failure.",
-        "If you really look closely, most overnight successes took a long time.",
-        "The secret of success is to do the common thing uncommonly well.",
-        "I never dreamed about success. I worked for it.",
-        "Don’t let the fear of losing be greater than the excitement of winning.",
-        "Success is not in what you have, but who you are.",
-        "To be successful, you must accept all challenges that come your way.",
-        "The difference between who you are and who you want to be is what you do.",
-        "Success is simple. Do what’s right, the right way, at the right time.",
-        "Don’t watch the clock; do what it does. Keep going."
-    ]
-};
 
 
-// Community quotes with designer names
-const communityQuotes = [
-    { 
-        quote: "Design is not just what it looks like and feels like. Design is how it works.", 
-        author: "Sarah Chen", 
-        title: "UI/UX Designer",
-        downloads: 1247,
-        likes: 892
-    },
-    { 
-        quote: "Creativity is intelligence having fun.", 
-        author: "Marcus Rodriguez", 
-        title: "Creative Director",
-        downloads: 2156,
-        likes: 1543
-    },
-    { 
-        quote: "The best way to predict the future is to create it.", 
-        author: "Emma Thompson", 
-        title: "Brand Designer",
-        downloads: 987,
-        likes: 654
-    },
-    { 
-        quote: "Innovation distinguishes between a leader and a follower.", 
-        author: "David Kim", 
-        title: "Product Designer",
-        downloads: 1876,
-        likes: 1234
-    },
-    { 
-        quote: "Simplicity is the ultimate sophistication.", 
-        author: "Lisa Wang", 
-        title: "Graphic Designer",
-        downloads: 3421,
-        likes: 2187
-    },
-    { 
-        quote: "Art is not what you see, but what you make others see.", 
-        author: "James Miller", 
-        title: "Visual Artist",
-        downloads: 1654,
-        likes: 987
-    },
-    { 
-        quote: "Every great design begins with an even better story.", 
-        author: "Sophia Garcia", 
-        title: "Brand Strategist",
-        downloads: 2341,
-        likes: 1765
-    },
-    { 
-        quote: "Design creates culture. Culture shapes values. Values determine the future.", 
-        author: "Alex Johnson", 
-        title: "Design Lead",
-        downloads: 1432,
-        likes: 876
-    }
-];
 
-// Initialize app
-setTimeout(() => {
-    document.getElementById('loadingScreen').style.display = 'none';
-    document.getElementById('mainApp').classList.remove('hidden');
-    document.getElementById('mainApp').classList.add('fade-in');
-    initializeBackgrounds();
-    initializeGallery();
-    initializeExplore();
-    setupCanvasDragging();
-    loadTheme();
-}, 2000);
 
-function toggleSidebar() {
-    const sidebar = document.getElementById('sidebar');
-    const mainContent = document.getElementById('mainContent');
-    const isMobile = window.innerWidth < 768;
-    
-    if (isMobile) {
-        if (sidebarOpen) {
-            // Close sidebar
-            sidebar.classList.remove('sidebar-open');
-            mainContent.classList.remove('content-pushed');
-            sidebarOpen = false;
-        } else {
-            // Open sidebar
-            sidebar.classList.add('sidebar-open');
-            mainContent.classList.add('content-pushed');
-            sidebarOpen = true;
-        }
-    } else {
-        // Desktop behavior
-        if (sidebarCollapsed) {
-            sidebar.style.width = '256px';
-            sidebar.classList.remove('sidebar-collapsed');
-            sidebarCollapsed = false;
-        } else {
-            sidebar.style.width = '80px';
-            sidebar.classList.add('sidebar-collapsed');
-            sidebarCollapsed = true;
-        }
-    }
-}
 
-function showPage(page) {
-    // Update nav buttons
-    document.querySelectorAll('.nav-btn').forEach(btn => {
-        btn.className = 'nav-btn w-full flex items-center p-3 rounded-lg hover:bg-tertiary transition-colors';
-    });
-    event.target.closest('.nav-btn').className = 'nav-btn w-full flex items-center p-3 rounded-lg bg-purple-600 text-white';
-    
-    // Hide all pages
-    document.querySelectorAll('[id$="Page"]').forEach(p => p.classList.add('hidden'));
-    
-    // Show selected page
-    document.getElementById(page + 'Page').classList.remove('hidden');
-    currentPage = page;
-    
-    // Show/hide dashboard action bar
-    const actionBar = document.getElementById('dashboardActionBar');
-    if (page === 'dashboard') {
-        actionBar.classList.remove('hidden');
-    } else {
-        actionBar.classList.add('hidden');
-    }
-    
-    // Update header title
-    const titles = {
-        'dashboard': 'Dashboard',
-        'gallery': 'My Creations',
-        'explore': 'Explore',
-        'profile': 'Profile',
-        'settings': 'Settings'
-    };
-    document.querySelector('header h1').textContent = titles[page];
-    
-    // Close sidebar on mobile after navigation
-    if (window.innerWidth < 768 && sidebarOpen) {
-        setTimeout(() => {
-            toggleSidebar();
-        }, 150);
-    }
-}
 
-function toggleTheme() {
-    currentTheme = currentTheme === 'dark' ? 'light' : 'dark';
-    document.documentElement.setAttribute('data-theme', currentTheme);
-    
-    const themeToggle = document.getElementById('themeToggle');
-    const settingsThemeIcon = document.getElementById('settingsThemeIcon');
-    const themeText = document.getElementById('themeText');
-    
-    if (currentTheme === 'light') {
-        themeToggle.checked = false;
-        if (settingsThemeIcon) settingsThemeIcon.className = 'fas fa-sun mr-2';
-        if (themeText) themeText.textContent = 'Light Mode';
-    } else {
-        themeToggle.checked = true;
-        if (settingsThemeIcon) settingsThemeIcon.className = 'fas fa-moon mr-2';
-        if (themeText) themeText.textContent = 'Dark Mode';
-    }
-    
-    localStorage.setItem('inspireverse_theme', currentTheme);
-}
 
-function openAIGenerator() {
-    document.getElementById('aiGeneratorModal').classList.remove('hidden');
-    regenerateAIQuote();
-}
 
-function closeAIGenerator() {
-    document.getElementById('aiGeneratorModal').classList.add('hidden');
-}
+// ==========================================================
+// GLOBAL INITIALIZATION AND HELPER FUNCTIONS
+// ==========================================================
 
-let currentAIQuote = '';
-let currentAIBackground = '';
+// Initialize dashboard when DOM is loaded
+document.addEventListener('DOMContentLoaded', () => {
+    new PowerUpDashboard();
+});
 
-function regenerateAIQuote() {
-    const mood = document.getElementById('aiMoodSelect').value;
-    const quotes = aiQuotes[mood];
-    currentAIQuote = quotes[Math.floor(Math.random() * quotes.length)];
-    
-    // Set random background
-    const backgrounds = [
-        'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-        'https://cdn.pixabay.com/photo/2017/02/01/22/02/mountain-landscape-2031539_640.jpg',
-        'https://cdn.pixabay.com/photo/2015/12/01/20/28/road-1072823_640.jpg',
-        'https://cdn.pixabay.com/photo/2016/08/09/21/54/lake-1581879_640.jpg'
-    ];
-    currentAIBackground = backgrounds[Math.floor(Math.random() * backgrounds.length)];
-    
-    // Apply to AI canvas
-    const aiCanvas = document.getElementById('aiCanvas');
-    const aiCanvasText = document.getElementById('aiCanvasText');
-    
-    if (currentAIBackground.startsWith('http')) {
-        aiCanvas.style.backgroundImage = `url(${currentAIBackground})`;
-        aiCanvas.style.backgroundSize = 'cover';
-        aiCanvas.style.backgroundPosition = 'center';
-        aiCanvas.style.background = 'none';
-    } else {
-        aiCanvas.style.background = currentAIBackground;
-        aiCanvas.style.backgroundImage = 'none';
-    }
-    
-    // Typewriter effect
-    aiCanvasText.textContent = '';
-    let i = 0;
-    const typeWriter = () => {
-        if (i < currentAIQuote.length) {
-            aiCanvasText.textContent += currentAIQuote.charAt(i);
-            i++;
-            setTimeout(typeWriter, 50);
-        }
-    };
-    typeWriter();
-}
+// Add some interactive enhancements
+document.addEventListener('DOMContentLoaded', () => {
+    // Add click ripple effect to buttons
+    const buttons = document.querySelectorAll('button, .cursor-pointer');
+    buttons.forEach(button => {
+        button.addEventListener('click', function(e) {
+            const ripple = document.createElement('span');
+            const rect = this.getBoundingClientRect();
+            const size = Math.max(rect.width, rect.height);
+            const x = e.clientX - rect.left - size / 2;
+            const y = e.clientY - rect.top - size / 2;
 
-function setAIBackground(type) {
-    const backgrounds = {
-        'gradient1': 'linear-gradient(135deg, #000000 0%, #000000 100%)',
-        'image1': 'https://cdn.pixabay.com/photo/2017/02/01/22/02/mountain-landscape-2031539_640.jpg',
-        'image2': 'https://cdn.pixabay.com/photo/2015/12/01/20/28/road-1072823_640.jpg',
-        'image3': 'https://cdn.pixabay.com/photo/2016/08/09/21/54/lake-1581879_640.jpg'
-    };
-    
-    currentAIBackground = backgrounds[type];
-    const aiCanvas = document.getElementById('aiCanvas');
-    
-    if (currentAIBackground.startsWith('http')) {
-        aiCanvas.style.backgroundImage = `url(${currentAIBackground})`;
-        aiCanvas.style.backgroundSize = 'cover';
-        aiCanvas.style.backgroundPosition = 'center';
-        aiCanvas.style.background = 'none';
-    } else {
-        aiCanvas.style.background = currentAIBackground;
-        aiCanvas.style.backgroundImage = 'none';
-    }
-}
+            ripple.style.cssText = `
+                position: absolute;
+                width: ${size}px;
+                height: ${size}px;
+                left: ${x}px;
+                top: ${y}px;
+                background: rgba(255, 255, 255, 0.3);
+                border-radius: 50%;
+                transform: scale(0);
+                animation: ripple 0.6s ease-out;
+                pointer-events: none;
+                z-index: 1;
+            `;
 
-function useAIQuote() {
-    document.getElementById('quoteInput').value = currentAIQuote;
-    if (currentAIBackground.startsWith('http')) {
-        setCanvasBackground(`url(${currentAIBackground})`);
-    } else {
-        setCanvasBackground(currentAIBackground);
-    }
-    updateCanvasText();
-    closeAIGenerator();
-    showPopup('AI quote applied to canvas!', 'success');
-}
+            // Ensure the parent element has relative positioning to contain the ripple
+            const parent = this.style.position === 'relative' ? this : (() => {
+                this.style.position = 'relative';
+                this.style.overflow = 'hidden'; // Hide overflow of ripple
+                return this;
+            })();
 
-function updateProfile() {
-    const name = document.getElementById('displayName').value;
-    const email = document.getElementById('userEmail').value;
-    const bio = document.getElementById('userBio').value;
-    
-    // Save to localStorage (in a real app, this would be sent to a server)
-    localStorage.setItem('inspireverse_profile', JSON.stringify({
-        name, email, bio
-    }));
-    
-    showPopup('Profile updated successfully!', 'success');
-}
+            parent.appendChild(ripple);
 
-function updateInterfaceFontSize() {
-    const fontSize = document.getElementById('interfaceFontSize').value;
-    document.getElementById('fontSizeDisplay').textContent = fontSize + 'px';
-    document.documentElement.style.fontSize = fontSize + 'px';
-    localStorage.setItem('inspireverse_fontSize', fontSize);
-}
-
-function loadTheme() {
-    const savedTheme = localStorage.getItem('inspireverse_theme') || 'dark';
-    currentTheme = savedTheme;
-    document.documentElement.setAttribute('data-theme', currentTheme);
-    
-    const themeToggle = document.getElementById('themeToggle');
-    const settingsThemeIcon = document.getElementById('settingsThemeIcon');
-    const themeText = document.getElementById('themeText');
-    
-    if (currentTheme === 'light') {
-        if (themeToggle) themeToggle.checked = false;
-        if (settingsThemeIcon) settingsThemeIcon.className = 'fas fa-sun mr-2';
-        if (themeText) themeText.textContent = 'Light Mode';
-    } else {
-        if (themeToggle) themeToggle.checked = true;
-        if (settingsThemeIcon) settingsThemeIcon.className = 'fas fa-moon mr-2';
-        if (themeText) themeText.textContent = 'Dark Mode';
-    }
-    
-    // Load font size
-    const savedFontSize = localStorage.getItem('inspireverse_fontSize') || '16';
-    document.documentElement.style.fontSize = savedFontSize + 'px';
-    if (document.getElementById('interfaceFontSize')) {
-        document.getElementById('interfaceFontSize').value = savedFontSize;
-        document.getElementById('fontSizeDisplay').textContent = savedFontSize + 'px';
-    }
-}
-
-function toggleAIDropdown() {
-    const dropdown = document.getElementById('aiDropdown');
-    dropdown.classList.toggle('open');
-}
-
-function toggleAIDropdownMobile() {
-    const dropdown = document.getElementById('aiDropdownMobile');
-    dropdown.classList.toggle('open');
-}
-
-function toggleMoodDropdown() {
-    const dropdown = document.getElementById('moodDropdown');
-    dropdown.classList.toggle('open');
-}
-
-function toggleMoodDropdownMobile() {
-    const dropdown = document.getElementById('moodDropdownMobile');
-    dropdown.classList.toggle('open');
-}
-
-function selectMood(mood) {
-    document.getElementById('selectedMood').textContent = mood;
-    document.getElementById('moodDropdown').classList.remove('open');
-}
-
-function selectMoodMobile(mood) {
-    document.getElementById('selectedMoodMobile').textContent = mood;
-    document.getElementById('moodDropdownMobile').classList.remove('open');
-}
-
-function generateAIQuote() {
-    const selectedMood = document.getElementById('selectedMood').textContent;
-    if (selectedMood === 'Select mood...') {
-        showPopup('Please select a mood first!', 'error');
-        return;
-    }
-    
-    const quotes = aiQuotes[selectedMood];
-    const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
-    
-    // Typewriter effect
-    const quoteInput = document.getElementById('quoteInput');
-    const quoteInputDesktop = document.getElementById('quoteInputDesktop');
-    
-    if (quoteInput) quoteInput.value = '';
-    if (quoteInputDesktop) quoteInputDesktop.value = '';
-    
-    if (quoteInput) quoteInput.classList.add('typewriter');
-    
-    let i = 0;
-    const typeWriter = () => {
-        if (i < randomQuote.length) {
-            if (quoteInput) quoteInput.value += randomQuote.charAt(i);
-            if (quoteInputDesktop) quoteInputDesktop.value += randomQuote.charAt(i);
-            updateCanvasText();
-            i++;
-            setTimeout(typeWriter, 50);
-        } else {
-            if (quoteInput) quoteInput.classList.remove('typewriter');
-            showPopup('AI quote generated successfully!', 'success');
-        }
-    };
-    
-    typeWriter();
-    toggleAIDropdown();
-}
-
-function generateAIQuoteMobile() {
-    const selectedMood = document.getElementById('selectedMoodMobile').textContent;
-    if (selectedMood === 'Select mood...') {
-        showPopup('Please select a mood first!', 'error');
-        return;
-    }
-    
-    const quotes = aiQuotes[selectedMood];
-    const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
-    
-    // Typewriter effect (assuming mobile uses 'quoteInput' like desktop; adjust if mobile has a separate input ID)
-    const quoteInput = document.getElementById('quoteInput');  // Or use 'quoteInputMobile' if you have a separate one
-    const quoteInputDesktop = document.getElementById('quoteInputDesktop');
-    
-    if (quoteInput) quoteInput.value = '';
-    if (quoteInputDesktop) quoteInputDesktop.value = '';
-    
-    if (quoteInput) quoteInput.classList.add('typewriter');
-    
-    let i = 0;
-    const typeWriter = () => {
-        if (i < randomQuote.length) {
-            if (quoteInput) quoteInput.value += randomQuote.charAt(i);
-            if (quoteInputDesktop) quoteInputDesktop.value += randomQuote.charAt(i);
-            updateCanvasText();
-            i++;
-            setTimeout(typeWriter, 50);
-        } else {
-            if (quoteInput) quoteInput.classList.remove('typewriter');
-            showPopup('AI quote generated successfully!', 'success');
-        }
-    };
-    
-    typeWriter();
-    // Close the dropdown (assuming you want to toggle it closed after generation)
-    document.getElementById('aiDropdownMobile').classList.remove('open');
-}
-
-// Sync functions for desktop/mobile inputs
-function syncQuoteInputs(source) {
-    const mobileInput = document.getElementById('quoteInput');
-    const desktopInput = document.getElementById('quoteInputDesktop');
-    
-    if (source.id === 'quoteInput') {
-        if (desktopInput) desktopInput.value = source.value;
-    } else {
-        if (mobileInput) mobileInput.value = source.value;
-    }
-    updateCanvasText();
-}
-
-function syncBrandInputs(source) {
-    const mobileInput = document.getElementById('brandInput');
-    const desktopInput = document.getElementById('brandInputDesktop');
-    
-    if (source.id === 'brandInput') {
-        if (desktopInput) desktopInput.value = source.value;
-    } else {
-        if (mobileInput) mobileInput.value = source.value;
-    }
-    updateBrandText();
-}
-
-function syncFontSize(source) {
-    const mobileSlider = document.getElementById('fontSize');
-    const desktopSlider = document.getElementById('fontSizeDesktop');
-    const mobileValue = document.getElementById('fontSizeValue');
-    const desktopValue = document.getElementById('fontSizeValueDesktop');
-    
-    if (source.id === 'fontSize') {
-        if (desktopSlider) desktopSlider.value = source.value;
-        if (desktopValue) desktopValue.textContent = source.value + 'px';
-    } else {
-        if (mobileSlider) mobileSlider.value = source.value;
-        if (mobileValue) mobileValue.textContent = source.value + 'px';
-    }
-    
-    const canvasText = document.getElementById('canvasText');
-    const canvasTextDesktop = document.getElementById('canvasTextDesktop');
-    
-    if (canvasText) canvasText.style.fontSize = source.value + 'px';
-    if (canvasTextDesktop) canvasTextDesktop.style.fontSize = source.value + 'px';
-}
-
-function updateCanvasText() {
-    const mobileInput = document.getElementById('quoteInput');
-    const desktopInput = document.getElementById('quoteInputDesktop');
-    const text = (mobileInput ? mobileInput.value : '') || (desktopInput ? desktopInput.value : '') || 'Your quote will appear here...';
-    
-    const canvasText = document.getElementById('canvasText');
-    const canvasTextDesktop = document.getElementById('canvasTextDesktop');
-    
-    if (canvasText) canvasText.textContent = text;
-    if (canvasTextDesktop) canvasTextDesktop.textContent = text;
-}
-
-function updateBrandText() {
-    const mobileInput = document.getElementById('brandInput');
-    const desktopInput = document.getElementById('brandInputDesktop');
-    const brand = (mobileInput ? mobileInput.value : '') || (desktopInput ? desktopInput.value : '');
-    
-    const brandText = document.getElementById('brandText');
-    const brandTextDesktop = document.getElementById('brandTextDesktop');
-    
-    if (brandText) brandText.textContent = brand;
-    if (brandTextDesktop) brandTextDesktop.textContent = brand;
-}
-
-function updateTextStyle() {
-    const fontSize = document.getElementById('fontSize').value;
-    document.getElementById('fontSizeValue').textContent = fontSize + 'px';
-    
-    const canvasText = document.getElementById('canvasText');
-    const canvasTextDesktop = document.getElementById('canvasTextDesktop');
-    
-    if (canvasText) canvasText.style.fontSize = fontSize + 'px';
-    if (canvasTextDesktop) canvasTextDesktop.style.fontSize = fontSize + 'px';
-}
-
-function setFontFamily(fontFamily) {
-    const canvasText = document.getElementById('canvasText');
-    const canvasTextDesktop = document.getElementById('canvasTextDesktop');
-    
-    if (canvasText) canvasText.style.fontFamily = fontFamily;
-    if (canvasTextDesktop) canvasTextDesktop.style.fontFamily = fontFamily;
-    
-    // Update button states
-    document.querySelectorAll('[id^="font"]').forEach(btn => {
-        btn.className = 'p-2 bg-tertiary hover:bg-purple-600 rounded border border-custom text-xs';
-    });
-    
-    // Set active button
-    const fontMap = {
-        'Righteous': 'fontRighteous',
-        'Arial': 'fontArial',
-        'Georgia': 'fontGeorgia',
-        'Times New Roman': 'fontTimes',
-        'Helvetica': 'fontHelvetica',
-        'Courier New': 'fontCourier',
-        'Impact': 'fontImpact',
-        'Comic Sans MS': 'fontComic'
-    };
-    
-    const activeBtn = document.getElementById(fontMap[fontFamily]);
-    if (activeBtn) {
-        activeBtn.className = 'p-2 bg-purple-600 hover:bg-purple-700 rounded border border-custom text-xs';
-    }
-}
-
-function setTextColor(color) {
-    currentTextColor = color;
-    const canvasText = document.getElementById('canvasText');
-    const canvasTextDesktop = document.getElementById('canvasTextDesktop');
-    
-    if (canvasText) canvasText.style.color = color;
-    if (canvasTextDesktop) canvasTextDesktop.style.color = color;
-}
-
-function setTextAlign(align) {
-    const canvasText = document.getElementById('canvasText');
-    const canvasTextDesktop = document.getElementById('canvasTextDesktop');
-    
-    if (canvasText) canvasText.style.textAlign = align;
-    if (canvasTextDesktop) canvasTextDesktop.style.textAlign = align;
-    
-    // Update button states for both mobile and desktop
-    document.querySelectorAll('[onclick^="setTextAlign"]').forEach(btn => {
-        if (btn.className.includes('flex-1')) {
-            // Mobile buttons
-            btn.className = 'flex-1 p-3 bg-tertiary hover:bg-purple-600 rounded-lg border border-custom';
-        } else {
-            // Desktop buttons
-            btn.className = 'p-2 bg-tertiary hover:bg-purple-600 rounded border border-custom';
-        }
-    });
-    
-    // Set active state for clicked button
-    document.querySelectorAll(`[onclick="setTextAlign('${align}')"]`).forEach(btn => {
-        if (btn.className.includes('flex-1')) {
-            // Mobile buttons
-            btn.className = 'flex-1 p-3 bg-purple-600 hover:bg-purple-700 rounded-lg border border-custom';
-        } else {
-            // Desktop buttons
-            btn.className = 'p-2 bg-purple-600 hover:bg-purple-700 rounded border border-custom';
-        }
-    });
-}
-
-function toggleBold() {
-    const canvasText = document.getElementById('canvasText');
-    const canvasTextDesktop = document.getElementById('canvasTextDesktop');
-    const mobileBtn = document.getElementById('boldBtn');
-    const desktopBtn = document.getElementById('boldBtnDesktop');
-    const currentWeight = canvasText ? canvasText.style.fontWeight : canvasTextDesktop ? canvasTextDesktop.style.fontWeight : '';
-
-    const isBold = currentWeight === 'bold';
-    const newWeight = isBold ? 'normal' : 'bold';
-    const newClass = isBold 
-        ? 'p-2 bg-tertiary hover:bg-purple-600 rounded border border-custom'
-        : 'p-2 bg-purple-600 hover:bg-purple-700 rounded border border-custom';
-
-    // Apply to both canvases
-    if (canvasText) canvasText.style.fontWeight = newWeight;
-    if (canvasTextDesktop) canvasTextDesktop.style.fontWeight = newWeight;
-
-    // Update both buttons
-    if (mobileBtn) mobileBtn.className = newClass;
-    if (desktopBtn) desktopBtn.className = newClass;
-}
-
-function toggleItalic() {
-    const canvasText = document.getElementById('canvasText');
-    const canvasTextDesktop = document.getElementById('canvasTextDesktop');
-    const mobileBtn = document.getElementById('italicBtn');
-    const desktopBtn = document.getElementById('italicBtnDesktop');
-    const currentStyle = canvasText ? canvasText.style.fontStyle : canvasTextDesktop ? canvasTextDesktop.style.fontStyle : '';
-
-    const isItalic = currentStyle === 'italic';
-    const newStyle = isItalic ? 'normal' : 'italic';
-    const newClass = isItalic 
-        ? 'p-2 bg-tertiary hover:bg-purple-600 rounded border border-custom'
-        : 'p-2 bg-purple-600 hover:bg-purple-700 rounded border border-custom';
-
-    // Apply to both canvases
-    if (canvasText) canvasText.style.fontStyle = newStyle;
-    if (canvasTextDesktop) canvasTextDesktop.style.fontStyle = newStyle;
-
-    // Update both buttons
-    if (mobileBtn) mobileBtn.className = newClass;
-    if (desktopBtn) desktopBtn.className = newClass;
-}
-
-function toggleUnderline() {
-    const canvasText = document.getElementById('canvasText');
-    const canvasTextDesktop = document.getElementById('canvasTextDesktop');
-    const mobileBtn = document.getElementById('underlineBtn');
-    const desktopBtn = document.getElementById('underlineBtnDesktop');
-    const currentDecoration = canvasText ? canvasText.style.textDecoration : canvasTextDesktop ? canvasTextDesktop.style.textDecoration : '';
-
-    const isUnderlined = currentDecoration === 'underline';
-    const newDecoration = isUnderlined ? 'none' : 'underline';
-    const newClass = isUnderlined 
-        ? 'p-2 bg-tertiary hover:bg-purple-600 rounded border border-custom'
-        : 'p-2 bg-purple-600 hover:bg-purple-700 rounded border border-custom';
-
-    // Apply to both canvases
-    if (canvasText) canvasText.style.textDecoration = newDecoration;
-    if (canvasTextDesktop) canvasTextDesktop.style.textDecoration = newDecoration;
-
-    // Update both buttons
-    if (mobileBtn) mobileBtn.className = newClass;
-    if (desktopBtn) desktopBtn.className = newClass;
-}
-
-function updateTextShadow() {
-    const mobileSlider = document.getElementById('textShadow');
-    const desktopSlider = document.getElementById('textShadowDesktop');
-    const mobileValue = document.getElementById('textShadowValue');
-    const desktopValue = document.getElementById('textShadowValueDesktop');
-    const shadow = (mobileSlider ? mobileSlider.value : desktopSlider ? desktopSlider.value : 2) || 2;
-
-    // Sync sliders and values
-    if (mobileSlider && desktopSlider) desktopSlider.value = shadow;
-    if (mobileValue) mobileValue.textContent = shadow + 'px';
-    if (desktopValue) desktopValue.textContent = shadow + 'px';
-
-    const canvasText = document.getElementById('canvasText');
-    const canvasTextDesktop = document.getElementById('canvasTextDesktop');
-    const shadowStyle = `${shadow}px ${shadow}px ${shadow * 2}px rgba(0,0,0,0.5)`;
-
-    // Apply to both canvases
-    if (canvasText) canvasText.style.textShadow = shadowStyle;
-    if (canvasTextDesktop) canvasTextDesktop.style.textShadow = shadowStyle;
-}
-
-function updateLetterSpacing() {
-    const mobileSlider = document.getElementById('letterSpacing');
-    const desktopSlider = document.getElementById('letterSpacingDesktop');
-    const mobileValue = document.getElementById('letterSpacingValue');
-    const desktopValue = document.getElementById('letterSpacingValueDesktop');
-    const spacing = (mobileSlider ? mobileSlider.value : desktopSlider ? desktopSlider.value : 0) || 0;
-
-    // Sync sliders and values
-    if (mobileSlider && desktopSlider) desktopSlider.value = spacing;
-    if (mobileValue) mobileValue.textContent = spacing + 'px';
-    if (desktopValue) desktopValue.textContent = spacing + 'px';
-
-    const canvasText = document.getElementById('canvasText');
-    const canvasTextDesktop = document.getElementById('canvasTextDesktop');
-
-    // Apply to both canvases
-    if (canvasText) canvasText.style.letterSpacing = spacing + 'px';
-    if (canvasTextDesktop) canvasTextDesktop.style.letterSpacing = spacing + 'px';
-}
-
-function updateLineHeight() {
-    const mobileSlider = document.getElementById('lineHeight');
-    const desktopSlider = document.getElementById('lineHeightDesktop');
-    const mobileValue = document.getElementById('lineHeightValue');
-    const desktopValue = document.getElementById('lineHeightValueDesktop');
-    const height = (mobileSlider ? mobileSlider.value : desktopSlider ? desktopSlider.value : 1.2) || 1.2;
-
-    // Sync sliders and values
-    if (mobileSlider && desktopSlider) desktopSlider.value = height;
-    if (mobileValue) mobileValue.textContent = height;
-    if (desktopValue) desktopValue.textContent = height;
-
-    const canvasText = document.getElementById('canvasText');
-    const canvasTextDesktop = document.getElementById('canvasTextDesktop');
-
-    // Apply to both canvases
-    if (canvasText) canvasText.style.lineHeight = height;
-    if (canvasTextDesktop) canvasTextDesktop.style.lineHeight = height;
-}
-
-function getUnsplashImage(query, width = 400, height = 400) {
-    return `https://source.unsplash.com/${width}x${height}/?${query}`;
-}
-
-async function initializeBackgrounds() {
-    const mobileGrid = document.getElementById('backgroundGrid');
-    const desktopGrid = document.getElementById('backgroundGridDesktop');
-    
-    // Add gradient backgrounds
-    const gradients = [
-        'linear-gradient(135deg, #000000ff 0%, #000000 100%)'
-,
-    ];
-    
-    let backgroundImages = [];
-    
-    try {
-        const query = unsplashCollections.join('+');
-        const response = await fetch(`https://pixabay.com/api/?key=${PIXABAY_API_KEY}&q=${query}&image_type=photo&per_page=11&min_width=1920&min_height=1080`);
-        const data = await response.json();
-        backgroundImages = data.hits.map(hit => hit.largeImageURL);
-    } catch (error) {
-        console.error('Error fetching Pixabay images:', error);
-        showPopup('Failed to load backgrounds from Pixabay', 'error');
-    }
-    
-    // Function to add backgrounds to a grid
-    function addBackgroundsToGrid(grid) {
-        if (!grid) return;
-        
-        // Clear existing content
-        grid.innerHTML = '';
-        
-        // Add gradients
-        gradients.forEach(bg => {
-            const div = document.createElement('div');
-            div.className = 'w-full h-32 rounded-lg cursor-pointer border-2 border-transparent hover:border-purple-500 transition-all'; // Increased height for better quality preview
-            div.style.background = bg;
-            div.onclick = () => setCanvasBackground(bg);
-            grid.appendChild(div);
-        });
-        
-        // Add images with lazy loading
-        backgroundImages.forEach(imageUrl => {
-            const div = document.createElement('div');
-            div.className = 'w-full h-32 rounded-lg cursor-pointer border-2 border-transparent hover:border-purple-500 transition-all overflow-hidden lazy-load'; // Increased height
-            div.dataset.src = imageUrl;
-            div.onclick = () => setCanvasBackground(imageUrl);
-            grid.appendChild(div);
-        });
-        
-        // Lazy load images
-        const observer = new IntersectionObserver((entries, observer) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    const div = entry.target;
-                    div.style.backgroundImage = `url("${div.dataset.src}")`;
-                    div.style.backgroundSize = 'cover';
-                    div.style.backgroundPosition = 'center';
-                    observer.unobserve(div);
+            setTimeout(() => {
+                if (ripple.parentNode) {
+                    ripple.parentNode.removeChild(ripple);
                 }
-            });
-        }, { rootMargin: '100px' });
-        
-        grid.querySelectorAll('.lazy-load').forEach(div => observer.observe(div));
-    }
-    
-    // Add backgrounds to both grids
-    addBackgroundsToGrid(mobileGrid);
-    addBackgroundsToGrid(desktopGrid);
-}
-
-function setCanvasBackground(background) {
-    const canvas = document.getElementById('canvas');
-    const canvasDesktop = document.getElementById('canvasDesktop');
-    
-    // Apply to both mobile and desktop canvases
-    [canvas, canvasDesktop].forEach(canvasEl => {
-        if (!canvasEl) return;
-        
-        // Clear existing styles first
-        canvasEl.style.background = '';
-        canvasEl.style.backgroundImage = '';
-        canvasEl.style.backgroundSize = '';
-        canvasEl.style.backgroundPosition = '';
-        canvasEl.style.backgroundRepeat = '';
-        
-        if (background.includes('http') || background.startsWith('url(')) {
-            // Handle image URLs - ensure proper url() format
-            let imageUrl = background;
-            if (!background.startsWith('url(')) {
-                imageUrl = `url("${background}")`;
-            }
-            canvasEl.style.backgroundImage = imageUrl;
-            canvasEl.style.backgroundSize = 'cover';
-            canvasEl.style.backgroundPosition = 'center';
-            canvasEl.style.backgroundRepeat = 'no-repeat';
-        } else {
-            // Handle gradients and solid colors
-            canvasEl.style.background = background;
-        }
-    });
-    
-    showPopup('Background applied!', 'success');
-}
-
-async function loadMoreBackgrounds() {
-    const mobileGrid = document.getElementById('backgroundGrid');
-    const desktopGrid = document.getElementById('backgroundGridDesktop');
-    
-    // Add more gradients
-    const moreGradients = [
-        'linear-gradient(135deg, #000000 0%, #000000 100%)',
-        'linear-gradient(135deg, #ffffff 0%, #ffffff 100%)',
-
-
-,
-    ];
-    
-    let moreImages = [];
-    
-    try {
-        const query = unsplashCollections.join('+');
-        const response = await fetch(`https://pixabay.com/api/?key=${PIXABAY_API_KEY}&q=${query}&image_type=photo&per_page=50&page=2&min_width=1920&min_height=1080`);
-        const data = await response.json();
-        moreImages = data.hits.map(hit => hit.largeImageURL);
-    } catch (error) {
-        console.error('Error fetching more Pixabay images:', error);
-        showPopup('Failed to load more backgrounds from Pixabay', 'error');
-    }
-    
-    // Function to add more backgrounds to a grid
-    function addMoreBackgroundsToGrid(grid) {
-        if (!grid) return;
-        
-        // Add gradients first
-        moreGradients.forEach(bg => {
-            const div = document.createElement('div');
-            div.className = 'w-full h-32 rounded-lg cursor-pointer border-2 border-transparent hover:border-purple-500 transition-all'; // Increased height
-            div.style.background = bg;
-            div.onclick = () => setCanvasBackground(bg);
-            grid.appendChild(div);
+            }, 600);
         });
-        
-        // Add images
-        moreImages.forEach(imageUrl => {
-            const div = document.createElement('div');
-            div.className = 'w-full h-32 rounded-lg cursor-pointer border-2 border-transparent hover:border-purple-500 transition-all overflow-hidden lazy-load'; // Increased height
-            div.dataset.src = imageUrl;
-            div.onclick = () => setCanvasBackground(imageUrl);
-            grid.appendChild(div);
-        });
-        
-        // Lazy load images
-        const observer = new IntersectionObserver((entries, observer) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    const div = entry.target;
-                    div.style.backgroundImage = `url("${div.dataset.src}")`;
-                    div.style.backgroundSize = 'cover';
-                    div.style.backgroundPosition = 'center';
-                    observer.unobserve(div);
-                }
-            });
-        }, { rootMargin: '100px' });
-        
-        grid.querySelectorAll('.lazy-load').forEach(div => observer.observe(div));
-    }
-    
-    // Add to both grids
-    addMoreBackgroundsToGrid(mobileGrid);
-    addMoreBackgroundsToGrid(desktopGrid);
-    
-    showPopup('More backgrounds loaded!', 'success');
-}
-
-function setupCanvasDragging() {
-    const canvasText = document.getElementById('canvasText');
-    const canvasTextDesktop = document.getElementById('canvasTextDesktop');
-    
-    // Setup dragging for both mobile and desktop canvas text
-    if (canvasText) {
-        canvasText.addEventListener('mousedown', startDrag);
-    }
-    if (canvasTextDesktop) {
-        canvasTextDesktop.addEventListener('mousedown', startDrag);
-    }
-    
-    document.addEventListener('mousemove', drag);
-    document.addEventListener('mouseup', stopDrag);
-    
-    // Touch events for mobile
-    if (canvasText) {
-        canvasText.addEventListener('touchstart', startDragTouch);
-    }
-    if (canvasTextDesktop) {
-        canvasTextDesktop.addEventListener('touchstart', startDragTouch);
-    }
-    
-    document.addEventListener('touchmove', dragTouch);
-    document.addEventListener('touchend', stopDrag);
-}
-
-let currentDragElement = null;
-
-function startDrag(e) {
-    e.preventDefault();
-    isDragging = true;
-    currentDragElement = e.target;
-    const rect = e.target.getBoundingClientRect();
-    dragOffset.x = e.clientX - rect.left;
-    dragOffset.y = e.clientY - rect.top;
-    e.target.style.cursor = 'grabbing';
-}
-
-function startDragTouch(e) {
-    e.preventDefault();
-    isDragging = true;
-    currentDragElement = e.target;
-    const touch = e.touches[0];
-    const rect = e.target.getBoundingClientRect();
-    dragOffset.x = touch.clientX - rect.left;
-    dragOffset.y = touch.clientY - rect.top;
-}
-
-function drag(e) {
-    if (!isDragging || !currentDragElement) return;
-    e.preventDefault();
-    
-    // Determine which canvas we're working with
-    const isDesktop = currentDragElement.id === 'canvasTextDesktop';
-    const canvas = isDesktop ? document.getElementById('canvasDesktop') : document.getElementById('canvas');
-    const canvasRect = canvas.getBoundingClientRect();
-    
-    let x = e.clientX - canvasRect.left - dragOffset.x;
-    let y = e.clientY - canvasRect.top - dragOffset.y;
-    
-    // Keep text within canvas bounds
-    x = Math.max(0, Math.min(x, canvas.offsetWidth - currentDragElement.offsetWidth));
-    y = Math.max(0, Math.min(y, canvas.offsetHeight - currentDragElement.offsetHeight));
-    
-    currentDragElement.style.left = x + 'px';
-    currentDragElement.style.top = y + 'px';
-    currentDragElement.style.transform = 'none';
-}
-
-function dragTouch(e) {
-    if (!isDragging || !currentDragElement) return;
-    e.preventDefault();
-    
-    const touch = e.touches[0];
-    const isDesktop = currentDragElement.id === 'canvasTextDesktop';
-    const canvas = isDesktop ? document.getElementById('canvasDesktop') : document.getElementById('canvas');
-    const canvasRect = canvas.getBoundingClientRect();
-    
-    let x = touch.clientX - canvasRect.left - dragOffset.x;
-    let y = touch.clientY - canvasRect.top - dragOffset.y;
-    
-    // Keep text within canvas bounds
-    x = Math.max(0, Math.min(x, canvas.offsetWidth - currentDragElement.offsetWidth));
-    y = Math.max(0, Math.min(y, canvas.offsetHeight - currentDragElement.offsetHeight));
-    
-    currentDragElement.style.left = x + 'px';
-    currentDragElement.style.top = y + 'px';
-    currentDragElement.style.transform = 'none';
-}
-
-function stopDrag() {
-    if (currentDragElement) {
-        currentDragElement.style.cursor = 'move';
-    }
-    isDragging = false;
-    currentDragElement = null;
-}
-
-function resetCanvasStyles() {
-    const textElements = [document.getElementById('canvasText'), document.getElementById('canvasTextDesktop')];
-    textElements.forEach(el => {
-        if (el) {
-            el.style.fontSize = '';
-            el.style.fontFamily = '';
-            el.style.fontWeight = '';
-            el.style.fontStyle = '';
-            el.style.textDecoration = '';
-            el.style.color = '#ffffff';
-            el.style.textAlign = 'center';
-            el.style.textShadow = '';
-            el.style.letterSpacing = '';
-            el.style.lineHeight = '';
-            el.style.left = '';
-            el.style.top = '';
-            el.style.transform = '';
-            el.style.position = 'absolute';
-        }
     });
 
-    // Reset UI controls
-    const defaultFontSize = 16;
-    [document.getElementById('fontSize'), document.getElementById('fontSizeDesktop')].forEach(slider => {
-        if (slider) slider.value = defaultFontSize;
-    });
-    [document.getElementById('fontSizeValue'), document.getElementById('fontSizeValueDesktop')].forEach(valueEl => {
-        if (valueEl) valueEl.textContent = defaultFontSize + 'px';
-    });
-
-    document.querySelectorAll('[id^="font"]').forEach(btn => {
-        btn.className = 'p-2 bg-tertiary hover:bg-purple-600 rounded border border-custom text-xs';
-    });
-    const defaultFontBtn = document.getElementById('fontArial'); // Assume Arial as default
-    if (defaultFontBtn) {
-        defaultFontBtn.className = 'p-2 bg-purple-600 hover:bg-purple-700 rounded border border-custom text-xs';
-    }
-
-    document.querySelectorAll('[onclick^="setTextAlign"]').forEach(btn => {
-        btn.className = btn.className.includes('flex-1') 
-            ? 'flex-1 p-3 bg-tertiary hover:bg-purple-600 rounded-lg border border-custom'
-            : 'p-2 bg-tertiary hover:bg-purple-600 rounded border border-custom';
-    });
-    document.querySelectorAll('[onclick="setTextAlign(\'center\')"]').forEach(btn => {
-        btn.className = btn.className.includes('flex-1') 
-            ? 'flex-1 p-3 bg-purple-600 hover:bg-purple-700 rounded-lg border border-custom'
-            : 'p-2 bg-purple-600 hover:bg-purple-700 rounded border border-custom';
-    });
-
-    ['boldBtn', 'italicBtn', 'underlineBtn'].forEach(btnId => {
-        const btn = document.getElementById(btnId);
-        if (btn) btn.className = 'p-2 bg-tertiary hover:bg-purple-600 rounded border border-custom';
-    });
-
-    if (document.getElementById('textShadow')) {
-        document.getElementById('textShadow').value = 0;
-        document.getElementById('textShadowValue').textContent = '0px';
-    }
-
-    if (document.getElementById('letterSpacing')) {
-        document.getElementById('letterSpacing').value = 0;
-        document.getElementById('letterSpacingValue').textContent = '0px';
-    }
-
-    if (document.getElementById('lineHeight')) {
-        document.getElementById('lineHeight').value = 1.5;
-        document.getElementById('lineHeightValue').textContent = '1.5';
-    }
-}
-
-function getTextStyles() {
-    const canvasText = document.getElementById('canvasText') || document.getElementById('canvasTextDesktop');
-    if (!canvasText) return {};
-    
-    return {
-        fontSize: canvasText.style.fontSize,
-        fontFamily: canvasText.style.fontFamily,
-        fontWeight: canvasText.style.fontWeight,
-        fontStyle: canvasText.style.fontStyle,
-        textDecoration: canvasText.style.textDecoration,
-        color: canvasText.style.color,
-        textAlign: canvasText.style.textAlign,
-        textShadow: canvasText.style.textShadow,
-        letterSpacing: canvasText.style.letterSpacing,
-        lineHeight: canvasText.style.lineHeight,
-        left: canvasText.style.left,
-        top: canvasText.style.top
-    };
-}
-
-function applyTextStyles(styles) {
-    const textElements = [document.getElementById('canvasText'), document.getElementById('canvasTextDesktop')];
-    textElements.forEach(el => {
-        if (el && styles) {
-            Object.assign(el.style, styles);
-        }
-    });
-    
-    // Update UI controls to match loaded styles
-    if (styles) {
-        // Font size
-        const fontSize = parseInt(styles.fontSize) || 16;
-        [document.getElementById('fontSize'), document.getElementById('fontSizeDesktop')].forEach(slider => {
-            if (slider) slider.value = fontSize;
-        });
-        [document.getElementById('fontSizeValue'), document.getElementById('fontSizeValueDesktop')].forEach(valueEl => {
-            if (valueEl) valueEl.textContent = fontSize + 'px';
-        });
-
-        // Font family
-        if (styles.fontFamily) {
-            const fontMap = {
-                'Righteous': 'fontRighteous',
-                'Arial': 'fontArial',
-                'Georgia': 'fontGeorgia',
-                'Times New Roman': 'fontTimes',
-                'Helvetica': 'fontHelvetica',
-                'Courier New': 'fontCourier',
-                'Impact': 'fontImpact',
-                'Comic Sans MS': 'fontComic'
-            };
-            document.querySelectorAll('[id^="font"]').forEach(btn => {
-                btn.className = 'p-2 bg-tertiary hover:bg-purple-600 rounded border border-custom text-xs';
-            });
-            const activeBtn = document.getElementById(fontMap[styles.fontFamily]);
-            if (activeBtn) {
-                activeBtn.className = 'p-2 bg-purple-600 hover:bg-purple-700 rounded border border-custom text-xs';
+    // Add CSS for ripple animation dynamically
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes ripple {
+            to {
+                transform: scale(2);
+                opacity: 0;
             }
         }
+    `;
+    document.head.appendChild(style);
+});
 
-        // Text align
-        if (styles.textAlign) {
-            document.querySelectorAll('[onclick^="setTextAlign"]').forEach(btn => {
-                btn.className = btn.className.includes('flex-1') 
-                    ? 'flex-1 p-3 bg-tertiary hover:bg-purple-600 rounded-lg border border-custom'
-                    : 'p-2 bg-tertiary hover:bg-purple-600 rounded border border-custom';
-            });
-            document.querySelectorAll(`[onclick="setTextAlign('${styles.textAlign}')"]`).forEach(btn => {
-                btn.className = btn.className.includes('flex-1')
-                    ? 'flex-1 p-3 bg-purple-600 hover:bg-purple-700 rounded-lg border border-custom'
-                    : 'p-2 bg-purple-600 hover:bg-purple-700 rounded border border-custom';
-            });
-        }
-
-        // Bold, italic, underline
-        if (styles.fontWeight === 'bold') {
-            const btn = document.getElementById('boldBtn');
-            if (btn) btn.className = 'p-2 bg-purple-600 hover:bg-purple-700 rounded border border-custom';
-        } else {
-            const btn = document.getElementById('boldBtn');
-            if (btn) btn.className = 'p-2 bg-tertiary hover:bg-purple-600 rounded border border-custom';
-        }
-
-        if (styles.fontStyle === 'italic') {
-            const btn = document.getElementById('italicBtn');
-            if (btn) btn.className = 'p-2 bg-purple-600 hover:bg-purple-700 rounded border border-custom';
-        } else {
-            const btn = document.getElementById('italicBtn');
-            if (btn) btn.className = 'p-2 bg-tertiary hover:bg-purple-600 rounded border border-custom';
-        }
-
-        if (styles.textDecoration === 'underline') {
-            const btn = document.getElementById('underlineBtn');
-            if (btn) btn.className = 'p-2 bg-purple-600 hover:bg-purple-700 rounded border border-custom';
-        } else {
-            const btn = document.getElementById('underlineBtn');
-            if (btn) btn.className = 'p-2 bg-tertiary hover:bg-purple-600 rounded border border-custom';
-        }
-
-        // Text shadow
-        if (styles.textShadow) {
-            const shadowMatch = styles.textShadow.match(/(\d+)px (\d+)px (\d+)px/);
-            if (shadowMatch) {
-                const shadowValue = parseInt(shadowMatch[1]);
-                if (document.getElementById('textShadow')) {
-                    document.getElementById('textShadow').value = shadowValue;
-                    document.getElementById('textShadowValue').textContent = shadowValue + 'px';
-                }
-            }
-        }
-
-        // Letter spacing
-        if (styles.letterSpacing) {
-            const spacing = parseFloat(styles.letterSpacing) || 0;
-            if (document.getElementById('letterSpacing')) {
-                document.getElementById('letterSpacing').value = spacing;
-                document.getElementById('letterSpacingValue').textContent = spacing + 'px';
-            }
-        }
-
-        // Line height
-        if (styles.lineHeight) {
-            if (document.getElementById('lineHeight')) {
-                document.getElementById('lineHeight').value = parseFloat(styles.lineHeight) || 1.5;
-                document.getElementById('lineHeightValue').textContent = styles.lineHeight;
-            }
+// Handle keyboard navigation
+document.addEventListener('keydown', (e) => {
+    // Close notifications with Escape key
+    if (e.key === 'Escape') {
+        const notificationCenter = document.getElementById('notificationCenter');
+        if (notificationCenter && !notificationCenter.classList.contains('hidden')) {
+            window.dashboard?.hideNotifications(); // Use optional chaining for safety
         }
     }
-}
 
-async function downloadImage() {
-    const canvasElement = document.getElementById('canvas');
-    const quote = document.getElementById('quoteInput').value || 'Your quote will appear here...';
-
-    if (!quote || quote === 'Your quote will appear here...') {
-        showPopup('Please enter a quote first!', 'error');
-        return;
+    // Quick theme toggle with Ctrl/Cmd + Shift + T
+    if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key === 'T') {
+        e.preventDefault();
+        window.dashboard?.toggleTheme(); // Use optional chaining for safety
     }
+});
 
-    showPopup('Preparing download...', 'info');
+// Store dashboard instance globally for console access
+// This needs to be set after the dashboard is instantiated.
+window.dashboard = null;
+document.addEventListener('DOMContentLoaded', () => {
+    window.dashboard = new PowerUpDashboard();
+});
 
-    // Ensure fonts/images are loaded
-    if (document.fonts) await document.fonts.ready;
 
-    html2canvas(canvasElement, {
-        scale: window.devicePixelRatio * 3, // max sharpness
-        useCORS: true,
-        backgroundColor: window.getComputedStyle(canvasElement).backgroundColor || '#ffffff',
-    }).then(canvas => {
-        // Disable smoothing for crisper edges
-        const ctx = canvas.getContext('2d');
-        ctx.imageSmoothingEnabled = false;
-
-        canvas.toBlob((blob) => {
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `inspireverse-quote-${Date.now()}.png`; // PNG = best quality
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
-
-            showPopup('Quote downloaded successfully!', 'success');
-
-            // Save to creations
-            const creation = {
-                id: Date.now(),
-                type: 'download',
-                quote: quote,
-                brand: document.getElementById('brandInput').value || '',
-                background: getCanvasBackground(),
-                textStyles: getTextStyles(),
-                timestamp: new Date().toISOString()
-            };
-
-            savedCreations.push(creation);
-            localStorage.setItem('inspireverse_creations', JSON.stringify(savedCreations));
-            updateGalleryView();
-        }, 'image/png');
-    }).catch(error => {
-        console.error('Error capturing canvas:', error);
-        showPopup('Failed to download image. Please try again.', 'error');
+// PWA-like features (optional)
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        // Service worker would be registered here in a real PWA
+        console.log('PowerUp Dashboard loaded successfully');
     });
 }
 
+// Handle network status (optional)
+window.addEventListener('online', () => {
+    console.log('Network connection restored');
+});
 
-function getCanvasBackground() {
-    const canvas = document.getElementById('canvas');
-    if (canvas.style.backgroundImage && canvas.style.backgroundImage !== 'none') {
-        const match = canvas.style.backgroundImage.match(/^url\(["']?([^"']*)["']?\)$/);
-        return match ? match[1] : '';
-    } else {
-        return canvas.style.background || '';
-    }
-}
+window.addEventListener('offline', () => {
+    console.log('Network connection lost');
+});
 
-function saveDraft() {
-    const quote = document.getElementById('quoteInput').value;
-    if (!quote || quote === 'Your quote will appear here...') {
-        showPopup('Please enter a quote first!', 'error');
-        return;
-    }
-    
-    const creation = {
-        id: Date.now(),
-        type: 'draft',
-        quote: quote,
-        brand: document.getElementById('brandInput').value || '',
-        background: getCanvasBackground(),
-        textStyles: getTextStyles(),
-        timestamp: new Date().toISOString()
-    };
-    
-    savedCreations.push(creation);
-    localStorage.setItem('inspireverse_creations', JSON.stringify(savedCreations));
-    showPopup('Draft saved successfully!', 'success');
-    updateGalleryView(); // Refresh gallery after save
-}
 
-function shareImage() {
-    if (navigator.share) {
-        navigator.share({
-            title: 'Check out my quote from Inspireverse!',
-            text: document.getElementById('quoteInput').value,
-            url: window.location.href
-        });
-    } else {
-        // Fallback for browsers that don't support Web Share API
-        const shareText = `Check out my quote: "${document.getElementById('quoteInput').value}" - Created with Inspireverse`;
-        navigator.clipboard.writeText(shareText);
-        alert('Quote copied to clipboard! Share it anywhere you like.');
-    }
-}
 
-function initializeGallery() {
-    updateGalleryView();
-}
 
-function toggleGalleryView(view) {
-    // Update button states
-    document.querySelectorAll('#galleryPage button').forEach(btn => {
-        btn.className = 'px-4 py-2 bg-tertiary hover:bg-purple-600 rounded-lg';
-    });
-    document.getElementById(view + 'Btn').className = 'px-4 py-2 bg-purple-600 text-white rounded-lg';
-    
-    updateGalleryView(view);
-}
 
-function updateGalleryView(filter = 'all') {
-    const grid = document.getElementById('galleryGrid');
-    grid.innerHTML = '';
-    
-    let filteredCreations = savedCreations;
-    if (filter !== 'all') {
-        filteredCreations = savedCreations.filter(c => c.type === (filter === 'downloads' ? 'download' : 'draft'));
-    }
-    
-    if (filteredCreations.length === 0) {
-        grid.innerHTML = `
-            <div class="col-span-full text-center py-12">
-                <i class="fas fa-folder-open text-6xl text-gray-400 mb-4"></i>
-                <p class="text-xl text-secondary mb-2">No creations yet</p>
-                <p class="text-secondary">Start creating your first quote!</p>
-                <button onclick="showPage('dashboard')" class="mt-4 px-6 py-3 bg-purple-600 hover:bg-purple-700 rounded-lg transition-colors">
-                    Create Quote
-                </button>
-            </div>
-        `;
-        return;
-    }
-    
-    filteredCreations.forEach(creation => {
-        const div = document.createElement('div');
-        div.className = 'image-container relative bg-secondary rounded-lg overflow-hidden aspect-square cursor-pointer';
-        
-        // Clean background
-        let cleanBackground = creation.background || '';
-        const match = cleanBackground.match(/^url\(["']?([^"']*)["']?\)$/);
-        if (match) {
-            cleanBackground = match[1];
-        }
-        
-        let backgroundStyle = '';
-        let isImage = false;
-        let backgroundAttr = '';
-        let canvasClass = 'w-full h-full flex items-center justify-center text-center p-4 relative';
-        
-        if (cleanBackground) {
-            if (cleanBackground.startsWith('http')) {
-                isImage = true;
-                canvasClass += ' lazy-load';
-                backgroundAttr = ` data-src="${cleanBackground}"`;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      // Global state management for panel animations
+        let currentPanel = null; // Track which panel is currently open
+        let isAnimating = false; // Prevent animation conflicts
+
+        // Main panel opening function - handles all service panels
+        function openPanel(panelType) {
+            if (isAnimating) return; // Prevent overlapping animations
+            
+            // If another panel is open, close it first then open new one
+            if (currentPanel) {
+                closePanel();
+                setTimeout(() => showPanel(panelType), 100); // Small delay for smooth transition
             } else {
-                backgroundStyle = `background: ${cleanBackground};`;
+                showPanel(panelType);
             }
-        } else {
-            backgroundStyle = 'background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%);';
         }
-        
-        let previewTextClass = 'text-white text-[8px] md:text-sm font-normal text-shadow relative z-10';
-        let previewTextStyle = 'text-shadow: 2px 2px 4px rgba(0,0,0,0.8);';
-        
-        if (creation.textStyles) {
-            previewTextStyle = `color: ${creation.textStyles.color || '#ffffff'}; text-shadow: 2px 2px 4px rgba(0,0,0,0.8);`;
-            if (creation.textStyles.fontFamily) previewTextStyle += ` font-family: ${creation.textStyles.fontFamily};`;
-            let fs = parseInt(creation.textStyles.fontSize) || 14;
-            fs = Math.min(fs / 3, 14); // Scale down for preview
-            previewTextStyle += ` font-size: ${fs}px;`;
-            if (creation.textStyles.fontWeight === 'bold') previewTextClass += ' font-bold';
-            if (creation.textStyles.fontStyle === 'italic') previewTextClass += ' italic';
-            if (creation.textStyles.textDecoration === 'underline') previewTextStyle += ' text-decoration: underline;';
-            if (creation.textStyles.letterSpacing) previewTextStyle += ` letter-spacing: ${creation.textStyles.letterSpacing};`;
-            if (creation.textStyles.lineHeight) previewTextStyle += ` line-height: ${creation.textStyles.lineHeight};`;
-            if (creation.textStyles.textAlign) previewTextClass += ` text-${creation.textStyles.textAlign}`;
-        }
-        
-        div.innerHTML = `
-            <div class="${canvasClass}" style="${backgroundStyle}"${backgroundAttr}>
-                <div class="absolute inset-0 bg-black bg-opacity-20"></div>
-                <div class="${previewTextClass}" style="${previewTextStyle}">${creation.quote.length > 60 ? creation.quote.substring(0, 60) + '...' : creation.quote}</div>
-                ${creation.brand ? `<div class="absolute bottom-2 left-2 text-white text-sm opacity-80 z-10" style="text-shadow: 1px 1px 2px rgba(0,0,0,0.8);">${creation.brand}</div>` : ''}
-            </div>
-            <div class="image-hover-overlay">
-                <div class="text-center mb-4">
-                    <p class="text-gray-300 text-[7px] md:text-sm">${new Date(creation.timestamp).toLocaleDateString()}</p>
-                    <span class="inline-block px-1 py-1 md:px-2 md:py-1 bg-purple-600 text-white rounded-full text-[8px] md:text-sm mt-2">
-                        ${creation.type === 'download' ? 'Downloaded' : 'Draft'}
-                    </span>
-                </div>
-                <div class="flex space-x-2">
-                    <button onclick="editCreation(${creation.id})" class="flex items-center justify-center text-center px-2 py-2 md:px-2 md:py-1 bg-blue-600 hover:bg-blue-700 rounded text-[8px] md:text-sm">
-                        <i class="fas fa-edit text-[10px] md:text-sm"></i>
-                    </button>
-                    <button onclick="downloadCreation(${creation.id})" class="flex items-center justify-center text-center px-2 py-2 md:px-2 md:py-1 bg-green-600 hover:bg-green-700 rounded text-[8px] md:text-sm">
-                        <i class="fas fa-download text-[10px] md:text-sm"></i>
-                    </button>
-                    <button onclick="deleteCreation(${creation.id})" class="flex items-center justify-center text-center px-2 py-2 md:px-2 md:py-1 bg-red-600 hover:bg-red-700 rounded text-[8px] md:text-sm">
-                        <i class="fas fa-trash text-[10px] md:text-sm"></i>
-                    </button>
-                </div>
-            </div>
-        `;
-        grid.appendChild(div);
-    });
-    
-    // Lazy load for gallery images
-    const observer = new IntersectionObserver((entries, observer) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                const target = entry.target;
-                target.style.backgroundImage = `url("${target.dataset.src}")`;
-                target.style.backgroundSize = 'cover';
-                target.style.backgroundPosition = 'center';
-                observer.unobserve(target);
-            }
-        });
-    }, { rootMargin: '100px' });
-    
-    grid.querySelectorAll('.lazy-load').forEach(el => observer.observe(el));
-}
 
-function editCreation(id) {
-    const creation = savedCreations.find(c => c.id === id);
-    if (creation) {
-        // Update nav buttons first
-        document.querySelectorAll('.nav-btn').forEach(btn => {
-            btn.className = 'nav-btn w-full flex items-center p-3 rounded-lg hover:bg-tertiary transition-colors';
-        });
-        document.querySelector('[onclick="showPage(\'dashboard\')"]').className = 'nav-btn w-full flex items-center p-3 rounded-lg bg-purple-600 text-white';
+        // Panel display function with beautiful bounce animation
+        function showPanel(panelType) {
+            if (isAnimating) return; // Animation guard
+            isAnimating = true;
+            
+            const overlay = document.querySelector('.panel-overlay');
+            const panel = document.querySelector(`.${panelType}-panel`);
+            
+            currentPanel = panelType; // Update global state
+            
+            // Show backdrop overlay with blur effect
+            overlay.classList.add('active');
+            
+            // Show panel with instant bounce animation (0.15s cubic-bezier)
+            panel.classList.add('active');
+            setTimeout(() => {
+                isAnimating = false; // Release animation lock
+            }, 150); // Match CSS transition duration
+        }
+
+        // Panel closing function with smooth fade-out
+        function closePanel() {
+            if (isAnimating) return; // Animation guard
+            isAnimating = true;
+            
+            const overlay = document.querySelector('.panel-overlay');
+            const activePanel = document.querySelector('.panel.active');
+            
+            // Remove active classes to trigger close animations
+            if (activePanel) {
+                activePanel.classList.remove('active');
+            }
+            
+            overlay.classList.remove('active');
+            
+            // Reset state after animation completes
+            setTimeout(() => {
+                currentPanel = null;
+                isAnimating = false;
+            }, 200); // Slightly longer than CSS transition for safety
+        }
+
+        function selectNetwork(button, network) {
+            const container = button.parentElement;
+            container.querySelectorAll('.network-btn').forEach(btn => {
+                btn.classList.remove('selected');
+            });
+            button.classList.add('selected');
+        }
+
+        function selectAmount(button, amount) {
+            const container = button.parentElement;
+            container.querySelectorAll('.amount-btn').forEach(btn => {
+                btn.classList.remove('selected');
+            });
+            button.classList.add('selected');
+            
+            const panel = button.closest('.panel');
+            const amountInput = panel.querySelector('input[type="number"]');
+            if (amountInput) {
+                amountInput.value = amount;
+                amountInput.classList.add('success');
+                setTimeout(() => amountInput.classList.remove('success'), 300);
+            }
+        }
+
+        function quickAction(type, provider, identifier) {
+            openPanel(type);
+            setTimeout(() => {
+                if (type === 'electricity') {
+                    quickPayElectricity(provider, identifier, 'Quick Pay');
+                } else if (type === 'airtime') {
+                    quickPayAirtime(provider, identifier);
+                } else if (type === 'data') {
+                    quickPayData(provider, identifier, '1GB');
+                }
+            }, 250);
+        }
+
+        function quickPayElectricity(provider, meterNumber, name) {
+            const panel = document.querySelector('.electricity-panel');
+            const dropdown = panel.querySelector('.dropdown-button');
+            dropdown.querySelector('span').textContent = provider;
+            dropdown.setAttribute('data-value', provider);
+            panel.querySelector('input[placeholder="Enter meter number"]').value = meterNumber;
+            
+            setTimeout(() => {
+                panel.querySelector('.form-group').scrollIntoView({ behavior: 'smooth' });
+            }, 50);
+        }
+
+        function quickPayTV(provider, cardNumber, packageName) {
+            const panel = document.querySelector('.tv-panel');
+            const dropdown = panel.querySelector('.dropdown-button');
+            const cardInput = panel.querySelector('input[placeholder="Enter smart card number"]');
+            
+            dropdown.querySelector('span').textContent = provider;
+            dropdown.setAttribute('data-value', provider);
+            cardInput.value = cardNumber;
+            
+            setTimeout(() => {
+                panel.querySelector('.form-group').scrollIntoView({ behavior: 'smooth' });
+            }, 50);
+        }
+
+        function quickPayAirtime(network, phoneNumber) {
+            const panel = document.querySelector('.airtime-panel');
+            const phoneInput = panel.querySelector('input[type="tel"]');
+            
+            phoneInput.value = phoneNumber;
+            
+            panel.querySelectorAll('.network-btn').forEach(btn => {
+                if (btn.textContent.includes(network)) {
+                    selectNetwork(btn, network);
+                }
+            });
+            
+            setTimeout(() => {
+                panel.querySelector('.network-grid').scrollIntoView({ behavior: 'smooth' });
+            }, 50);
+        }
+
+        function quickPayData(network, phoneNumber, dataPlan) {
+            const panel = document.querySelector('.data-panel');
+            const phoneInput = panel.querySelector('input[type="tel"]');
+            
+            phoneInput.value = phoneNumber;
+            
+            panel.querySelectorAll('.network-btn').forEach(btn => {
+                if (btn.textContent.includes(network)) {
+                    selectNetwork(btn, network);
+                }
+            });
+            
+            setTimeout(() => {
+                panel.querySelector('.network-grid').scrollIntoView({ behavior: 'smooth' });
+            }, 50);
+        }
+
+        // Enhanced dropdown functions with icon support
+        function toggleDropdown(button) {
+            const dropdown = button.nextElementSibling;
+            const isActive = dropdown.classList.contains('active');
+            
+            // Close all other dropdowns first
+            document.querySelectorAll('.dropdown-options.active').forEach(d => {
+                if (d !== dropdown) {
+                    d.classList.remove('active');
+                    d.previousElementSibling.classList.remove('active');
+                }
+            });
+            
+            // Toggle current dropdown with smooth animation
+            if (isActive) {
+                dropdown.classList.remove('active');
+                button.classList.remove('active');
+            } else {
+                dropdown.classList.add('active');
+                button.classList.add('active');
+            }
+        }
+
+        function selectOption(option, value, icon = '') {
+            const dropdown = option.parentElement;
+            const button = dropdown.previousElementSibling;
+            const buttonContent = button.querySelector('.dropdown-button-content');
+            
+            // Update button content with icon and text
+            if (buttonContent) {
+                const iconSpan = buttonContent.querySelector('.dropdown-button-icon');
+                const textSpan = buttonContent.querySelector('span:not(.dropdown-button-icon)');
+                
+                if (icon && iconSpan) {
+                    iconSpan.textContent = icon;
+                }
+                
+                // Get the option name (first span in option text)
+                const optionName = option.querySelector('.dropdown-option-name');
+                if (optionName && textSpan) {
+                    textSpan.textContent = optionName.textContent;
+                } else if (textSpan) {
+                    // Fallback for simple text options
+                    textSpan.textContent = option.textContent;
+                }
+            } else {
+                // Fallback for buttons without the new structure
+                const textSpan = button.querySelector('span:not(.dropdown-arrow)');
+                if (textSpan) {
+                    textSpan.textContent = option.textContent;
+                }
+            }
+            
+            // Store the selected value
+            button.setAttribute('data-value', value);
+            
+            // Close dropdown with animation
+            dropdown.classList.remove('active');
+            button.classList.remove('active');
+            
+            // Beautiful success animation
+            button.classList.add('success');
+            setTimeout(() => button.classList.remove('success'), 300);
+        }
+
+        // Transfer method selection
+        function selectTransferMethod(option, method) {
+            const container = option.parentElement;
+            container.querySelectorAll('.transfer-option').forEach(opt => {
+                opt.classList.remove('selected');
+            });
+            option.classList.add('selected');
+            
+            const panel = option.closest('.panel');
+            const powerupForm = panel.querySelector('.powerup-form');
+            const bankForm = panel.querySelector('.bank-form');
+            const amountGroup = panel.querySelector('.transfer-amount-group');
+            const submitBtn = panel.querySelector('.transfer-submit-btn');
+            
+            if (method === 'powerup') {
+                powerupForm.style.display = 'block';
+                bankForm.style.display = 'none';
+            } else {
+                powerupForm.style.display = 'none';
+                bankForm.style.display = 'block';
+            }
+            
+            amountGroup.style.display = 'block';
+            submitBtn.style.display = 'block';
+        }
+
+        // Receipt display function - shows transaction confirmation
+        function showReceipt(service, amount, reference) {
+            // Close current panel first to ensure smooth transition
+            closePanel();
+            
+            // Wait for panel close animation to complete before showing receipt
+            setTimeout(() => {
+                const receiptPanel = document.querySelector('.receipt-panel');
+                
+                // Populate receipt details with transaction information
+                document.getElementById('receipt-service').textContent = service;
+                document.getElementById('receipt-amount').textContent = amount;
+                document.getElementById('receipt-reference').textContent = reference;
+                document.getElementById('receipt-date').textContent = new Date().toLocaleString();
+                document.getElementById('receipt-total').textContent = amount;
+                
+                // Show receipt panel with beautiful bounce animation
+                showPanel('receipt');
+            }, 300); // Delay ensures smooth panel transition
+        }
+
+        // Enhanced form submission handler with beautiful animations
+// Attach transaction handler only to real service submit buttons
+document.querySelectorAll('.submit-btn').forEach(btn => {
+    // ✅ Skip the Done button inside the receipt panel
+    if (btn.closest('.receipt-panel')) return;
+
+    btn.addEventListener('click', function(e) {
+        e.preventDefault(); // Prevent form submission navigation
         
-        // Hide all pages and show dashboard
-        document.querySelectorAll('[id$="Page"]').forEach(p => p.classList.add('hidden'));
-        document.getElementById('dashboardPage').classList.remove('hidden');
-        document.getElementById('dashboardActionBar').classList.remove('hidden');
-        document.querySelector('header h1').textContent = 'Dashboard';
-        currentPage = 'dashboard';
-        
-        // Then populate the editor
+        if (this.disabled) return;
+
+        // Store original button state
+        const originalText = this.textContent;
+        const panel = this.closest('.panel');
+        const panelClass = panel.className.split(' ')[1].replace('-panel', '');
+
+        // Start processing animation
+        this.textContent = 'Processing...';
+        this.disabled = true;
+        this.classList.add('loading'); // Adds shimmer effect
+
+        // Simulate processing
         setTimeout(() => {
-            resetCanvasStyles();
-            document.getElementById('quoteInput').value = creation.quote;
-            document.getElementById('brandInput').value = creation.brand || '';
-            if (creation.background) {
-                setCanvasBackground(creation.background);
-            }
-            updateCanvasText();
-            updateBrandText();
-            if (creation.textStyles) {
-                applyTextStyles(creation.textStyles);
-            }
-            showPopup('Quote loaded for editing!', 'success');
-        }, 200);
-    }
-}
+            // Success state
+            this.textContent = '✓ Success!';
+            this.style.background = '#10b981';
+            this.classList.remove('loading');
+            this.classList.add('success');
 
-function downloadCreation(id) {
-    const creation = savedCreations.find(c => c.id === id);
-    if (creation) {
-        resetCanvasStyles();
-        document.getElementById('quoteInput').value = creation.quote;
-        document.getElementById('brandInput').value = creation.brand || '';
-        setCanvasBackground(creation.background);
-        updateCanvasText();
-        updateBrandText();
-        if (creation.textStyles) {
-            applyTextStyles(creation.textStyles);
-        }
-        
-        setTimeout(() => {
-            downloadImage();
-        }, 500);
-    }
-}
+            // Show receipt after animation
+            setTimeout(() => {
+                closePanel();
 
-function deleteCreation(id) {
-    if (confirm('Are you sure you want to delete this creation?')) {
-        savedCreations = savedCreations.filter(c => c.id !== id);
-        localStorage.setItem('inspireverse_creations', JSON.stringify(savedCreations));
-        updateGalleryView();
-        showPopup('Creation deleted successfully!', 'success');
-    }
-}
+                // Transaction details
+                const amount = panel.querySelector('input[type="number"]')?.value || '1000';
+                const reference = 'TXN' + Math.random().toString(36).substr(2, 9).toUpperCase();
 
-function initializeExplore() {
-    const grid = document.getElementById('exploreGrid');
-    
-    communityQuotes.forEach((item, index) => {
-        const div = document.createElement('div');
-        div.className = 'explore-container relative bg-secondary rounded-lg overflow-hidden aspect-square cursor-pointer';
-        
-        // Use different Unsplash images with specific IDs for consistency
-        const imageIds = [
-            'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1280&h=720&fit=crop&q=85',
-            'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=1280&h=720&fit=crop&q=85',
-            'https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=1280&h=720&fit=crop&q=85',
-            'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1280&h=720&fit=crop&q=85',
-            'https://images.unsplash.com/photo-1518837695005-2083093ee35b?w=1280&h=720&fit=crop&q=85',
-            'https://images.unsplash.com/photo-1501594907352-04cda38ebc29?w=1280&h=720&fit=crop&q=85',
-            'https://images.unsplash.com/photo-1472214103451-9374bd1c798e?w=1280&h=720&fit=crop&q=85',
-            'https://images.unsplash.com/photo-1447752875215-b2761acb3c5d?w=1280&h=720&fit=crop&q=85'
-        ];
-        
-        const backgroundImage = imageIds[index % imageIds.length];
-        
-        div.innerHTML = `
-            <div class="w-full h-full flex items-center justify-center text-center p-4 relative" style="background-image: url(${backgroundImage}); background-size: cover; background-position: center;">
-                <div class="absolute inset-0 bg-black bg-opacity-30"></div>
-                <div class="text-white font-bold relative z-10 px-2" style="text-shadow: 2px 2px 4px rgba(0,0,0,0.8); font-size: 14px; line-height: 1.3;">${item.quote.length > 80 ? item.quote.substring(0, 80) + '...' : item.quote}</div>
-            </div>
-            <div class="explore-hover-overlay">
-                <div class="text-center">
-                    <div class="flex items-center justify-center space-x-2 mb-2">
-                        <div class="w-6 h-6 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center">
-                            <i class="fas fa-user text-white text-xs"></i>
-                        </div>
-                        <div class="text-left">
-                            <p class="text-white font-medium text-xs">${item.author}</p>
-                            <p class="text-gray-300 text-xs">${item.title}</p>
-                        </div>
-                    </div>
-                    <div class="flex items-center justify-center space-x-3 text-xs text-gray-300">
-                        <span><i class="fas fa-download mr-1"></i>${item.downloads.toLocaleString()}</span>
-                        <span><i class="fas fa-heart mr-1"></i>${item.likes.toLocaleString()}</span>
-                    </div>
-                </div>
-                <div class="flex justify-center space-x-1">
-                    <button onclick="likeCommunityQuote(${index})" class="p-2 bg-red-600 hover:bg-red-700 rounded-full text-xs" title="Like">
-                        <i class="fas fa-heart"></i>
-                    </button>
-                    <button onclick="editCommunityQuote('${item.quote.replace(/'/g, "\\'")}', '${backgroundImage}')" class="p-2 bg-blue-600 hover:bg-blue-700 rounded-full text-xs" title="Edit">
-                        <i class="fas fa-edit"></i>
-                    </button>
-                    <button onclick="downloadCommunityQuote('${item.quote.replace(/'/g, "\\'")}', '${backgroundImage}')" class="p-2 bg-green-600 hover:bg-green-700 rounded-full text-xs" title="Download">
-                        <i class="fas fa-download"></i>
-                    </button>
-                </div>
-            </div>
-        `;
-        grid.appendChild(div);
+                // Service name formatting
+                let service = panelClass.charAt(0).toUpperCase() + panelClass.slice(1);
+                if (panelClass === 'topup') service = 'Wallet Top Up';
+                if (panelClass === 'transfer') service = 'Money Transfer';
+
+                // Display receipt
+                showReceipt(service, '₦' + amount, reference);
+
+                // Reset button state
+                setTimeout(() => {
+                    this.textContent = originalText;
+                    this.disabled = false;
+                    this.style.background = '';
+                    this.classList.remove('success');
+                }, 300);
+            }, 600);
+        }, 800);
     });
-}
-
-function editCommunityQuote(quote, backgroundImage) {
-    // Update nav buttons first
-    document.querySelectorAll('.nav-btn').forEach(btn => {
-        btn.className = 'nav-btn w-full flex items-center p-3 rounded-lg hover:bg-tertiary transition-colors';
-    });
-    document.querySelector('[onclick="showPage(\'dashboard\')"]').className = 'nav-btn w-full flex items-center p-3 rounded-lg bg-purple-600 text-white';
-    
-    // Hide all pages and show dashboard
-    document.querySelectorAll('[id$="Page"]').forEach(p => p.classList.add('hidden'));
-    document.getElementById('dashboardPage').classList.remove('hidden');
-    document.getElementById('dashboardActionBar').classList.remove('hidden');
-    document.querySelector('header h1').textContent = 'Dashboard';
-    currentPage = 'dashboard';
-    
-    // Then populate the editor
-    setTimeout(() => {
-        resetCanvasStyles();
-        document.getElementById('quoteInput').value = quote;
-        setCanvasBackground(backgroundImage);
-        updateCanvasText();
-        showPopup('Community quote loaded for editing!', 'success');
-    }, 200);
-}
-
-function downloadCommunityQuote(quote, backgroundImage) {
-    // Set the quote and background in the editor
-    resetCanvasStyles();
-    document.getElementById('quoteInput').value = quote;
-    setCanvasBackground(`url(${backgroundImage})`);
-    updateCanvasText();
-    
-    // Trigger download
-    setTimeout(() => {
-        downloadImage();
-    }, 500);
-    
-    showPopup('Community quote downloaded!', 'success');
-}
-
-function likeCommunityQuote(index) {
-    communityQuotes[index].likes++;
-    showPopup('Quote liked!', 'success');
-    initializeExplore(); // Refresh the explore page
-}
-
-// Mobile tab functionality
-let currentMobileTab = 'editor';
-let currentMobileAIQuote = '';
-
-function showMobileTab(tab) {
-    // Update tab buttons
-    document.querySelectorAll('[id$="Tab"]').forEach(btn => {
-        btn.className = 'flex-1 p-4 text-center hover:bg-tertiary transition-colors border-r border-custom';
-    });
-    
-    // Remove border-r from last tab
-    document.getElementById('aiTab').className = 'flex-1 p-4 text-center hover:bg-tertiary transition-colors';
-    
-    // Set active tab
-    document.getElementById(tab + 'Tab').className = 'flex-1 p-4 text-center bg-purple-600 text-white ' + (tab !== 'ai' ? 'border-r border-custom' : '');
-    
-    // Hide all tab content
-    document.getElementById('mobileEditorTab').classList.add('hidden');
-    document.getElementById('mobileBackgroundsTab').classList.add('hidden');
-    document.getElementById('mobileAITab').classList.add('hidden');
-    
-    // Show selected tab content
-    document.getElementById('mobile' + tab.charAt(0).toUpperCase() + tab.slice(1) + 'Tab').classList.remove('hidden');
-    
-    currentMobileTab = tab;
-}
-
-function applyQuickStyle(style) {
-    const canvasText = document.getElementById('canvasText');
-    const canvasTextDesktop = document.getElementById('canvasTextDesktop');
-    
-    switch(style) {
-        case 'bold':
-            if (canvasText) {
-                canvasText.style.fontWeight = 'bold';
-                canvasText.style.fontFamily = 'Impact';
-            }
-            if (canvasTextDesktop) {
-                canvasTextDesktop.style.fontWeight = 'bold';
-                canvasTextDesktop.style.fontFamily = 'Impact';
-            }
-            setTextColor('#ffffff');
-            break;
-        case 'elegant':
-            if (canvasText) {
-                canvasText.style.fontWeight = 'normal';
-                canvasText.style.fontFamily = 'Georgia';
-                canvasText.style.fontStyle = 'italic';
-            }
-            if (canvasTextDesktop) {
-                canvasTextDesktop.style.fontWeight = 'normal';
-                canvasTextDesktop.style.fontFamily = 'Georgia';
-                canvasTextDesktop.style.fontStyle = 'italic';
-            }
-            setTextColor('#f8fafc');
-            break;
-        case 'modern':
-            if (canvasText) {
-                canvasText.style.fontWeight = '300';
-                canvasText.style.fontFamily = 'Helvetica';
-                canvasText.style.letterSpacing = '2px';
-            }
-            if (canvasTextDesktop) {
-                canvasTextDesktop.style.fontWeight = '300';
-                canvasTextDesktop.style.fontFamily = 'Helvetica';
-                canvasTextDesktop.style.letterSpacing = '2px';
-            }
-            setTextColor('#ffffff');
-            break;
-        case 'classic':
-            if (canvasText) {
-                canvasText.style.fontWeight = 'normal';
-                canvasText.style.fontFamily = 'Times New Roman';
-                canvasText.style.fontStyle = 'normal';
-                canvasText.style.letterSpacing = 'normal';
-            }
-            if (canvasTextDesktop) {
-                canvasTextDesktop.style.fontWeight = 'normal';
-                canvasTextDesktop.style.fontFamily = 'Times New Roman';
-                canvasTextDesktop.style.fontStyle = 'normal';
-                canvasTextDesktop.style.letterSpacing = 'normal';
-            }
-            setTextColor('#f1f5f9');
-            break;
-    }
-    
-    showPopup(`${style.charAt(0).toUpperCase() + style.slice(1)} style applied!`, 'success');
-}
-
-function generateMobileAIQuote() {
-    const mood = document.getElementById('aiMoodSelect').value;
-    const quotes = aiQuotes[mood];
-    currentMobileAIQuote = quotes[Math.floor(Math.random() * quotes.length)];
-    
-    document.getElementById('mobileAIQuoteText').textContent = currentMobileAIQuote;
-    document.getElementById('mobileAIResult').classList.remove('hidden');
-    
-    showPopup('AI quote generated!', 'success');
-}
-
-function useMobileAIQuote() {
-    document.getElementById('quoteInput').value = currentMobileAIQuote;
-    updateCanvasText();
-    showMobileTab('editor');
-    showPopup('Quote applied to canvas!', 'success');
-}
-
-// Handle window resize for responsive sidebar
-window.addEventListener('resize', () => {
-    const sidebar = document.getElementById('sidebar');
-    const mainContent = document.getElementById('mainContent');
-    
-    if (window.innerWidth >= 768) {
-        // Desktop mode
-        sidebar.classList.remove('sidebar-open');
-        mainContent.classList.remove('content-pushed');
-        sidebarOpen = true;
-        sidebar.style.width = sidebarCollapsed ? '80px' : '256px';
-    } else {
-        // Mobile mode - reset to closed state
-        if (sidebarOpen) {
-            sidebar.classList.remove('sidebar-open');
-            mainContent.classList.remove('content-pushed');
-            sidebarOpen = false;
-        }
-    }
 });
 
-// Close dropdowns when clicking outside
-document.addEventListener('click', (e) => {
-    if (!e.target.closest('.custom-dropdown')) {
-        document.getElementById('moodDropdown').classList.remove('open');
-        const moodDropdownMobile = document.getElementById('moodDropdownMobile');
-        if (moodDropdownMobile) moodDropdownMobile.classList.remove('open');
-    }
-    if (!e.target.closest('#aiDropdown') && !e.target.closest('button[onclick="toggleAIDropdown()"]')) {
-        document.getElementById('aiDropdown').classList.remove('open');
-    }
-    if (!e.target.closest('#aiDropdownMobile') && !e.target.closest('button[onclick="toggleAIDropdownMobile()"]')) {  // Add if you have a toggleAIDropdownMobile
-        const aiDropdownMobile = document.getElementById('aiDropdownMobile');
-        if (aiDropdownMobile) aiDropdownMobile.classList.remove('open');
-    }
-});
+// ✅ Handle Done button in receipt separately
+const doneBtn = document.querySelector('.receipt-panel .submit-btn');
+if (doneBtn) {
+    doneBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        closePanel(); // Just close, no reopen
+    });
+}
+
+
+        // Prevent panel close when clicking inside
+        document.querySelectorAll('.panel').forEach(panel => {
+            panel.addEventListener('click', function(e) {
+                e.stopPropagation();
+            });
+        });
+
+        // Escape key handler
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && currentPanel && !isAnimating) {
+                closePanel();
+            }
+        });
+
+        // Touch optimization for mobile
+        if ('ontouchstart' in window) {
+            document.querySelectorAll('.service-btn, .network-btn, .amount-btn, .quick-pay-btn').forEach(btn => {
+                btn.addEventListener('touchstart', function() {
+                    this.style.transform = 'scale(0.95)';
+                });
+                
+                btn.addEventListener('touchend', function() {
+                    setTimeout(() => {
+                        this.style.transform = '';
+                    }, 100);
+                });
+            });
+        }
+
+
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        // Global state
+        let currentFilter = 'all';
+        let servicesExpanded = false;
+        let analyticsExpanded = false;
+
+
+        // Modal functions
+        function openModal(modalId) {
+            const modal = document.getElementById(modalId);
+            modal.classList.add('active');
+        }
+
+        function closeModal(modalId) {
+            const modal = document.getElementById(modalId);
+            modal.classList.remove('active');
+        }
+
+        // Service functions
+        function openService(serviceType) {
+            const modal = document.getElementById('service-modal');
+            const title = document.getElementById('service-title');
+            const content = document.getElementById('service-content');
+            
+            const services = {
+                electricity: {
+                    title: 'Buy Electricity',
+                    content: `
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium mb-2">Select Provider</label>
+                                <select class="w-full p-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800">
+                                    <option>AEDC (Abuja Electricity Distribution Company)</option>
+                                    <option>EKEDC (Eko Electricity Distribution Company)</option>
+                                    <option>IKEDC (Ikeja Electric)</option>
+                                    <option>PHED (Port Harcourt Electricity Distribution)</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium mb-2">Meter Number</label>
+                                <input type="text" placeholder="Enter meter number" class="w-full p-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium mb-2">Amount (₦)</label>
+                                <input type="number" placeholder="Enter amount" class="w-full p-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800">
+                            </div>
+                            <button onclick="processPayment('electricity')" class="w-full btn-primary p-3 rounded-lg font-medium">
+                                Buy Electricity
+                            </button>
+                        </div>
+                    `
+                },
+                airtime: {
+                    title: 'Buy Airtime',
+                    content: `
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium mb-2">Select Network</label>
+                                <div class="grid grid-cols-2 gap-3">
+                                    <button class="p-3 border rounded-lg text-center hover:bg-gray-50 dark:hover:bg-gray-800">
+                                        <div class="w-8 h-8 bg-yellow-500 rounded mx-auto mb-1"></div>
+                                        <span class="text-sm">MTN</span>
+                                    </button>
+                                    <button class="p-3 border rounded-lg text-center hover:bg-gray-50 dark:hover:bg-gray-800">
+                                        <div class="w-8 h-8 bg-green-500 rounded mx-auto mb-1"></div>
+                                        <span class="text-sm">Glo</span>
+                                    </button>
+                                    <button class="p-3 border rounded-lg text-center hover:bg-gray-50 dark:hover:bg-gray-800">
+                                        <div class="w-8 h-8 bg-red-500 rounded mx-auto mb-1"></div>
+                                        <span class="text-sm">Airtel</span>
+                                    </button>
+                                    <button class="p-3 border rounded-lg text-center hover:bg-gray-50 dark:hover:bg-gray-800">
+                                        <div class="w-8 h-8 bg-blue-500 rounded mx-auto mb-1"></div>
+                                        <span class="text-sm">9mobile</span>
+                                    </button>
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium mb-2">Phone Number</label>
+                                <input type="tel" placeholder="Enter phone number" class="w-full p-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium mb-2">Amount (₦)</label>
+                                <div class="grid grid-cols-3 gap-2 mb-3">
+                                    <button class="p-2 border rounded text-sm hover:bg-gray-50 dark:hover:bg-gray-800">₦100</button>
+                                    <button class="p-2 border rounded text-sm hover:bg-gray-50 dark:hover:bg-gray-800">₦200</button>
+                                    <button class="p-2 border rounded text-sm hover:bg-gray-50 dark:hover:bg-gray-800">₦500</button>
+                                    <button class="p-2 border rounded text-sm hover:bg-gray-50 dark:hover:bg-gray-800">₦1000</button>
+                                    <button class="p-2 border rounded text-sm hover:bg-gray-50 dark:hover:bg-gray-800">₦2000</button>
+                                    <button class="p-2 border rounded text-sm hover:bg-gray-50 dark:hover:bg-gray-800">₦5000</button>
+                                </div>
+                                <input type="number" placeholder="Or enter custom amount" class="w-full p-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800">
+                            </div>
+                            <button onclick="processPayment('airtime')" class="w-full btn-primary p-3 rounded-lg font-medium">
+                                Buy Airtime
+                            </button>
+                        </div>
+                    `
+                },
+                data: {
+                    title: 'Buy Data Bundle',
+                    content: `
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium mb-2">Select Network</label>
+                                <select class="w-full p-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800">
+                                    <option>MTN Nigeria</option>
+                                    <option>Glo Nigeria</option>
+                                    <option>Airtel Nigeria</option>
+                                    <option>9mobile Nigeria</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium mb-2">Phone Number</label>
+                                <input type="tel" placeholder="Enter phone number" class="w-full p-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium mb-2">Select Data Plan</label>
+                                <div class="space-y-2">
+                                    <div class="p-3 border rounded-lg cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800">
+                                        <div class="flex justify-between">
+                                            <span>1GB - 30 Days</span>
+                                            <span class="font-bold">₦500</span>
+                                        </div>
+                                    </div>
+                                    <div class="p-3 border rounded-lg cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800">
+                                        <div class="flex justify-between">
+                                            <span>2GB - 30 Days</span>
+                                            <span class="font-bold">₦1,000</span>
+                                        </div>
+                                    </div>
+                                    <div class="p-3 border rounded-lg cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800">
+                                        <div class="flex justify-between">
+                                            <span>5GB - 30 Days</span>
+                                            <span class="font-bold">₦2,500</span>
+                                        </div>
+                                    </div>
+                                    <div class="p-3 border rounded-lg cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800">
+                                        <div class="flex justify-between">
+                                            <span>10GB - 30 Days</span>
+                                            <span class="font-bold">₦5,000</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <button onclick="processPayment('data')" class="w-full btn-primary p-3 rounded-lg font-medium">
+                                Buy Data Bundle
+                            </button>
+                        </div>
+                    `
+                },
+                tv: {
+                    title: 'TV Subscription',
+                    content: `
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium mb-2">Select Provider</label>
+                                <select class="w-full p-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800">
+                                    <option>DStv</option>
+                                    <option>GOtv</option>
+                                    <option>StarTimes</option>
+                                    <option>Netflix</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium mb-2">Smart Card / Account Number</label>
+                                <input type="text" placeholder="Enter smart card number" class="w-full p-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium mb-2">Select Package</label>
+                                <div class="space-y-2">
+                                    <div class="p-3 border rounded-lg cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800">
+                                        <div class="flex justify-between">
+                                            <span>DStv Compact</span>
+                                            <span class="font-bold">₦9,000</span>
+                                        </div>
+                                    </div>
+                                    <div class="p-3 border rounded-lg cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800">
+                                        <div class="flex justify-between">
+                                            <span>DStv Compact Plus</span>
+                                            <span class="font-bold">₦14,250</span>
+                                        </div>
+                                    </div>
+                                    <div class="p-3 border rounded-lg cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800">
+                                        <div class="flex justify-between">
+                                            <span>DStv Premium</span>
+                                            <span class="font-bold">₦21,000</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <button onclick="processPayment('tv')" class="w-full btn-primary p-3 rounded-lg font-medium">
+                                Subscribe Now
+                            </button>
+                        </div>
+                    `
+                }
+            };
+            
+            const service = services[serviceType] || services.electricity;
+            title.textContent = service.title;
+            content.innerHTML = service.content;
+            
+            openModal('service-modal');
+            closeModal('quick-actions-modal');
+        }
+
+        // Top up function
+        function openTopUp() {
+            const modal = document.getElementById('service-modal');
+            const title = document.getElementById('service-title');
+            const content = document.getElementById('service-content');
+            
+            title.textContent = 'Top Up Wallet';
+            content.innerHTML = `
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium mb-2">Select Payment Method</label>
+                        <div class="space-y-2">
+                            <div class="p-3 border rounded-lg cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800 flex items-center gap-3">
+                                <div class="w-8 h-8 bg-blue-500 rounded"></div>
+                                <span>Bank Transfer</span>
+                            </div>
+                            <div class="p-3 border rounded-lg cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800 flex items-center gap-3">
+                                <div class="w-8 h-8 bg-green-500 rounded"></div>
+                                <span>Debit Card</span>
+                            </div>
+                            <div class="p-3 border rounded-lg cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800 flex items-center gap-3">
+                                <div class="w-8 h-8 bg-purple-500 rounded"></div>
+                                <span>USSD</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-2">Amount (₦)</label>
+                        <div class="grid grid-cols-3 gap-2 mb-3">
+                            <button class="p-2 border rounded text-sm hover:bg-gray-50 dark:hover:bg-gray-800">₦1,000</button>
+                            <button class="p-2 border rounded text-sm hover:bg-gray-50 dark:hover:bg-gray-800">₦5,000</button>
+                            <button class="p-2 border rounded text-sm hover:bg-gray-50 dark:hover:bg-gray-800">₦10,000</button>
+                            <button class="p-2 border rounded text-sm hover:bg-gray-50 dark:hover:bg-gray-800">₦20,000</button>
+                            <button class="p-2 border rounded text-sm hover:bg-gray-50 dark:hover:bg-gray-800">₦50,000</button>
+                            <button class="p-2 border rounded text-sm hover:bg-gray-50 dark:hover:bg-gray-800">₦100,000</button>
+                        </div>
+                        <input type="number" placeholder="Or enter custom amount" class="w-full p-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800">
+                    </div>
+                    <button onclick="processPayment('topup')" class="w-full btn-primary p-3 rounded-lg font-medium">
+                        Top Up Wallet
+                    </button>
+                </div>
+            `;
+            
+            openModal('service-modal');
+            closeModal('quick-actions-modal');
+        }
+
+        // Process payment
+        function processPayment(type) {
+            const messages = {
+                electricity: 'Electricity purchase successful!',
+                airtime: 'Airtime top-up successful!',
+                data: 'Data bundle purchase successful!',
+                tv: 'TV subscription successful!',
+                topup: 'Wallet top-up successful!'
+            };
+            
+            showNotification('Payment Successful', messages[type] || 'Payment completed successfully');
+            closeModal('service-modal');
+            
+            // Update balance (simulate)
+            setTimeout(() => {
+                updateBalance();
+            }, 1000);
+        }
+
+        // Update balance
+        function updateBalance() {
+            const balanceElement = document.getElementById('balance-amount');
+            const currentBalance = parseFloat(balanceElement.textContent.replace('₦', '').replace(',', ''));
+            const newBalance = currentBalance + Math.floor(Math.random() * 5000) + 1000;
+            balanceElement.textContent = `₦${newBalance.toLocaleString()}.92`;
+        }
+
+        // Transaction filtering
+        function filterTransactions(type) {
+            currentFilter = type;
+            const transactions = document.querySelectorAll('.transaction-item');
+            const buttons = ['filter-all', 'filter-income', 'filter-expenses'];
+            
+            // Update button styles
+            buttons.forEach(id => {
+                const btn = document.getElementById(id);
+                if (id === `filter-${type}`) {
+                    btn.className = 'btn-primary px-4 py-2 rounded-lg text-sm font-medium';
+                } else {
+                    btn.className = 'btn-secondary px-4 py-2 rounded-lg text-sm';
+                }
+            });
+            
+            // Filter transactions
+            transactions.forEach(transaction => {
+                const transactionType = transaction.getAttribute('data-type');
+                if (type === 'all' || transactionType === type) {
+                    transaction.style.display = 'block';
+                } else {
+                    transaction.style.display = 'none';
+                }
+            });
+            
+            showNotification('Filter Applied', `Showing ${type} transactions`);
+        }
+
+        // Show transaction details
+        function showTransactionDetails(transactionId) {
+            const modal = document.getElementById('transaction-modal');
+            const content = document.getElementById('transaction-content');
+            
+            const transactions = {
+                tx1: {
+                    title: 'AEDC Electricity Purchase',
+                    amount: '-₦5,000',
+                    date: 'Today, 2:30 PM',
+                    status: 'Completed',
+                    reference: 'PWR123456789',
+                    details: 'Meter: 04123456789<br>Units: 45.2 kWh<br>Token: 1234-5678-9012-3456'
+                },
+                tx2: {
+                    title: 'MTN Airtime Purchase',
+                    amount: '-₦2,000',
+                    date: 'Yesterday, 4:15 PM',
+                    status: 'Completed',
+                    reference: 'AIR987654321',
+                    details: 'Phone: +234 803 123 4567<br>Network: MTN Nigeria<br>Bonus: ₦200 extra airtime'
+                }
+            };
+            
+            const transaction = transactions[transactionId] || transactions.tx1;
+            
+            content.innerHTML = `
+                <div class="space-y-4">
+                    <div class="text-center">
+                        <h3 class="text-xl font-bold">${transaction.title}</h3>
+                        <p class="text-3xl font-bold ${transaction.amount.startsWith('-') ? 'text-red-400' : 'text-green-400'} mt-2">${transaction.amount}</p>
+                        <p class="text-sm opacity-60">${transaction.date}</p>
+                    </div>
+                    <div class="border-t pt-4">
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <p class="text-sm opacity-60">Status</p>
+                                <p class="font-semibold text-green-400">${transaction.status}</p>
+                            </div>
+                            <div>
+                                <p class="text-sm opacity-60">Reference</p>
+                                <p class="font-semibold">${transaction.reference}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="border-t pt-4">
+                        <p class="text-sm opacity-60 mb-2">Transaction Details</p>
+                        <div class="text-sm">${transaction.details}</div>
+                    </div>
+                    <div class="flex gap-3">
+                        <button onclick="downloadReceipt('${transactionId}')" class="flex-1 btn-secondary p-3 rounded-lg font-medium">
+                            Download Receipt
+                        </button>
+                        <button onclick="shareTransaction('${transactionId}')" class="flex-1 btn-primary p-3 rounded-lg font-medium">
+                            Share
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            openModal('transaction-modal');
+        }
+
+        // Show account details
+        function showAccountDetails(accountType) {
+            const modal = document.getElementById('account-modal');
+            const content = document.getElementById('account-content');
+            
+            const accounts = {
+                electricity: {
+                    title: 'AEDC Electricity Account',
+                    details: `
+                        <div class="space-y-4">
+                            <div class="text-center">
+                                <div class="w-16 h-16 primary-gradient rounded-full flex items-center justify-center mx-auto mb-4">
+                                    <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+                                    </svg>
+                                </div>
+                                <h3 class="text-xl font-bold">AEDC Electricity</h3>
+                                <p class="text-sm opacity-60">Meter: 04123456789</p>
+                            </div>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div class="text-center p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                                    <p class="text-sm opacity-60">Current Balance</p>
+                                    <p class="font-bold text-lg">₦2,847</p>
+                                </div>
+                                <div class="text-center p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                                    <p class="text-sm opacity-60">This Month Usage</p>
+                                    <p class="font-bold text-lg">156.2 kWh</p>
+                                </div>
+                            </div>
+                            <div class="space-y-2">
+                                <div class="flex justify-between">
+                                    <span class="text-sm">Account Name:</span>
+                                    <span class="text-sm font-semibold">John Doe</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-sm">Tariff Class:</span>
+                                    <span class="text-sm font-semibold">R2 - Residential</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-sm">Last Recharge:</span>
+                                    <span class="text-sm font-semibold">Today, 2:30 PM</span>
+                                </div>
+                            </div>
+                            <div class="flex gap-3">
+                                <button onclick="openService('electricity')" class="flex-1 btn-primary p-3 rounded-lg font-medium">
+                                    Buy Electricity
+                                </button>
+                                <button onclick="viewHistory('electricity')" class="flex-1 btn-secondary p-3 rounded-lg font-medium">
+                                    View History
+                                </button>
+                            </div>
+                        </div>
+                    `
+                }
+            };
+            
+            const account = accounts[accountType] || accounts.electricity;
+            content.innerHTML = account.details;
+            
+            openModal('account-modal');
+        }
+
+        // Toggle services
+        function toggleServices() {
+            const additionalServices = document.getElementById('additional-services');
+            const toggleText = document.getElementById('services-toggle-text');
+            
+            servicesExpanded = !servicesExpanded;
+            
+            if (servicesExpanded) {
+                additionalServices.classList.add('expanded');
+                toggleText.textContent = 'Show Less';
+            } else {
+                additionalServices.classList.remove('expanded');
+                toggleText.textContent = 'View All';
+            }
+        }
+
+        // Show notifications
+        function showNotifications() {
+            showNotification('Notifications', 'You have 3 new notifications');
+        }
+
+        // Show profile
+        function showProfile() {
+            showNotification('Profile', 'Profile settings opened');
+        }
+
+        // Show quick actions
+        function showQuickActions() {
+            openModal('quick-actions-modal');
+        }
+
+        // Show notification
+        function showNotification(title, message) {
+            const notification = document.getElementById('notification');
+            const titleElement = document.getElementById('notification-title');
+            const messageElement = document.getElementById('notification-message');
+            
+            titleElement.textContent = title;
+            messageElement.textContent = message;
+            
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+
+        // Chart interaction
+        function showChartData(month) {
+            const data = {
+                'Jan': '₦18,500',
+                'Feb': '₦22,300',
+                'Mar': '₦19,800',
+                'Apr': '₦21,200',
+                'May': '₦24,847',
+                'Jun': '₦20,100',
+                'Jul': '₦23,400',
+                'Aug': '₦17,900',
+                'Sep': '₦21,600',
+                'Oct': '₦19,300'
+            };
+            
+            showNotification(`${month} Balance`, data[month] || '₦20,000');
+        }
+
+        // Load more transactions
+        function loadMoreTransactions() {
+            showNotification('Loading', 'Loading more transactions...');
+            
+            setTimeout(() => {
+                showNotification('Loaded', 'More transactions loaded successfully');
+            }, 1500);
+        }
+
+        // Additional utility functions
+        function downloadReceipt(transactionId) {
+            showNotification('Download', 'Receipt downloaded successfully');
+            closeModal('transaction-modal');
+        }
+
+        function shareTransaction(transactionId) {
+            showNotification('Share', 'Transaction details shared');
+            closeModal('transaction-modal');
+        }
+
+        function addAccount() {
+            showNotification('Add Account', 'Account addition form opened');
+        }
+
+        function showDetails(type) {
+            showNotification('Details', `Showing ${type} details`);
+        }
+
+        function showCategoryDetails(category) {
+            showNotification('Category', `${category} spending details`);
+        }
+
+        function editBudget(type) {
+            showNotification('Budget', `${type} budget settings opened`);
+        }
+
+        function toggleAnalytics() {
+            const toggle = document.getElementById('analytics-toggle');
+            analyticsExpanded = !analyticsExpanded;
+            
+            if (analyticsExpanded) {
+                toggle.textContent = 'Summary';
+                showNotification('Analytics', 'Detailed analytics view');
+            } else {
+                toggle.textContent = 'Details';
+                showNotification('Analytics', 'Summary analytics view');
+            }
+        }
+
+        function viewHistory(type) {
+            showNotification('History', `${type} transaction history`);
+            closeModal('account-modal');
+        }
+
+        // Initialize app
+        document.addEventListener('DOMContentLoaded', function() {
+            // Animate progress bars on load
+            const progressBars = document.querySelectorAll('.progress-bar');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.width = entry.target.style.width;
+                    }
+                });
+            });
+
+            progressBars.forEach(bar => observer.observe(bar));
+
+            // Add ripple effect to buttons
+            const buttons = document.querySelectorAll('button');
+            buttons.forEach(button => {
+                button.addEventListener('click', function(e) {
+                    const ripple = document.createElement('span');
+                    const rect = this.getBoundingClientRect();
+                    const size = Math.max(rect.width, rect.height);
+                    const x = e.clientX - rect.left - size / 2;
+                    const y = e.clientY - rect.top - size / 2;
+                    
+                    ripple.style.cssText = `
+                        position: absolute;
+                        width: ${size}px;
+                        height: ${size}px;
+                        left: ${x}px;
+                        top: ${y}px;
+                        background: rgba(255, 255, 255, 0.3);
+                        border-radius: 50%;
+                        transform: scale(0);
+                        animation: ripple 0.6s linear;
+                        pointer-events: none;
+                    `;
+                    
+                    this.style.position = 'relative';
+                    this.style.overflow = 'hidden';
+                    this.appendChild(ripple);
+                    
+                    setTimeout(() => ripple.remove(), 600);
+                });
+            });
+
+            // Close modals when clicking outside
+            document.querySelectorAll('.modal').forEach(modal => {
+                modal.addEventListener('click', function(e) {
+                    if (e.target === this) {
+                        this.classList.remove('active');
+                    }
+                });
+            });
+
+            // Show welcome notification
+            setTimeout(() => {
+                showNotification('Welcome! PowerUp is ready to use');
+            }, 1000);
+        });
+
+        // Add ripple animation styles
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes ripple {
+                to {
+                    transform: scale(4);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ // Avatar functionality
+        function changeAvatar() {
+            document.getElementById('avatar-input').click();
+        }
+
+        function handleAvatarChange(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const avatar = document.getElementById('avatar');
+                    avatar.style.backgroundImage = `url(${e.target.result})`;
+                    avatar.style.backgroundSize = 'cover';
+                    avatar.style.backgroundPosition = 'center';
+                    document.getElementById('avatar-text').style.display = 'none';
+                    showNotification('Profile picture updated successfully');
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        // Modal functionality
+        function editProfile() {
+            document.getElementById('edit-modal').classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('edit-modal').classList.remove('active');
+        }
+
+        function changePassword() {
+            document.getElementById('password-modal').classList.add('active');
+        }
+
+        function closePasswordModal() {
+            document.getElementById('password-modal').classList.remove('active');
+        }
+
+        // Form functionality
+        function saveProfile(event) {
+            event.preventDefault();
+            
+            const name = document.getElementById('edit-name').value;
+            const email = document.getElementById('edit-email').value;
+            const phone = document.getElementById('edit-phone').value;
+            const location = document.getElementById('edit-location').value;
+            
+            // Update display fields
+            document.getElementById('profile-name').textContent = name;
+            document.getElementById('display-name').textContent = name;
+            document.getElementById('display-email').textContent = email;
+            document.getElementById('display-phone').textContent = phone;
+            document.getElementById('display-location').textContent = location;
+            
+            // Update avatar initials
+            document.getElementById('avatar-text').textContent = name.split(' ').map(n => n[0]).join('');
+            
+            closeModal();
+            showNotification('Profile updated successfully');
+        }
+
+        function submitPasswordChange(event) {
+            event.preventDefault();
+            closePasswordModal();
+            showNotification('Password changed successfully');
+        }
+
+        // Notification system
+        function showNotification(message) {
+            const notification = document.getElementById('notification');
+            notification.querySelector('div:last-child').textContent = message;
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+
+        // Close modals when clicking outside
+        document.getElementById('edit-modal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModal();
+            }
+        });
+
+        document.getElementById('password-modal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closePasswordModal();
+            }
+        });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ // Font size controls
+        const decreaseFont = document.getElementById('decreaseFont');
+        const increaseFont = document.getElementById('increaseFont');
+        const currentFontSize = document.getElementById('currentFontSize');
+        let fontSize = 16;
+
+        decreaseFont.addEventListener('click', () => {
+            if (fontSize > 12) {
+                fontSize -= 2;
+                updateFontSize();
+            }
+        });
+
+        increaseFont.addEventListener('click', () => {
+            if (fontSize < 18) {
+                fontSize += 2;
+                updateFontSize();
+            }
+        });
+
+        function updateFontSize() {
+            document.documentElement.style.setProperty('--font-size', fontSize + 'px');
+            currentFontSize.textContent = fontSize + 'px';
+            showNotification('Font size updated!');
+        }
+
+        // Toggle switches
+        function setupToggle(toggleId) {
+            const toggle = document.getElementById(toggleId);
+            toggle.addEventListener('click', () => {
+                toggle.classList.toggle('active');
+                showNotification('Setting updated!');
+            });
+        }
+
+        setupToggle('lowBalanceToggle');
+        setupToggle('autoRenewalToggle');
+
+        // Save functions
+        function savePhoneNumber() {
+            const phoneNumber = document.getElementById('phoneNumber').value;
+            if (phoneNumber.trim()) {
+                showNotification('Phone number updated successfully!');
+            } else {
+                showNotification('Please enter a valid phone number!', 'warning');
+            }
+        }
+
+        function saveMeterNumber() {
+            const meterNumber = document.getElementById('meterNumber').value;
+            if (meterNumber.trim()) {
+                showNotification('Meter number updated successfully!');
+            } else {
+                showNotification('Please enter a valid meter number!', 'warning');
+            }
+        }
+
+        function saveIUCNumber() {
+            const iucNumber = document.getElementById('iucNumber').value;
+            if (iucNumber.trim()) {
+                showNotification('IUC number updated successfully!');
+            } else {
+                showNotification('Please enter a valid IUC number!', 'warning');
+            }
+        }
+
+        // Purchase functions
+        function topUpWallet() {
+            const currentBalance = parseFloat(document.getElementById('walletBalance').textContent.replace(',', ''));
+            const newBalance = currentBalance + 5000;
+            document.getElementById('walletBalance').textContent = newBalance.toLocaleString() + '.00';
+            showNotification('Wallet topped up with ₦5,000!');
+        }
+
+        function buyAirtime() {
+            const currentAirtime = parseFloat(document.getElementById('airtimeBalance').textContent.replace(',', ''));
+            const newAirtime = currentAirtime + 1000;
+            document.getElementById('airtimeBalance').textContent = newAirtime.toLocaleString() + '.00';
+            
+            const currentWallet = parseFloat(document.getElementById('walletBalance').textContent.replace(',', ''));
+            const newWallet = currentWallet - 1000;
+            document.getElementById('walletBalance').textContent = newWallet.toLocaleString() + '.00';
+            
+            showNotification('₦1,000 airtime purchased successfully!');
+        }
+
+        function buyData() {
+            const currentData = parseFloat(document.getElementById('dataBalance').textContent);
+            const newData = currentData + 2.0;
+            document.getElementById('dataBalance').textContent = newData.toFixed(1);
+            
+            const currentWallet = parseFloat(document.getElementById('walletBalance').textContent.replace(',', ''));
+            const newWallet = currentWallet - 1500;
+            document.getElementById('walletBalance').textContent = newWallet.toLocaleString() + '.00';
+            
+            showNotification('2GB data bundle purchased successfully!');
+        }
+
+        // Notification system
+        function showNotification(message, type = 'success') {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            
+            if (type === 'warning') {
+                notification.style.background = 'var(--warning)';
+                notification.style.color = 'var(--warning-foreground)';
+            } else {
+                notification.style.background = 'var(--success)';
+                notification.style.color = 'var(--success-foreground)';
+            }
+            
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+
+        // Simulate live data updates
+        function simulateLiveUpdates() {
+            // Simulate electricity usage
+            setInterval(() => {
+                const electricityUnits = document.getElementById('electricityUnits');
+                let currentUnits = parseFloat(electricityUnits.textContent);
+                if (currentUnits > 0) {
+                    currentUnits -= 0.1;
+                    electricityUnits.textContent = currentUnits.toFixed(1);
+                }
+            }, 30000); // Update every 30 seconds
+
+            // Simulate data usage
+            setInterval(() => {
+                const dataBalance = document.getElementById('dataBalance');
+                let currentData = parseFloat(dataBalance.textContent);
+                if (currentData > 0) {
+                    currentData -= 0.01;
+                    dataBalance.textContent = currentData.toFixed(2);
+                }
+            }, 60000); // Update every minute
+        }
+
+        // Initialize live updates
+        simulateLiveUpdates();
+
 
 
 
