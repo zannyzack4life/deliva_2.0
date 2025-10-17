@@ -2579,6 +2579,10 @@ padding: 5px 10px;
 .panel-content {
     padding-bottom: 20%;
 }
+
+.tv-panel, data-panel{
+    padding-bottom: 70%;
+}
     }
 
 
@@ -2601,4 +2605,3 @@ padding: 5px 10px;
     .balancePercentage, .balanceUnit{
         color: var(--card-foreground);
     }
-
