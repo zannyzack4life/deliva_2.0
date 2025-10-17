@@ -2576,9 +2576,9 @@ padding: 5px 10px;
         .panel-title {
     font-size: 1rem;
 }
-/* .panel-content {
-    padding-bottom: 10%;
-} */
+.panel-content {
+    padding-bottom: 20%;
+}
     }
 
 
@@ -2601,3 +2601,4 @@ padding: 5px 10px;
     .balancePercentage, .balanceUnit{
         color: var(--card-foreground);
     }
+
