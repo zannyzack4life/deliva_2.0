@@ -1503,9 +1503,9 @@ padding: 0 15px;
         }
 
         .ac-chat-send{
-            position: fixed;
-            bottom: 7%;
-            width: 60%;
+            position: absolute;
+            bottom: 1%;
+            width: 100%;
             background: var(--color-background);
         }
 
@@ -1515,5 +1515,6 @@ padding: 0 15px;
 
 
         
+
 
 
