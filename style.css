@@ -1479,6 +1479,13 @@ overflow: hidden;
         #search-div{
             background: var(--color-background);
         }
+
+         .ac-chat-send{
+            position: relative;
+            bottom: 0;
+            width: 100%;
+            background: var(--color-background);
+        }
         @media (max-width: 768px){
 
 .textspch{
@@ -1496,9 +1503,9 @@ padding: 0 15px;
         }
 
         .ac-chat-send{
-            position: absolute;
+            position: fixed;
             bottom: 0;
-            width: 100%;
+            width: 60%;
             background: var(--color-background);
         }
 
