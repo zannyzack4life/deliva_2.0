@@ -1495,9 +1495,16 @@ padding: 0 15px;
             padding-left: 0;
         }
 
+        .ac-chat-send{
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            background: var(--color-background);
+        }
+
         }
 
 
 
 
-        slide-headline
+        
