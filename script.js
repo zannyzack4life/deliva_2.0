@@ -3674,3 +3674,26 @@ window.addEventListener('beforeunload', () => {
 
 // Initialize state on load
 setTranscriptionStatus("Ready.");
+
+
+
+
+
+document.addEventListener('DOMContentLoaded', function() {
+    const inputField = document.getElementById('ac-input-textarea');
+
+    // Only apply this fix on mobile devices (or small screens) if necessary
+    // A simple way to check:
+    if (/Mobi|Android/i.test(navigator.userAgent) || window.innerWidth < 768) {
+        inputField.addEventListener('focus', function() {
+            // Wait a moment (e.g., 300ms) for the keyboard to fully render
+            setTimeout(() => {
+                // Scroll the input into view, aligning it to the bottom of the screen
+                this.scrollIntoView({ 
+                    behavior: 'smooth', 
+                    block: 'end' 
+                });
+            }, 300); 
+        });
+    }
+});
