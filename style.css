@@ -27,6 +27,7 @@ html {
 /* FULL SCREEN DESKTOP LAYOUT */
 body {
     background-color: var(--color-background);
+    height: 100vh;
     font-family: 'Rajdhani', sans-serif;
     margin: 0;
     padding: 0;
@@ -1499,3 +1500,4 @@ padding: 0 15px;
 
 
 
+        slide-headline
