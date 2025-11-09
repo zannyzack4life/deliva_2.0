@@ -1503,18 +1503,19 @@ padding: 0 15px;
         }
 
         .ac-chat-send{
-            position: absolute;
-            bottom: 1%;
-            width: 100%;
+            position: fixed;
+            bottom: 0;
+            width: 60%;
             background: var(--color-background);
         }
 
+        #ac-messages{
+            max-height: 75vh;
+            overflow: scroll;
         }
 
+        }
 
-
-
-        
 
 
 
