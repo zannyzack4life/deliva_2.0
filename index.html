@@ -1,1815 +1,258 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>Coggito Dashboard</title>
-    <!-- Load Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Load Lucide Icons for aesthetic vectors -->
-   <link
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
-    rel="stylesheet"
-    />
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <script src="https://unpkg.com/lucide@latest"></script>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,200,0,200&icon_names=graphic_eq" />
-<link rel="stylesheet" href="style.css">
-    <script type="module">
-        import {
-            Home,
-            Settings,
-            Banknote,
-            Lightbulb,
-            Brain,
-            CheckCircle,
-            FileText,
-            Monitor,
-            Wifi,
-            ChevronDown,
-            Folder,
-            ArrowUp,
-            PanelLeft // Added for sidebar toggle
-        } from 'https://unpkg.com/lucide@latest/dist/esm/lucide.js';
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jarvis - Elite Frontend Developer Portfolio</title>
+  <script src="/_sdk/element_sdk.js"></script>
+  <style>@view-transition { navigation: auto; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+  <script src="https://cdn.tailwindcss.com" type="text/javascript"></script>
+  <link rel="stylesheet" href="style.css">
 
-        // Helper function to inject icons
-        function injectIcon(selector, IconComponent) {
-            const elements = document.querySelectorAll(selector);
-            elements.forEach(el => {
-                const icon = IconComponent({ class: el.className });
-                el.innerHTML = icon.outerHTML;
-            });
-        }
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
-  
-    </script>
-    <script>
-        // Custom Tailwind Config & Inter Font
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        // Darker palette for a moody, full-screen look
-                        'dark-bg': '#121212', // Body background
-                        'sidebar-bg': '#1e1e1e', // Sidebar background
-                        'dark-card': '#242424', // Card background
-                        'accent-blue': '#3b82f6',
-                        'accent-yellow': '#f59e0b',
-                    },
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                    },
-                },
-            }
-        }
-    </script>
-
-        <!-- Load Three.js (for the 3D Orb) --><script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-
-</head>
-<body class="lg:flex">
-
-    <div class="dashboard-container bg-dark-bg text-white lg:overflow-hidden">
-        
-        <!-- 1. LEFT SIDEBAR (Desktop) -->
-       <div id="desktop-sidebar" class="hidden lg:flex flex-col justify-between w-64 p-4 border-r border-gray-500 shrink-0 bg-[#121212] transition-all duration-300">
-            <div class="flex flex-col">
-                <div class="flex items-center justify-between h-16 py-2">
-                    <div id="sidebar-logo" class="text-white text-xl font-bold px-1 flex items-center overflow-hidden transition-all duration-300">
-                        <i class="fa-brands fa-slack fa-spin text-2xl text-orange-500 mr-2"></i> <span id="sidebar-logo-text" class="whitespace-nowrap">
-                            <span class="text-2xl text-orange-500">C</span>oggito
-                        </span>
-                    </div>
-                    <button id="sidebar-toggle" class="p-2 w-8 h-8 text-gray-400 hover:text-white transition-colors duration-200 rounded-full hover:bg-gray-800 flex items-center justify-center">
-                    <i class="fa-solid fa-arrows-left-right-to-line"></i>
-                    </button>
-                </div>
-
-            <nav class="mt-4 space-y-2">
-                <button class="nav-btn active-nav flex items-center w-full h-10 px-3 bg-gray-800 rounded-xl text-orange-500 shadow-lg relative group transition-colors duration-200" data-route="home">
-                    <i class="fas fa-home w-5 h-5 mr-3 shrink-0"></i>
-                    <span class="nav-link-text text-sm font-semibold whitespace-nowrap">Home</span>
-                    <div class="absolute right-0 top-1/2 -translate-y-1/2 w-1 bg-orange-500 h-6 rounded-l-lg"></div>
-                </button>
-                <button class="nav-btn flex items-center w-full h-10 px-3 text-gray-400 hover:bg-gray-800 hover:text-white rounded-xl transition-colors duration-200" data-route="banking">
-                    <i class="fas fa-university w-5 h-5 mr-3 shrink-0"></i>
-                    <span class="nav-link-text text-sm font-medium whitespace-nowrap">Banking</span>
-                </button>
-                <button class="nav-btn flex items-center w-full h-10 px-3 text-gray-400 hover:bg-gray-800 hover:text-white rounded-xl transition-colors duration-200" data-route="aichat">
-                    <i class="fas fa-robot w-5 h-5 mr-3 shrink-0"></i>
-                    <span class="nav-link-text text-sm font-medium whitespace-nowrap">Coggito AI</span>
-                </button>
-                <button class="nav-btn flex items-center w-full h-10 px-3 text-gray-400 hover:bg-gray-800 hover:text-white rounded-xl transition-colors duration-200" data-route="utilities">
-                    <i class="fas fa-tools w-5 h-5 mr-3 shrink-0"></i>
-                    <span class="nav-link-text text-sm font-medium whitespace-nowrap">Utilities</span>
-                </button>
-            </nav>
-
-            </div>
-            
-            <div class="pt-4 border-t border-gray-500">
-                <button class="flex items-center w-full h-10 px-3 text-gray-400 hover:bg-gray-800 hover:text-white rounded-xl transition-colors duration-200">
-                    <i class="fas fa-cog w-5 h-5 mr-3 shrink-0"></i>
-                    <span class="nav-link-text text-sm font-medium whitespace-nowrap">Settings</span>
-                </button>
-            </div>
+ </head>
+ <body>
+    <div id="preloader" class="fixed inset-0 z-[100] flex items-center justify-center bg-[#111827] transition-opacity duration-700 opacity-100">
+    <div class="loader-spinner"></div>
+    </div>
+  <div class="app-container"><!-- Mobile Sidebar -->
+   <div class="mobile-sidebar" id="mobileSidebar">
+    <div class="sidebar-header">
+     <div class="sidebar-logo">
+      JERRY
+     </div><button class="sidebar-close" id="sidebarClose"><i class="fa-regular fa-circle-right"></i></button>
+    </div>
+    <nav class="sidebar-nav">
+        <a href="#" class="sidebar-nav-item active" data-page="home"><i class="fa-solid fa-house-chimney-crack"></i> Home</a> 
+        <a href="#" class="sidebar-nav-item" data-page="about"><i class="fa-solid fa-user-tie"></i> About</a> 
+        <a href="#" class="sidebar-nav-item" data-page="gallery"><i class="fa-solid fa-clipboard-check"></i> Portfolio</a> 
+        <a href="#" class="sidebar-nav-item" data-page="contact"><i class="fa-solid fa-id-card"></i> Contact</a>
+    </nav>
+   </div><!-- Sidebar Overlay -->
+   <div class="sidebar-overlay" id="sidebarOverlay"></div>
+   <!-- Desktop Navigation -->
+   <nav class="navbar" id="navbar">
+    <div class="nav-container">
+     <div class="logo" data-page="home">
+      JERRY
+     </div>
+     <ul class="nav-links">
+      <li><a href="#" class="nav-link active" data-page="home">Home</a></li>
+      <li><a href="#" class="nav-link" data-page="about">About</a></li>
+      <li><a href="#" class="nav-link" data-page="gallery">Portfolio</a></li>
+      <li><a href="#" class="nav-link" data-page="contact">Contact</a></li>
+      <li><a href="#" class="nav-cta" data-page="contact">Hire Me</a></li>
+     </ul><button class="mobile-menu-btn" id="mobileMenuBtn"><i class="fa-regular fa-circle-left"></i></button>
+    </div>
+   </nav><!-- Main Content -->
+   <main class="main-content" id="mainContent">
+    <!-- Home Page -->
+    <div class="page active" id="home">
+     <div class="page-content">
+      <div class="hero-section">
+       <div class="hero-content">
+        <div class="animate-slide-left" style="font-size: 1.1rem; color: #00d4ff; margin-bottom: 1rem;">
+         <i class="fa-solid fa-hand-peace fa-shake" style="color: #FFD43B;"></i> Hi there! I'm
         </div>
-
-        <!-- 2. MAIN CONTENT AREA -->
-        <!-- Changed back to lg:ml-0 as requested. JS will dynamically apply the correct margin on load. -->
-        <div id="main-content-area" class="flex-1 p-0 lg:ml-0 overflow-y-auto  relative">
-
-         <section id="content-home" class="page-content-section transition-opacity duration-300">
-            
-            <div class="side-rad lg:block"></div>
-            <div class="side-radb lg:block"></div>            
-
-            <!-- GRADIENT HEADER CARD -->
-            <div class="deskhead group 
-            /* Base Styles & Sticky Position */
-            bg-gradient-to-br from-white to-white overflow-hidden shadow-lg subtle-pattern
-            sticky top-0 z-10 
-            
-            transition-all duration-300 ease-in-out
-            
-            /* Styles when scrolled */
-            data-[scrolled=true]:mb-0 
-            data-[scrolled=true]:shadow-xl 
-            data-[scrolled=true]:p-8 pb-4 lg:data-[scrolled=true]:p-5">
-    
-                <div class="geometric-accent"></div>
-                <div class="geometric-accentb"></div>
-                
-                <div class="minimal-line"></div>
-                
-                <div class="flex flex-col">
-                    <div class="flex justify-between items-start">
-                        <div>
-                            <p class="text-sm text-black/70 font-medium">Welcome back,</p>
-                            <h2 class="text-3xl text-black/70 lg:text-4xl font-bold
-                                    transition-all duration-300 ease-in-out
-                                    group-data-[scrolled=true]:text-xl 
-                                    group-data-[scrolled=true]:lg:text-2xl">
-                                Jeremiah
-                            </h2>
-                        </div>
-                        <button class="nav-btn w-24 h-24 bg-gray-700 rounded-full border-2 border-white/50 overflow-hidden shrink-0 z-10
-                                    transition-all duration-300 ease-in-out
-                                    group-data-[scrolled=true]:w-16 
-                                    group-data-[scrolled=true]:h-16" data-route="profile">
-                            <img src="https://placehold.co/56x56/000000/FFFFFF?text=J" alt="User Avatar" class="w-full h-full object-cover">
-                        </button>
-                    </div>
-
-                    <div class="flex justify-between items-end
-                                transition-all duration-300 ease-in-out">
-                        <div>
-                            <p class="text-sm text-black/70 font-medium
-                                    transition-opacity duration-300 ease-in-out
-                                    group-data-[scrolled=true]:opacity-1 
-                                    group-data-[scrolled=true]:overflow-hidden">
-                                Account Overview
-                            </p>
-                            <h1 id="current-balance" 
-                                class="text-4xl text-black/70 lg:text-5xl font-extrabold -mt-1
-                                    transition-all duration-300 ease-in-out
-                                    /* Reduced size when scrolled */
-                                    group-data-[scrolled=true]:text-xl 
-                                    group-data-[scrolled=true]:lg:text-3xl 
-                                    /* Ensure it shrinks smoothly */
-                                    group-data-[scrolled=true]:-mt-0">
-                                ₦350,000.<span class="text-2xl 
-                                                    transition-all duration-300 ease-in-out
-                                                    group-data-[scrolled=true]:text-sm">50</span>
-                            </h1> 
-                        </div>
-                        <div class="hidden lg:block">
-                            </div>
-                    </div>
-
-                    <div class="flex justify-between items-center mt-4 border-t border-black/10 pt-3
-                                transition-all duration-300 ease-in-out 
-                                group-data-[scrolled=true]:hidden group-data-[scrolled=true]:pt-0 group-data-[scrolled=true]:mt-2">
-                        <div class="flex items-center text-sm font-medium text-black/70">
-                            <span class="icon-synced w-4 h-4 mr-1 text-green-700 fill-green-700"></span>
-                            Synced: Just now
-                        </div>
-                        <button class="flex items-center text-sm font-medium text-black/70 hover:text-black">
-                            Transfer Statements
-                            <span class="icon-transfer w-4 h-4 ml-1"></span>
-                        </button>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- MAIN CARD LAYOUT (Desktop Grid / Mobile Stack) -->
-            <div id="content-body" class="contbdy transition-all duration-300 ease-in-out">
-                <div class="grid lg:grid-cols-3 gap-6 mobbdy">
-                    
-                    <!-- LEFT COLUMN (Account Details & Quick Actions) -->
-                    <div class="lg:col-span-1 space-y-2">
-                        
-                        <!-- Account Holder Detail Card -->
-                        <div id="accountCard" 
-                            class="w-full bg-gray-800 p-4 rounded-xl shadow-2xl cursor-pointer"
-                            onclick="toggleExpansion()">
-                            
-                            <div class="flex items-center space-x-3">
-                                <div class="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center text-xl font-bold shrink-0 text-white">M</div>
-                                
-                                <div class="flex-1">
-                                    <p class="text-white text-xs md:text-sm font-semibold flex items-center">
-                                        JEREMIAH CHUKWUDUBEM...
-                                        <span id="expandIcon" class="icon-chevron-down w-3 h-3 ml-1 text-gray-500 transform transition-transform duration-300"></span>
-                                    </p>
-                                    <p class="text-gray-400 text-xs">9018654747</p>
-                                </div>
-                                
-                                <button class="text-gray-400 hover:text-white shrink-0">
-                                    <i class="fa-solid fa-folder-open"></i>
-                                </button>
-                            </div>
-
-                            <div id="detailPanel" 
-                                class="overflow-hidden max-h-0 transition-all duration-500 ease-in-out">
-                                
-                                <hr class="mt-4 mb-3 border-gray-700">
-                                
-                                <div class="space-y-2">
-                                    <p class="text-gray-300 text-xs">Account Name</p>
-                                    <p class="text-white text-base font-bold">
-                                        JEREMIAH CHUKWUDUBEM ONYEKACHI
-                                    </p>
-                                    <p class="text-gray-300 text-xs">Account Number</p>
-                                    <p class="text-white text-base font-bold">
-                                        9018654747
-                                    </p>
-                                    
-                                    <p class="text-gray-300 text-xs pt-2">Current Balance</p>
-                                    <p class="text-orange-400 text-2xl font-extrabold">
-                                        ₦350,000.50
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Quick Actions -->
-                        <div>
-                            <h3 class="text-sm md:text-lg font-semibold mb-3 text-gray-300">Quick Actions</h3>
-                            <div class="grid grid-cols-3 gap-3 " style="justify-items: center;">
-                                <!-- Banking -->
-                                <button class="nav-btn quick-action-btn bg-dark-card justify-center w-full p-2 md:p-4 md:w-full rounded-xl flex flex-col items-center space-y-2 hover:bg-gray-700 shadow-md" data-route="banking">
-                                    <div class="w-8 h-8 md:w-10 md:h-10 bg-accent-blue rounded-lg items-center justify-center !flex">
-                                        <i class="fa-solid fa-money-bill-transfer text-white"></i>
-                                    </div>
-                                    <span class="text-xs font-medium">Banking</span>
-                                </button>
-                                <!-- AI -->
-                                <button class="nav-btn quick-action-btn bg-dark-card justify-center w-full p-2 md:p-4 md:w-full rounded-xl flex flex-col items-center space-y-2 hover:bg-gray-700 shadow-md" data-route="aichat">
-                                    <div class="w-8 h-8 md:w-10 md:h-10 bg-accent-yellow rounded-lg flex items-center justify-center !flex">
-                                        <i class="fa-brands fa-slack fa-spin text-white"></i>
-                                    </div>
-                                    <span class="text-xs font-medium">AI</span>
-                                </button>
-                                <!-- Utility -->
-                                <button class="nav-btn quick-action-btn bg-dark-card justify-center w-full p-2 md:p-4 md:w-full rounded-xl flex flex-col items-center space-y-2 hover:bg-gray-700 shadow-md" data-route="utilities">
-                                    <div class="w-8 h-8 md:w-10 md:h-10 bg-dark-card border border-gray-700 rounded-lg !flex items-center justify-center">
-                                        <i class="fa-solid fa-money-bill-trend-up"></i>
-                                    </div>
-                                    <span class="text-xs font-medium">Utility</span>
-                                </button>
-                            </div>
-                        </div>
-                        
-                        <!-- System Status -->
-                        <div>
-                            <h3 class="text-sm md:text-lg font-semibold mb-3 text-gray-300">System Status</h3>
-                            <div class="grid grid-cols-2 gap-3">
-                                <!-- Device Status -->
-                                <div class="bg-dark-card p-4 rounded-xl space-y-1 shadow-md flex justify-between">
-                                    <div>
-                                        <p class="text-white text-sm font-medium">Device (HBD)</p>
-                                        <p class="text-gray-400 text-xs">Connected: V1 2.0</p>
-                                    </div>
-                                    <i class="fa-regular fa-hard-drive"></i>
-                                </div>
-                                <!-- App State -->
-                                <div class="bg-dark-card p-4 rounded-xl space-y-1 shadow-md flex justify-between">
-                                    <div>
-                                        <p class="text-white text-sm font-medium">App state</p>
-                                        <p class="text-green-500 text-xs font-bold">ONLINE MODE</p>
-                                    </div>
-                                    <i class="fa-solid fa-wifi"></i>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- System Activity (Placeholder section) -->
-                        <div class="hidden lg:block">
-                            <h3 class="text-sm md:text-lg font-semibold mb-3 text-gray-300">System Activity</h3>
-                            <div class="bg-dark-card p-4 rounded-xl h-32">
-                                <p class="text-sm text-gray-400">No critical alerts.</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- RIGHT COLUMN (Recent Activity) - Desktop span 2 / Mobile span 3 -->
-                    <div class="lg:col-span-2">
-                    <div class="carousel-container">
-                        <div class="carousel-track" id="promo-track">
-                            
-                            <div class="promo-slide" style="background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.6)), url('placeholder-travel.jpg'); background-color: #2196f3;">
-                                <p class="slide-headline">Travel Card: 0% APR for 1 Year!</p>
-                                <p class="slide-subtext">Unlock exclusive travel rewards and lounge access.</p>
-                                <a href="#" class="cta-button">Apply Now</a>
-                            </div>
-
-                            <div class="promo-slide" style="background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.6)), url('placeholder-home.jpg'); background-color: #4caf50;">
-                                <p class="slide-headline">Home Loan Special: 6.1% Rate</p>
-                                <p class="slide-subtext">Low rates for your dream home purchase or refinance.</p>
-                                <a href="#" class="cta-button">Check Eligibility</a>
-                            </div>
-
-                            <div class="promo-slide" style="background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.6)), url('placeholder-savings.jpg'); background-color: #ff9800;">
-                                <p class="slide-headline">AI Savings: Earn 5.25% APY!</p>
-                                <p class="slide-subtext">Intelligent savings that grow your money faster.</p>
-                                <a href="#" class="cta-button">Open Account</a>
-                            </div>
-
-                        </div>
-                    </div>
-                    <div class="carousel-indicators" id="indicators">
-                    </div>
-
-                        <div class="flex justify-between">
-                            <h3 class="text-md md:text-sm md:text-lg font-semibold mb-3 text-gray-300">Recent Activity</h3>
-                             <button><h3 class="nav-btn hover:bg-transparent text-md md:text-sm md:text-lg font-semibold mb-3 text-gray-300" data-route="recentactivities">View all</h3></button>
-                        </div>
-                        
-                        <div class="bg-dark-card p-4 rounded-xl space-y-1 ">
-                            <!-- Activity List Items -->
-                            
-                        <div id="recent-activity" class="space-y-3 rcptdet"><!-- Recent transactions will be populated here -->
-                        </div>
-                        </div>
-
-
-                    </div>
-                </div>
-
-                <!-- Mobile Bottom Spacer to prevent content being hidden by fixed nav -->
-                <div class="h-28 lg:hidden"></div>
-            </div> 
-
-                    <!-- 3. BOTTOM NAVIGATION BAR (Mobile Only) - Significantly improved -->
-        <div id="mobileFooter" class=" mobfot lg:hidden fixed bottom-0 left-0 right-0  flex justify-around items-start  z-[110] ">
-          <div class="fotmob bg-dark-card flex items-center justify-center gap-[25px]">
-              <!-- Home -->
-            <button class="flex flex-col items-center text-xs space-y-1 text-orange-500 justify-center">
-                <i class="fa-solid fa-house-chimney-crack"></i>
-                <span class="font-medium text-sm">Home</span>
-            </button> 
-            <!-- Banking -->
-            <button class="nav-btn flex flex-col items-center text-xs space-y-1 text-white justify-center" data-route="banking">
-                <i class="fa-solid fa-money-bill-transfer text-white"></i>
-                <span class="font-medium text-sm">Banking</span>
-            </button>       
-            <!-- Floating Center Button (The big orange one) - Z-INDEX ADDED HERE -->
-            <div class=" z-[51]">
-                <div id="aiButtonContainer" class="relative flex items-center justify-center -top-6 flex-col cenai">
-                    <div id="aiButton" 
-                        class="aiicon bg-gradient-to-t from-orange-600 to-yellow-400 rounded-full shadow-2xl shadow-orange-600/50 flex items-center justify-center cursor-pointer"
-                        onclick="toggleAIModal()">
-                        <!-- Initial Icon: Spinning Slack/AI Logo -->
-                        <i id="aiIcon" class="fa-brands fa-slack fa-spin text-white text-2xl"></i>
-                    </div>
-                    <span class="font-medium text-xs text-white">AI</span>
-                </div>
-            </div>
-              <!-- Utility -->
-            <button class="nav-btn flex flex-col items-center text-xs space-y-1 text-white justify-center"  data-route="utilities">
-                <i class="fas fa-tools w-5 h-5 shrink-0"></i>
-                <span class="font-medium text-xs">Utility</span>
-            </button>
-              <!-- Settings -->
-            <button class="nav-btn flex flex-col items-center text-xs space-y-1 text-white justify-center"  data-route="settings">
-                <i class="fas fa-cog w-5 h-5 "></i>
-                <span class="font-medium text-xs">Settings</span>
-            </button>
+        <h1 id="heroName" class="typewriter animate-slide-left stagger-1">Onyekachi Jeremiah</h1>
+        <h2 id="heroTitle" class="animate-slide-left stagger-2">Frontend Developer &amp; UI Implementation Specialist</h2>
+        <p class="hero-tagline animate-slide-left stagger-3" id="heroTagline">I turn ideas into clean, responsive, high-performing interfaces — basically, I make the internet look good.</p>
+        <p class="hero-punchline animate-slide-left stagger-4" id="heroPunchline">Frontend dev by day, bug exterminator by night.</p>
+        <div class="hero-stats animate-scale stagger-5">
+         <div class="stat-item animate-on-scroll stagger-1"><span class="stat-number">50+</span> <span class="stat-label">Projects Delivered</span>
+         </div>
+         <div class="stat-item animate-on-scroll stagger-2"><span class="stat-number">3+</span> <span class="stat-label">Years Experience</span>
+         </div>
+         <div class="stat-item animate-on-scroll stagger-3"><span class="stat-number">100%</span> <span class="stat-label">Client Satisfaction</span>
+         </div>
+        </div>
+        <div class="cta-buttons animate-slide-left stagger-6">
+            <a href="#" class="btn btn-primary animate-scale stagger-1" data-page="gallery">View My Work</a> 
+            <a href="#" class="btn btn-secondary animate-scale stagger-2" data-page="contact">Get In Touch</a>
+        </div>
+        <div class="availability-badge animate-scale stagger-3 mt-4">
+          <div class="availability-dot"></div> Available for hire
+         </div>
+       </div>
+       <div class="hero-visual">
+        <div class="code-visual animate-slide-right" style="animation: float 4s ease-in-out infinite;">
+         <div class="code-header">
+          <div class="code-dot red"></div>
+          <div class="code-dot yellow"></div>
+          <div class="code-dot green"></div>
+          <div class="code-title">
+           Jeremiah-portfolio.js
           </div>
-
+         </div>
+         <div class="code-lines">
+          <div class="code-line animate-on-scroll stagger-1" data-line="1">
+           <span class="operator">&lt;</span><span class="keyword">div</span> <span class="property">class</span><span class="operator">=</span><span class="string">"hero-section"</span><span class="operator">&gt;</span>
+          </div>
+          <div class="code-line animate-on-scroll stagger-2" data-line="2"><span class="operator">&lt;</span><span class="keyword">h1</span> <span class="property">class</span><span class="operator">=</span><span class="string">"gradient-text"</span><span class="operator">&gt;</span>
+          </div>
+          <div class="code-line animate-on-scroll stagger-3" data-line="3"><span class="string">Frontend Developer</span>
+          </div>
+          <div class="code-line animate-on-scroll stagger-4" data-line="4"><span class="operator">&lt;/</span><span class="keyword">h1</span><span class="operator">&gt;</span>
+          </div>
+          <div class="code-line animate-on-scroll stagger-5" data-line="5">
+           <span class="operator">&lt;/</span><span class="keyword">div</span><span class="operator">&gt;</span>
+          </div>
+          <div class="code-line animate-on-scroll stagger-6" data-line="6"></div>
+          <div class="code-line animate-on-scroll stagger-1" data-line="7">
+           <span class="property">.gradient-text</span> <span class="bracket">{</span>
+          </div>
+          <div class="code-line animate-on-scroll stagger-2" data-line="8"><span class="property">background</span><span class="operator">:</span> <span class="function">linear-gradient</span><span class="bracket">(</span><span class="string">45deg, #00d4ff, #ff6b6b</span><span class="bracket">)</span><span class="operator">;</span>
+          </div>
+          <div class="code-line animate-on-scroll stagger-3" data-line="9"><span class="property">-webkit-background-clip</span><span class="operator">:</span> <span class="string">text</span><span class="operator">;</span>
+          </div>
+          <div class="code-line animate-on-scroll stagger-4" data-line="10">
+           <span class="bracket">}</span> <span class="comment">/* Beautiful gradients! */</span>
+          </div>
+         </div>
         </div>
-         </section>
-
-
-        <section id="content-banking" class="page-content-section hidden transition-opacity duration-300 min-h-full">
-              <div id="initial-loading" class="fixed inset-0 bg-white flex items-center justify-center z-50">
-                <div class="text-center">
-                    <div class="w-12 h-12 border-4 border-gray-200 border-t-yellow-500 rounded-full animate-spin mx-auto mb-4"></div>
-                    <p class="text-gray-600 font-medium">Loading SecureTransfer...</p>
-                </div>
-                </div><!-- Main App Container -->
-                <div id="app-container" class="grid-layout min-h-screen" style="display: none;"><!-- Left Panel -->
-                <div class="left-panel text-white p-6">
-                    <div class="mb-8">
-                    <h1 id="app-title" class="text-2xl font-bold mb-2">SecureTransfer</h1>
-                    <p class="text-gray-300 text-sm">Fast &amp; Secure Banking</p>
-                    </div>
-                    <div class="bg-white/10 rounded-lg p-4 mb-6">
-                    <p class="text-gray-300 text-sm mb-1">Account Balance</p>
-                    <p class="text-2xl font-bold">₦350,000.00</p>
-                    <p class="text-gray-300 text-xs mt-1">Available Balance</p>
-                    </div>
-                    <div class="space-y-3">
-                    <div class="flex items-center space-x-3 p-3 rounded-lg bg-white/5">
-                    <div class="w-8 h-8 rounded-full flex items-center justify-center" style="background-color: var(--accent-yellow);"><span class="text-xs font-bold" style="color: var(--primary-navy);">₦</span>
-                    </div>
-                    <div>
-                    <p class="font-medium text-sm">Transfer Money</p>
-                    <p class="text-gray-400 text-xs">Send to any bank</p>
-                    </div>
-                    </div>
-                    </div>
-                </div>
-                <!-- Main Panel -->
-                <div class="main-panel ">
-                    <div id="main-content" class="p-6 max-w-2xl mx-auto"><!-- Bank Selection View -->
-                        <button class="backbtn nav-btn" data-route="home"><i class="fa-regular fa-circle-left"></i></button>
-                    <div id="bank-selection-view" class="max-w-5xl view-container">
-                    <div class="mb-4 md:mb-6 text-center">
-                    <h2 class="text-4xl font-bold bg-gradient-to-r from-white to-gray-700 bg-clip-text text-transparent mb-4">Send Money</h2>
-                     <div class="bg-white/10 rounded-lg p-2 md:p-4 mb-4 md:mb-6 block md:hidden">
-                    <p class="text-gray-300 text-sm mb-1">Account Balance</p>
-                    <p id="balance-display" class="text-2xl font-bold">₦350,000.00</p>
-                    <p class="text-gray-300 text-xs mt-1">Available Balance</p>
-                    </div>
-                    <p class="text-white text-[12px] md:text-x1">Choose the recipient's bank to get started</p>
-                    <div class="w-20 h-1 bg-gradient-to-r from-yellow-400 to-yellow-500 rounded-full mx-auto mt-2"></div>
-                    </div>
-                    <div class="mb-8">
-                    <div class="relative max-w-md mx-auto">
-                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none"><span class="text-gray-400 text-xl">🔍</span>
-                        </div><input type="text" id="bank-search" placeholder="Search for a bank..." class="sendfrom w-full pl-12 pr-4 py-2 md:py-4 rounded-2xl text-lg  shadow-sm focus:shadow-lg transition-all duration-200">
-                    </div>
-                    </div>
-                    <div class="flex justify-between items-center mb-8">
-                    <h3 id="banks-title" class="text-sm md:text-x1 font-bold text-white">Popular Banks</h3><button id="toggle-banks-btn" class="px-3 py-2 md:px-6 md:py-3 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-semibold rounded-xl transition-all duration-200 transform shadow-lg hover:shadow-xl"> All Banks → </button>
-                    </div>
-                    <div class="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-2" id="banks-grid"><!-- Banks will be populated here -->
-                    </div>
-                    <div id="no-results" class="text-center py-12 hidden">
-                    <div class="text-6xl mb-4">
-                        🏦
-                    </div>
-                    <p class="text-gray-500 text-lg">No banks found matching your search</p>
-                    <p class="text-gray-400 text-sm mt-2">Try searching for a different bank</p>
-                    </div>
-                    </div><!-- Account Input View -->
-                    <div id="account-input-view" class="max-w-lg mx-auto view-container hidden">
-                    <div class="mb-10 text-center">
-                    <h2 class="text-2xl md:text-3xl font-bold text-white mb-4">Enter Account Details</h2>
-                    <div class="bg-gradient-to-r sendfrom rounded-2xl p-4 ">
-                        <p class="text-gray-400 font-medium">Sending to</p>
-                        <p id="selected-bank-name" class="text-xl font-bold text-orange-500">Bank Name</p>
-                    </div>
-                    </div>
-                    <div class="space-y-8">
-                    <div class="sendfrom rounded-2xl p-4 md:p-6 shadow-lg"><label class="block text-lg font-semibold text-white mb-4">Account Number</label> <input type="text" id="account-number" maxlength="11" class="w-full p-6 rounded-2xl input-fieldbank text-2xl text-center font-mono tracking-wider transition-all duration-200" placeholder="0000000000">
-                        <div class="mt-4 flex items-center justify-center space-x-2">
-                        <p class="text-sm text-gray-400">Enter the recipient's 10-digit account number</p>
-                        </div>
-                    </div>
-                    <div class="flex space-x-4">
-                        <button id="back-to-banks" class="flex-1 px-4 py-2 md:px-6 md:py-4 border-2 border-gray-300 rounded-xl font-semibold text-gray-400 transition-all duration-200 transform "> Back </button> 
-                        <button id="lookup-account" class="flex-1 px-4 py-2 md:px-6 md:py-4 bg-gradient-to-r from-yellow-400 to-yellow-500 hover:from-yellow-500 hover:to-yellow-600 text-gray-900 font-bold rounded-xl transition-all duration-200 transform shadow-lg hover:shadow-xl"> Continue </button>
-                    </div>
-                    </div>
-                    </div><!-- Recipient Confirm View -->
-                    <div id="recipient-confirm-view" class="max-w-md mx-auto view-container hidden">
-                    <div class="mb-8 text-center">
-                    <h2 class="text-2xl md:text-3xl font-bold text-white mb-3">Confirm Recipient</h2>
-                    <p class="text-gray-400 text-lg">Verify the account details below</p>
-                    </div>
-                    <div class="bg-gradient-to-br sendfrom rounded-2xl p-4 md:p-8 mb-6  shadow-sm">
-                    <div class="text-center mb-6">
-                        <div id="recipient-avatar" class="w-20 h-20 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg"><span id="recipient-initial" class="text-white font-bold text-2xl">A</span>
-                        </div>
-                        <h3 id="recipient-name" class="text-2xl font-bold text-gray-100 mb-1">Account Holder</h3>
-                        <div class="w-12 h-1 bg-gradient-to-r from-yellow-400 to-yellow-500 rounded-full mx-auto"></div>
-                    </div>
-                    <div class="space-y-4">
-                        <div class="accdet backdrop-blur-sm rounded-xl p-4 flex justify-between items-center"><span class="text-gray-300 font-medium">Account Number</span> <span id="confirm-account-number" class="font-bold text-gray-400 text-lg">0000000000</span>
-                        </div>
-                        <div class="accdet backdrop-blur-sm rounded-xl p-4 flex justify-between items-center"><span class="text-gray-300 font-medium">Bank</span> <span id="confirm-bank-name" class="font-bold text-gray-400">Bank Name</span>
-                        </div>
-                    </div>
-                    </div><!-- Save Beneficiary Toggle -->
-                    <div class="sendfrom rounded-xl p-5 mb-6 shadow-sm">
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center space-x-3">
-                        <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center"><span class="text-green-100 text-lg">💾</span>
-                        </div>
-                        <div>
-                        <h4 class="font-semibold text-gray-300">Save as Beneficiary</h4>
-                        <p class="text-sm text-gray-400">Add to quick transfer list</p>
-                        </div>
-                        </div><label class="relative inline-flex items-center cursor-pointer"> <input type="checkbox" id="save-beneficiary" class="sr-only peer">
-                        <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-yellow-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-gradient-to-r peer-checked:from-yellow-400 peer-checked:to-yellow-500"></div></label>
-                    </div>
-                    </div>
-                    <div class="flex space-x-4">
-                        <button id="back-to-account" class="accdet flex-1 px-4 py-2 md:px-6 md:py-4 border-2 border-gray-300 rounded-xl font-semibold text-gray-300 transition-all duration-200 transform"> Back </button> 
-                        <button id="proceed-to-amount" class="flex-1 px-4 py-2 md:px-6 md:py-4 bg-gradient-to-r from-yellow-400 to-yellow-500 hover:from-yellow-500 hover:to-yellow-600 text-gray-900 font-bold rounded-xl transition-all duration-200 transform shadow-lg hover:shadow-xl"> Proceed </button>
-                    </div>
-                    </div><!-- Amount Entry View -->
-                    <div id="amount-entry-view" class="max-w-lg mx-auto view-container hidden">
-                    <div class="mb-4 md:mb-6 text-center">
-                    <h2 class="text-3xl font-bold text-white mb-4">Enter Amount</h2>
-                    <p class="text-gray-400 text-lg">How much do you want to send?</p>
-                    <div class="w-16 h-1 bg-gradient-to-r from-yellow-400 to-yellow-500 rounded-full mx-auto mt-4"></div>
-                    </div>
-                    <div class="bg-gradient-to-br sendfrom rounded-2xl p-2 md:p-6 mb-2 md:mb-6 shadow-sm">
-                    <div class="text-center">
-                        <p class="text-orange-700 font-medium mb-2">Sending to</p>
-                        <p id="amount-recipient-name" class="text-sm md:text-x1 font-bold text-gray-300">Recipient Name</p>
-                        <p id="amount-bank-name" class="text-orange-600 font-medium">Bank Name</p>
-                    </div>
-                    </div>
-                    <div class="space-y-8">
-                    <div class="sendfrom rounded-2xl p-2 md:p-6 shadow-lg"><label class="block text-x1 font-semibold text-gray-300 mb-4 md:mb-6">Amount</label>
-                        <div class="relative recetra rounded-2xl"><span class="absolute  left-6 top-1/2 transform -translate-y-1/2 text-gray-400 text-3xl font-bold">₦</span> <input type="number" id="transfer-amount" class="w-full pl-16 pr-6 py-6 border-2 border-gray-200 rounded-2xl input-fieldbank text-2xl font-bold text-center recetra transition-all duration-200" placeholder="0.00" min="1" step="0.01">
-                        </div>
-                    </div>
-                    <div class="bg-gradient-to-r sendfrom rounded-2xl p-6 ">
-                        <div class="space-y-3">
-                        <div class="flex justify-between items-center"><span class="text-gray-300 font-medium">Transfer Fee</span> <span class="font-bold text-gray-400">₦50.00</span>
-                        </div>  
-                        <div class="border-t border-blue-200 pt-3">
-                        <div class="flex justify-between items-center"><span class="text-lg font-semibold text-gray-300">Total Debit</span> <span id="total-debit" class="text-xl font-bold text-blue-400">₦50.00</span>
-                        </div>
-                        </div>
-                        </div>
-                    </div>
-                    <div class="text-center sendfrom rounded-xl p-4 border border-yellow-200">
-                        <p class="text-gray-200">Available Balance: <span id="available-balance" class="font-bold text-green-600">₦0.00</span></p>
-                    </div>
-                    <div class="flex space-x-4"><button id="back-to-confirm" class="flex-1 px-4 py-2 md:px-6 md:py-4 border-2 border-gray-300 rounded-xl font-semibold text-gray-300 transition-all duration-200 transform"> Back </button> <button id="send-money" class="flex-1 px-4 py-2 md:px-6 md:py-4 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white font-bold rounded-xl transition-all duration-200 transform shadow-lg hover:shadow-xl"> Send Money 💸 </button>
-                    </div>
-                    </div>
-                    </div><!-- Loading View -->
-                    <div id="loading-view" class="text-center py-20 view-container hidden">
-                    <div class="relative mb-8">
-                    <div class="w-24 h-24 border-4 border-gray-200 border-t-yellow-500 rounded-full animate-spin mx-auto"></div>
-                    <div class="absolute inset-0 flex items-center justify-center"><span class="text-2xl">💸</span>
-                    </div>
-                    </div>
-                    <h3 class="text-2xl font-bold text-gray-200 mb-4">Processing Transfer</h3>
-                    <p class="text-gray-300 text-lg">Please wait while we securely process your transaction...</p>
-                    <div class="mt-6 flex justify-center space-x-2">
-                    <div class="w-2 h-2 bg-yellow-400 rounded-full animate-bounce"></div>
-                    <div class="w-2 h-2 bg-yellow-400 rounded-full animate-bounce" style="animation-delay: 0.1s"></div>
-                    <div class="w-2 h-2 bg-yellow-400 rounded-full animate-bounce" style="animation-delay: 0.2s"></div>
-                    </div>
-                    </div><!-- Receipt View -->
-                    <div id="receipt-view" class="max-w-lg mx-auto view-container hidden">
-                    <div class="text-center mb-10">
-                    <div class="w-16 h-16 md:w-24 md:h-24 bg-gradient-to-br from-green-400 to-emerald-500 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg"><span class="text-2xl md:text-3x1">✅</span>
-                    </div>
-                    <h2 class="text-2xl font-bold text-gray-300 mb-3">Transfer Successful!</h2>
-                    <p class="text-gray-300 text-sm md:text-lg">Your money has been sent successfully</p>
-                    <div class="w-20 h-1 bg-gradient-to-r from-green-400 to-emerald-500 rounded-full mx-auto mt-4"></div>
-                    </div>
-                    <div class="sendfrom border-2 border-gray-200 rounded-2xl p-2 md:p-8 mb-4 md:mb-8 shadow-lg">
-                    <div class="text-center mb-6">
-                        <h3 class="text-sm md:text-lg font-semibold text-gray-300">Transaction Receipt</h3>
-                    </div>
-                    <div class="space-y-4 rcptdet" id="receipt-details"><!-- Receipt details will be populated here -->
-                    </div>
-                    </div>
-                    <div class="space-y-4">
-                        <button id="send-another" class="w-full px-4 py-2 md:px-6 md:py-4 bg-gradient-to-r from-yellow-400 to-yellow-500 hover:from-yellow-500 hover:to-yellow-600 text-gray-900 font-bold rounded-xl transition-all duration-200 transform shadow-lg hover:shadow-xl"> Done 🚀 
-
-                        </button> <button id="share-receipt" class="w-full px-4 py-2 md:px-6 md:py-4 border-2 border-gray-300 rounded-xl font-semibold text-gray-300 hover:bg-gray-50 hover:border-gray-400 transition-all duration-200 transform"> Share Receipt 📤 </button>
-                    </div>
-                    </div>
-                    </div>
-                </div>
-                <!-- Right Panel -->
-                <div class="right-panel p-6">
-                    <div class="mb-6">
-                    <h3 class="font-semibold text-white mb-4">Quick Transfer</h3>
-                    <div class="space-y-3"  >
-                    <div class="flex items-center space-x-3 p-3 quicktr  rounded-lg border cursor-pointer hover:shadow-sm transition-shadow" onclick="quickTransfer('John Doe', 'GTBank', '1234567890')">
-                    <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center"><span class="text-blue-600 font-semibold text-sm">JD</span>
-                    </div>
-                    <div class="flex-1">
-                        <p class="font-medium text-sm">John Doe</p>
-                        <p class="text-gray-400 text-xs">GTBank • 1234567890</p>
-                    </div>
-                    </div>
-                    <div class="flex items-center space-x-3 p-3 quicktr rounded-lg border cursor-pointer hover:shadow-sm transition-shadow" onclick="quickTransfer('Sarah Adams', 'Access Bank', '0987654321')">
-                    <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center"><span class="text-green-600 font-semibold text-sm">SA</span>
-                    </div>
-                    <div class="flex-1">
-                        <p class="font-medium text-sm">Sarah Adams</p>
-                        <p class="text-gray-400 text-xs">Access Bank • 0987654321</p>
-                    </div>
-                    </div>
-                    <div class="flex items-center space-x-3 p-3 quicktr  rounded-lg border cursor-pointer hover:shadow-sm transition-shadow" onclick="quickTransfer('Jerry Luis', 'Opay', '9018654747')">
-                    <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center"><span class="text-blue-600 font-semibold text-sm">JD</span>
-                    </div>
-                    <div class="flex-1">
-                        <p class="font-medium text-sm">Jerry Luis</p>
-                        <p class="text-gray-400 text-xs">Opay • 9018654747</p>
-                    </div>
-                    </div>
-                    <div class="flex items-center space-x-3 p-3 quicktr rounded-lg border cursor-pointer hover:shadow-sm transition-shadow" onclick="quickTransfer('Melvin col', 'uba', '8104101875')">
-                    <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center"><span class="text-green-600 font-semibold text-sm">SA</span>
-                    </div>
-                    <div class="flex-1">
-                        <p class="font-medium text-sm">Melvin col</p>
-                        <p class="text-gray-400 text-xs">UBA • 8104101875</p>
-                    </div>
-                    </div>
-                    <div class="flex items-center space-x-3 p-3 quicktr  rounded-lg border cursor-pointer hover:shadow-sm transition-shadow" onclick="quickTransfer('Jennifer Lee', 'Sterling Bank', '1234567890')">
-                    <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center"><span class="text-blue-600 font-semibold text-sm">JD</span>
-                    </div>
-                    <div class="flex-1">
-                        <p class="font-medium text-sm">Jennifer Lee</p>
-                        <p class="text-gray-400 text-xs">Sterling Bank • 1234567890</p>
-                    </div>
-                    </div>
-                    <div class="flex items-center space-x-3 p-3 quicktr rounded-lg border cursor-pointer hover:shadow-sm transition-shadow" onclick="quickTransfer('David Johnson', 'Providus Bank', '0987654321')">
-                    <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center"><span class="text-green-600 font-semibold text-sm">SA</span>
-                    </div>
-                    <div class="flex-1">
-                        <p class="font-medium text-sm">David Johnson</p>
-                        <p class="text-gray-400 text-xs">Providus Bank • 0987654321</p>
-                    </div>
-                    </div>
-                    </div>
-                    </div>
-                    <div>
-                    
-                    </div>
-                </div>
-                </div><!-- Confirmation Modal -->
-                <div id="confirmation-modal" class="fixed inset-0 sendfrom backdrop-blur-sm z-50 hidden">
-                <div class="flex items-center justify-center min-h-screen p-4">
-                    <div id="modal-content" class="recetra rounded-xl p-6 w-full max-w-md">
-                    <div class="text-center mb-6">
-                    <div class="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-4"><span class="text-2xl">⚠️</span>
-                    </div>
-                    <h3 class="text-xl font-semibold text-white mb-2">Confirm Transfer</h3>
-                    <p class="text-gray-300 text-sm">Please review the details below</p>
-                    </div>
-                    <div id="transfer-details" class="space-y-3 mb-6"><!-- Transfer details will be populated here -->
-                    </div>
-                    <div class="flex space-x-3">
-                        <button id="cancel-transfer" class="flex-1 px-2 py-2 md:px-4 md:py-3 border border-gray-300 rounded-lg font-medium text-gray-300 transition-colors"> Cancel </button> 
-                        <button id="confirm-transfer" class="flex-1 px-2 py-2 md:px-4 btn-primarybank rounded-lg"> Confirm Transfer </button>
-                    </div>
-                    </div>
-                </div>
-                </div>
-
-        </section>
-
-
-        <section id="content-utilities" class="page-content-section hidden transition-opacity duration-300 min-h-full">
-        <button class="backbtn nav-btn" data-route="home"><i class="fa-regular fa-circle-left"></i></button>
-        <div class="min-h-full">
-            <div class="text-center py-6 px-3 md:py-12 md:px-6">
-                <h1 id="main-title" class="text-2xl md:text-5xl font-bold mb-4" style="color: var(--text-color);">Utility Payments</h1>
-                <p id="subtitle" class="text-lg md:text-xl opacity-80 max-w-2xl mx-auto" style="color: var(--text-color);">Pay all your bills in one convenient place.</p>
-            </div><!-- Main Content -->
-            <main class="max-w-7xl mx-auto px-3 md:px-6 pb-16">
-                <div class="service-grid grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-2">
-                <!-- Airtime -->
-                <button class="nav-btn" data-route="airtime" style="color: inherit; background: none; text-align: left;">
-                    <div class="payment-card rounded-2xl p-2 md:p-6 cursor-pointer flex flex-col justify-between !block" onclick="handlePayment('airtime')">
-                    <div class="flex items-center mb-4">
-                    <div class="icon-container w-10 h-10 md:w-14 md:h-14 rounded-[8px] flex items-center justify-center mr-4">
-                        <svg class="w-7 h-7 text-white" fill="currentColor" viewbox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z" />
-                        </svg>
-                    </div>
-                    <div>
-                        <h3 class="text-sm md:text-x1 font-semibold mb-1" style="color: var(--text-color);">Airtime</h3>
-                        <p class="text-xs md:text-sm opacity-70" style="color: var(--text-color);">Mobile top-up</p>
-                    </div>
-                    </div>
-                    <div class="flex items-center justify-between"><span class="text-xs md:text-sm font-medium" style="color: var(--primary-color);">Quick &amp; Easy</span>
-                    <svg class="w-5 h-5 opacity-60" style="color: var(--text-color);" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                    </svg>
-                    </div>
-                    </div>
-                </button>
-
-                <!-- Data -->
-                <button class="nav-btn" data-route="data" style="color: inherit; background: none; text-align: left;">
-                    <div class="payment-card rounded-2xl p-2 md:p-6 cursor-pointer flex flex-col justify-between !block" onclick="handlePayment('data')">
-                    <div class="flex items-center mb-4">
-                    <div class="icon-container w-10 h-10 md:w-14 md:h-14 rounded-[8px] flex items-center justify-center mr-4">
-                        <svg class="w-7 h-7 text-white" fill="currentColor" viewbox="0 0 24 24"><path d="M3 5v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2H5c-1.11 0-2 .9-2 2zm12 4c0 1.66-1.34 3-3 3s-3-1.34-3-3 1.34-3 3-3 3 1.34 3 3zm-9 8c0-2 4-3.1 6-3.1s6 1.1 6 3.1v1H6v-1z" />
-                        </svg>
-                    </div>
-                    <div>
-                        <h3 class="text-sm md:text-x1 font-semibold mb-1" style="color: var(--text-color);">Data Plans</h3>
-                        <p class="text-xs md:text-sm opacity-70" style="color: var(--text-color);">Internet bundles</p>
-                    </div>
-                    </div>
-                    <div class="flex items-center justify-between"><span class="text-xs md:text-sm font-medium" style="color: var(--primary-color);">All Networks</span>
-                    <svg class="w-5 h-5 opacity-60" style="color: var(--text-color);" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                    </svg>
-                    </div>
-                    </div>
-                </button>
-                <!-- TV Subscription -->
-                <div class="payment-card rounded-2xl p-2 md:p-6 cursor-pointer flex flex-col justify-between" onclick="handlePayment('tv')">
-                <div class="flex items-center mb-4">
-                <div class="icon-container w-10 h-10 md:w-14 md:h-14 rounded-[8px] flex items-center justify-center mr-4">
-                    <svg class="w-7 h-7 text-white" fill="currentColor" viewbox="0 0 24 24"><path d="M21 3H3c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h5l-1 1v2h8v-2l-1-1h5c1.1 0 1.99-.9 1.99-2L23 5c0-1.1-.9-2-2-2zm0 12H3V5h18v10z" />
-                    </svg>
-                </div>
-                <div>
-                    <h3 class="text-sm md:text-x1 font-semibold mb-1" style="color: var(--text-color);">TV Subscription</h3>
-                    <p class="text-xs md:text-sm opacity-70" style="color: var(--text-color);">Cable &amp; satellite</p>
-                </div>
-                </div>
-                <div class="flex items-center justify-between"><span class="text-xs md:text-sm font-medium" style="color: var(--primary-color);">All Providers</span>
-                <svg class="w-5 h-5 opacity-60" style="color: var(--text-color);" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                </svg>
-                </div>
-                </div>
-                <!-- Electricity -->
-                <div class="payment-card rounded-2xl p-2 md:p-6 cursor-pointer flex flex-col justify-between" onclick="handlePayment('electricity')">
-                <div class="flex items-center mb-4">
-                <div class="icon-container w-10 h-10 md:w-14 md:h-14 rounded-[8px] flex items-center justify-center mr-4">
-                    <svg class="w-7 h-7 text-white" fill="currentColor" viewbox="0 0 24 24"><path d="M14.69 2.21L4.33 11.49c-.64.58-.28 1.65.58 1.73L13 14l-4.85 6.76c-.22.31-.19.74.08 1.01.3.3.77.31 1.08.02L19.67 12.51c.64-.58.28-1.65-.58-1.73L11 10l4.85-6.76c.22-.31.19-.74-.08-1.01-.3-.3-.77-.31-1.08-.02z" />
-                    </svg>
-                </div>
-                <div>
-                    <h3 class="text-sm md:text-x1 font-semibold mb-1" style="color: var(--text-color);">Electricity</h3>
-                    <p class="text-xs md:text-sm opacity-70" style="color: var(--text-color);">Power bills</p>
-                </div>
-                </div>
-                <div class="flex items-center justify-between"><span class="text-xs md:text-sm font-medium" style="color: var(--primary-color);">Instant Token</span>
-                <svg class="w-5 h-5 opacity-60" style="color: var(--text-color);" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                </svg>
-                </div>
-                </div>
-                <!-- Betting -->
-                <div class="payment-card rounded-2xl p-2 md:p-6 cursor-pointer flex flex-col justify-between" onclick="handlePayment('betting')">
-                <div class="flex items-center mb-4">
-                <div class="icon-container w-10 h-10 md:w-14 md:h-14 rounded-[8px] flex items-center justify-center mr-4">
-                    <svg class="w-7 h-7 text-white" fill="currentColor" viewbox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM7.5 18c-.83 0-1.5-.67-1.5-1.5S6.67 15 7.5 15s1.5.67 1.5 1.5S8.33 18 7.5 18zm0-9C6.67 9 6 8.33 6 7.5S6.67 6 7.5 6 9 6.67 9 7.5 8.33 9 7.5 9zm4.5 4.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm4.5 4.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm0-9c-.83 0-1.5-.67-1.5-1.5S15.67 6 16.5 6s1.5.67 1.5 1.5S17.33 9 16.5 9z" />
-                    </svg>
-                </div>
-                <div>
-                    <h3 class="text-sm md:text-x1 font-semibold mb-1" style="color: var(--text-color);">Betting</h3>
-                    <p class="text-xs md:text-sm opacity-70" style="color: var(--text-color);">Sports &amp; games</p>
-                </div>
-                </div>
-                <div class="flex items-center justify-between"><span class="text-xs md:text-sm font-medium" style="color: var(--primary-color);">Secure Funding</span>
-                <svg class="w-5 h-5 opacity-60" style="color: var(--text-color);" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                </svg>
-                </div>
-                </div>
-                <!-- Water Bills -->
-                <div class="payment-card rounded-2xl p-2 md:p-6 cursor-pointer flex flex-col justify-between" onclick="handlePayment('water')">
-                <div class="flex items-center mb-4">
-                <div class="icon-container w-10 h-10 md:w-14 md:h-14 rounded-[8px] flex items-center justify-center mr-4">
-                    <svg class="w-7 h-7 text-white" fill="currentColor" viewbox="0 0 24 24"><path d="M12 2c-5.33 4.55-8 8.48-8 11.8 0 4.98 3.8 8.2 8 8.2s8-3.22 8-8.2c0-3.32-2.67-7.25-8-11.8zM7.83 14c.37 0 .67.26.67.62 0 .36-.3.83-.67.83s-.67-.47-.67-.83c0-.36.3-.62.67-.62z" />
-                    </svg>
-                </div>
-                <div>
-                    <h3 class="text-sm md:text-x1 font-semibold mb-1" style="color: var(--text-color);">Water Bills</h3>
-                    <p class="text-xs md:text-sm opacity-70" style="color: var(--text-color);">Utility payments</p>
-                </div>
-                </div>
-                <div class="flex items-center justify-between"><span class="text-xs md:text-sm font-medium" style="color: var(--primary-color);">Easy Payment</span>
-                <svg class="w-5 h-5 opacity-60" style="color: var(--text-color);" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                </svg>
-                </div>
-                </div>
-                </div>
-
-            </main><!-- Footer -->
-            <div class="text-center py-8 px-6 border-0 md:border-t md:border-gray-900 fixed bottom-0 md:relative" style="background-color: var(--card-bg);">
-                <p id="footer-text" class="opacity-70" style="color: var(--text-color);">Secure payments powered by advanced encryption.</p>
-            </div>
-        </div>    
-
-        </section>
-
-        <section id="content-airtime" class="page-content-section hidden transition-opacity duration-300 min-h-full">
-        <button class="backbtn nav-btn flex top-[12px] left-[12px] md:top-[25px] md:left-[25px] " data-route="utilities"><i class="fa-regular fa-circle-left"></i></button>
-            <div class="inset-0 gradient-bg"></div><!-- Floating shapes for visual appeal -->
-            <!-- Main Container -->
-            <div class="relative min-h-screen flex items-center justify-center p-4 ">
-            <div class="w-full max-w-4xl"><!-- Header -->
-                <div class="text-center mb-8 slide-up-airtime">
-                <h1 id="page-title" class="text-3xl md:text-5xl font-bold text-white mb-4">Buy Airtime</h1>
-                <p class="text-white/80 text-lg md:text-xl">Quick and secure airtime purchase for all networks</p>
-                </div><!-- Main Card -->
-                <div class="glass-card rounded-3xl slide-up-airtime " style="animation-delay: 0.2s;"><!-- Progress Indicator -->
-                <div class="bg-white/50 p-1 toprad">
-                <div class="lightdark p-4 toprad">
-                <div class="flex items-center justify-center space-x-4">
-                    <div class="flex items-center space-x-2">
-                    <div id="step1-indicator" class="w-8 h-8 rounded-full bg-orange-500 text-white flex items-center justify-center text-sm font-bold">
-                    1
-                    </div><span class="text-sm font-medium text-gray-100 hidden sm:inline">Network</span>
-                    </div>
-                    <div class="w-8 h-0.5 bg-gray-300">
-                    <div id="progress-bar-1" class="h-full bg-orange-500 transition-all duration-500" style="width: 0%"></div>
-                    </div>
-                    <div class="flex items-center space-x-2">
-                    <div id="step2-indicator" class="w-8 h-8 rounded-full bg-gray-300 text-gray-500 flex items-center justify-center text-sm font-bold">
-                    2
-                    </div><span class="text-sm font-medium text-gray-500 hidden sm:inline">Amount</span>
-                    </div>
-                    <div class="w-8 h-0.5 bg-gray-300">
-                    <div id="progress-bar-2" class="h-full bg-orange-500 transition-all duration-500" style="width: 0%"></div>
-                    </div>
-                    <div class="flex items-center space-x-2">
-                    <div id="step3-indicator" class="w-8 h-8 rounded-full bg-gray-300 text-gray-500 flex items-center justify-center text-sm font-bold">
-                    3
-                    </div><span class="text-sm font-medium text-gray-500 hidden sm:inline">Payment</span>
-                    </div>
-                </div>
-                </div>
-                </div><!-- Content Area -->
-                <div class="p-0 md:p-8 mt-2 md:mt-0" ><!-- Step 1: Network Selection -->
-                <div id="step1" class="step-content">
-                <div class="lightdark quipur p-2 md:p-6 mb-2">
-                    <h2 class="text-2xl md:text-3xl font-bold text-gray-200 mb-2 text-center">Quick Purchase</h2>
-                     <p class="text-gray-300 text-center mb-6">Buy airtime instantly with your saved details</p>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6"><!-- Quick ₦100 -->
-                    <div class="quick-option verydark rounded-xl p-4 cursor-pointer hover:border-blue-400 hover:shadow-md transition-all" onclick="quickPurchase(100, event)">
-                    <div class="flex items-center space-x-3 justify-between">
-                    <div class="flex items-center gap-4">
-                        <div class="w-10 h-10 md:w-12 md:h-12 bg-blue-500 rounded-full flex items-center justify-center"><span class="text-white text-lg font-bold">₦</span>
-                        </div>
-                        <div>
-                            <h4 class="font-bold text-gray-300">₦100 Airtime</h4>
-                            <p class="text-sm text-gray-400">MTN • 0801***5678</p>
-                        </div>
-                        </div>
-                        <div class="text-blue-500 text-xl">
-                            ⚡
-                        </div>
-                    </div>
-                    </div><!-- Quick ₦500 -->
-                    <div class="quick-option verydark rounded-xl p-4 cursor-pointer hover:border-green-400 hover:shadow-md transition-all" onclick="quickPurchase(500, event)">
-                    <div class="flex items-center space-x-3 justify-between">
-                    <div class="flex items-center gap-4">
-                        <div class="w-10 h-10 md:w-12 md:h-12 bg-green-500 rounded-full flex items-center justify-center"><span class="text-white text-lg font-bold">₦</span>
-                        </div>
-                        <div>
-                            <h4 class="font-bold text-gray-300">₦500 Airtime</h4>
-                            <p class="text-sm text-gray-400">Airtel • 0802***1234</p>
-                        </div>
-                    </div>
-                        <div class="text-green-500 text-xl">
-                            ⚡
-                        </div>
-                    </div>
-                    </div>
-                    </div>
-                    <div class="text-center">
-                    </div>
-                </div>
-                <h3 class="text-lg font-semibold text-gray-300 text-center mb-2">Select Network</h3>
-                <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6"><!-- MTN -->
-                    <div class="network-card-airtime payment-card rounded-2xl p-4 md:p-6 shadow-lg" onclick="selectNetwork('MTN', '#FFCC00', '🟡', event)">
-                    <div class="text-center netcks">
-                    <h3 class="font-bold text-lg md:text-xl text-gray-200 mb-2">MTN</h3>
-                    <p class="text-sm text-gray-300">Nigeria's largest network</p>
-                    <div class="mt-3 text-xs text-black font-bold"><span class="bg-yellow-500 px-2 py-1 rounded-full">Most Popular</span>
-                    </div>
-                    </div>
-                    </div><!-- Airtel -->
-                    <div class="network-card-airtime payment-card rounded-2xl p-4 md:p-6 shadow-lg" onclick="selectNetwork('Airtel', '#FF0000', '🔴', event)">
-                    <div class="text-center netcks">
-                    <h3 class="font-bold text-lg md:text-xl text-gray-200 mb-2">Airtel</h3>
-                    <p class="text-sm text-gray-300">Smart choice network</p>
-                    <div class="mt-3 text-xs text-gray-100 font-bold"><span class="bg-red-700 px-2 py-1 rounded-full">Fast Service</span>
-                    </div>
-                    </div>
-                    </div><!-- Glo -->
-                    <div class="network-card-airtime payment-card rounded-2xl p-4 md:p-6 shadow-lg" onclick="selectNetwork('Glo', '#00B04F', '🟢', event)">
-                    <div class="text-center netcks">
-                    <h3 class="font-bold text-lg md:text-xl text-gray-200 mb-2">Glo</h3>
-                    <p class="text-sm text-gray-300">Unlimited possibilities</p>
-                    <div class="mt-3 text-xs text-white font-bold"><span class="bg-green-700 px-2 py-1 rounded-full">Great Value</span>
-                    </div>
-                    </div>
-                    </div><!-- 9mobile -->
-                    <div class="network-card-airtime payment-card    rounded-2xl p-4 md:p-6 shadow-lg" onclick="selectNetwork('9mobile', '#00A651', '🟢', event)">
-                    <div class="text-center netcks">
-                    <h3 class="font-bold text-lg md:text-xl text-gray-200 mb-2">9mobile</h3>
-                    <p class="text-sm text-gray-300">More than mobile</p>
-                    <div class="mt-3 text-xs text-white font-bold"><span class="bg-emerald-700 px-2 py-1 rounded-full">Reliable</span>
-                    </div>
-                    </div>
-                    </div>
-                </div>
-                </div><!-- Step 2: Amount Selection -->
-                <div id="step2" class="step-content hidden">
-                <div class="text-center mb-6">
-                    <h2 class="text-2xl md:text-3xl font-bold text-gray-200 mb-2">Select Amount</h2>
-                    <div class="flex items-center justify-center space-x-2 text-lg hidden"><span>Buying for</span> <span id="selected-network-display" class="font-bold text-purple-600">Network</span> <span id="selected-network-icon">📱</span>
-                    </div>
-                </div><!-- Phone Number Input -->
-                <div class="mb-4">
-                    <div class="relative max-w-md mx-auto">
-                        <input type="tel" id="phone-number" class="custom-input w-full p-4 lightdark rounded-2xl text-lg text-center text-white font-mono tracking-wider" placeholder=" " maxlength="11"> 
-                        <label class="floating-label-airtime">Phone Number</label>
-                    </div>
-                </div>
-                <!-- Quick Amount Selection -->
-                <div class="mb-8">
-                    <h3 class="text-lg font-semibold text-gray-200 mb-4 text-center">Quick Select</h3>
-                    <div class="grid grid-cols-3 md:grid-cols-6 gap-3">
-                        <button class="amount-btn-airtime rounded-xl p-3 md:p-4 font-bold text-gray-200" onclick="selectAmount(100, event)">₦100</button> 
-                        <button class="amount-btn-airtime rounded-xl p-3 md:p-4 font-bold text-gray-200" onclick="selectAmount(200, event)">₦200</button> 
-                        <button class="amount-btn-airtime rounded-xl p-3 md:p-4 font-bold text-gray-200" onclick="selectAmount(500, event)">₦500</button> 
-                        <button class="amount-btn-airtime rounded-xl p-3 md:p-4 font-bold text-gray-200" onclick="selectAmount(1000, event)">₦1,000</button> 
-                        <button class="amount-btn-airtime rounded-xl p-3 md:p-4 font-bold text-gray-200" onclick="selectAmount(2000, event)">₦2,000</button> 
-                        <button class="amount-btn-airtime rounded-xl p-3 md:p-4 font-bold text-gray-200" onclick="selectAmount(5000, event)">₦5,000</button>
-                    </div>
-                </div><!-- Custom Amount Input -->
-                <div class="mb-8">
-                    <h3 class="text-lg font-semibold text-gray-200 mb-4 text-center">Or Enter Custom Amount</h3>
-                    <div class="relative max-w-sm mx-auto">
-                    <div class="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-500 text-xl font-bold">
-                    ₦
-                    </div><input type="number" id="custom-amount" class="custom-input w-full pl-12 pr-4 p-4 rounded-2xl text-xl font-bold text-center text-white" placeholder="0" min="50" max="50000">
-                    </div>
-                    <p class="text-center text-sm text-gray-300 mt-2">Minimum: ₦50 | Maximum: ₦50,000</p>
-                </div><!-- Navigation Buttons -->
-                <div class="flex space-x-4">
-                    <button onclick="goToStep(1)" class="flex-1 verydark text-gray-200 py-4 bckbtn rounded-2xl font-semibold transition-colors"> ← Back </button> 
-                    <button id="continue-to-payment" onclick="goToStep(3)" class="flex-1 bg-gradient-to-r from-purple-500 to-pink-500 text-white py-4 rounded-2xl font-semibold hover:from-purple-600 hover:to-pink-600 transition-all disabled:opacity-50 disabled:cursor-not-allowed" disabled> Continue → </button>
-                </div>
-                </div><!-- Step 3: Payment -->
-                <div id="step3" class="step-content hidden">
-                <div class="text-center mb-4">
-                    <h2 class="text-2xl md:text-3xl font-bold text-gray-200 mb-2">Confirm Purchase</h2>
-                </div><!-- Purchase Summary -->
-                <div class="lightdark rounded-2xl p-6 mb-4">
-                    <div class="space-y-3">
-                    <div class="flex justify-between items-center"><span class="text-gray-200">Network:</span>
-                    <div class="flex items-center space-x-2"><span class="hidden" id="summary-network-icon">📱</span> <span id="summary-network" class="font-semibold">Network</span>
-                    </div>
-                    </div>
-                    <div class="flex justify-between items-center"><span class="text-gray-200">Phone Number:</span> <span id="summary-phone" class="font-semibold font-mono">+234</span>
-                    </div>
-                    <div class="flex justify-between items-center"><span class="text-gray-200">Amount:</span> <span id="summary-amount" class="font-bold text-xl text-orange-600">₦0</span>
-                    </div>
-                    <div class="border-t border-purple-200 pt-3">
-                    <div class="flex justify-between items-center"><span class="text-gray-200">Service Fee:</span> <span class="font-semibold">₦10</span>
-                    </div>
-                    </div>
-                    <div class="border-t border-purple-200 pt-3">
-                    <div class="flex justify-between items-center text-lg"><span class="font-bold text-gray-200">Total:</span> <span id="summary-total" class="font-bold text-orange-600">₦10</span>
-                    </div>
-                    </div>
-                    </div>
-                </div><!-- Payment Method -->
-                <div class="mb-8">
-                    <h3 class="text-lg font-semibold text-gray-200 mb-4 text-center">Payment Method</h3>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div class="payment-method  lightdark rounded-2xl p-4 cursor-pointer transition-colors" onclick="selectPaymentMethod('card', event)">
-                    <div class="flex items-center space-x-3">
-                    <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center"><span class="text-2xl">💳</span>
-                    </div>
-                    <div>
-                        <h4 class="font-semibold text-gray-200">Debit Card</h4>
-                        <p class="text-sm text-gray-300">Pay with your debit card</p>
-                    </div>
-                    </div>
-                    </div>
-                    <div id="wallet-payment" class="payment-method lightdark rounded-2xl p-4 cursor-pointer transition-colors" onclick="selectPaymentMethod('wallet', event)">
-                    <div class="flex items-center space-x-3">
-                    <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center"><span class="text-2xl">💰</span>
-                    </div>
-                    <div>
-                        <h4 class="font-semibold text-gray-200">Wallet</h4>
-                        <p class="text-sm text-gray-300">Pay from wallet balance</p>
-                        <div class="mt-1"><span class="bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs font-bold"> Balance: ₦350,000 </span>
-                        </div>
-                    </div>
-                    <div class="text-purple-500"><span class="text-xl">✓</span>
-                    </div>
-                    </div>
-                    </div>
-                    </div>
-                </div><!-- Navigation Buttons -->
-                <div class="flex space-x-4">
-                    <button onclick="goToStep(2)" class="flex-1 verydark text-gray-200 py-4 bckbtn rounded-2xl font-semibold transition-colors"> ← Back </button> 
-                    <button id="purchase-btn" onclick="processPurchase()" class="flex-1 bg-gradient-to-r from-green-500 to-emerald-600 text-white py-4 rounded-2xl font-semibold hover:from-green-600 hover:to-emerald-700 transition-all"> Continue </button>
-                </div>
-                </div><!-- Success Screen -->
-                <div id="success-screen" class="step-content hidden fixed inset-0 dataPurchase__modal flex items-center justify-center z-50">
-                <div class="bounce-in lightdark rounded-2xl p-4 md:p-8 text-center dataPurchase__slide-up mx-4 w-[90%] md:w-[40%] mx-4">
-                    <div class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4 dataPurchase__success-check">
-                    <svg class="w-10 h-10 text-green-600" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                    </svg>
-                    </div>
-                    <h2 class="text-2xl font-bold text-gray-200 mb-2">Purchase Successful!</h2>
-                    <p id="success-message" class=" text-gray-300 mb-6">Your airtime has been sent successfully</p>
-                    <div class="verydark rounded-2xl p-6 mb-4">
-                    <div class="space-y-2 text-left">
-                    <div class="flex justify-between"><span class="text-gray-200">Transaction ID::</span> <span id="transaction-ref" class="font-mono text-sm">TXN123456789</span>
-                    </div>
-                    <div class="flex justify-between"><span class="text-gray-200">Network:</span> <span class="text-green-600 font-semibold">MTN</span>
-                    </div>
-                    <div class="flex justify-between"><span class="text-gray-200">Number:</span> <span class="text-green-600 font-semibold">09018654747</span>
-                    </div>
-                    <div class="flex justify-between"><span class="text-gray-200">Amount:</span> <span class="text-green-600 font-semibold">1000</span>
-                    </div>
-                    <div class="flex justify-between"><span class="text-gray-200">Date:</span> <span id="transaction-date">Today</span>
-                    </div>
-                    </div>
-                    </div>
-                    <div class="flex gap-3">
-                        <button onclick="shareReceipt()" class="w-full flex-1 verydark text-gray-200 py-4 bckbtn rounded-2xl font-semibold transition-colors">  Receipt  </button>
-                        <button onclick="startOver(), event" class="w-full flex-1 bg-gradient-to-r from-purple-500 to-pink-500 text-white py-4 rounded-2xl font-semibold hover:from-purple-600 hover:to-pink-600 transition-all"> Done </button> 
-                    </div>
-                </div>
-                </div>
-                </div>
-                </div>
-            </div>
-            </div><!-- Loading Overlay -->
-            <div id="loading-overlay" class="fixed inset-0 dataPurchase__modal z-50 hidden flex items-center justify-center">
-            <div class="lightdark rounded-2xl p-8 text-center w-[80%] md:w-[400px]">
-                <div class="loading-spinner w-12 h-12 border-4 border-gray-200 border-t-purple-500 rounded-full mx-auto mb-4"></div>
-                <h3 class="text-xl font-semibold text-gray-200 mb-2">Processing Purchase</h3>
-                <p class="text-gray-300">Please wait while we process your transaction...</p>
-            </div>
-            </div>
-
-        </section>
-
-         <section id="content-data" class="page-content-section hidden transition-opacity duration-300 min-h-full">
-        <button class="backbtn nav-btn  flex top-[12px] left-[12px] md:top-[25px] md:left-[25px]" data-route="utilities"><i class="fa-regular fa-circle-left"></i></button>
-            <div class="inset-0 gradient-bg"></div><!-- Floating shapes for visual appeal -->
-            <!-- Main Container -->
-            <div class="relative min-h-screen flex items-center justify-center p-4 ">
-            <div class="container w-full max-w-4xl"><!-- Header -->
-                <div class="text-center mb-8 dataPurchase__floating">
-                <h1 id="dataPurchase__appTitle" class="text-3xl md:text-5xl lg:text-6xl font-bold text-white mb-4 tracking-tight">Data Purchase</h1>
-                <p class="text-white opacity-90 text-lg md:text-xl">Quick and secure data top-up</p>
-                </div><!-- Progress Bar -->
-                <div class="max-w-4xl mx-auto mb-4 glass-card rounded-3xl slide-up-airtime " style="animation-delay: 0.2s;">
-                <div class="lightdark p-4 toprad datastep">
-                <div class="flex items-center justify-center space-x-4">
-                <div class="flex items-center space-x-2">
-                    <div id="dataPurchase__step1Indicator" class="w-8 h-8 rounded-full bg-orange-500 text-white flex items-center justify-center text-sm font-bold transition-all duration-300">
-                    1
-                    </div><span class="text-sm font-medium text-gray-100 hidden sm:inline">Network</span>
-                </div>
-                <div class="w-8 h-0.5 bg-gray-300">
-                    <div id="dataPurchase__progressBar1" class="h-full bg-orange-500 transition-all duration-500" style="width: 0%"></div>
-                </div>
-                <div class="flex items-center space-x-2">
-                    <div id="dataPurchase__step2Indicator" class="w-8 h-8 rounded-full bg-gray-300 text-gray-500 flex items-center justify-center text-sm font-bold transition-all duration-300">
-                    2
-                    </div><span class="text-sm font-medium text-gray-500 hidden sm:inline">Plan</span>
-                </div>
-                <div class="w-8 h-0.5 bg-gray-300">
-                    <div id="dataPurchase__progressBar2" class="h-full bg-orange-500 transition-all duration-500" style="width: 0%"></div>
-                </div>
-                <div class="flex items-center space-x-2">
-                    <div id="dataPurchase__step3Indicator" class="w-8 h-8 rounded-full bg-gray-300 text-gray-500 flex items-center justify-center text-sm font-bold transition-all duration-300">
-                    3
-                    </div><span class="text-sm font-medium text-gray-500 hidden sm:inline">Payment</span>
-                </div>
-                </div>
-                </div>
-                </div><!-- Main Content Card -->
-                <div class="max-w-4xl mx-auto datamaincard dataPurchase__card p-0 relative overflow-hidden"><!-- Step 1: Network Selection -->
-                <div id="dataPurchase__step1" class="dataPurchase__step dataPurchase__step--active"><!-- Quick Purchase Section -->
-                <div class=" lightdark p-2 md:p-6 mb-2 quipur">
-                <h2 id="dataPurchase__quickPurchaseTitle" class="text-2xl md:text-3xl font-bold text-gray-200 mb-2 text-center">Quick Purchase</h2>
-                <p class="text-gray-300 text-center mb-6">Buy data instantly for your frequently used numbers</p><!-- Saved Numbers -->
-                <div class="mb-4">
-                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 md:gap-4">
-                    <div class="dataPurchase__saved-number rounded-xl p-4 cursor-pointer hover:shadow-lg transition-all" data-number="08012345678" data-network="mtn">
-                    <div class="flex items-center justify-between">
-                    <div>
-                        <div class="text-sm text-gray-200 font-medium">
-                        0801-234-5678
-                        </div>
-                    </div>
-                        <div class="text-xs text-white font-bold">
-                        MTN
-                        </div>
-                    </div>
-                    </div>
-                    <div class="dataPurchase__saved-number rounded-xl p-4 cursor-pointer hover:shadow-lg transition-all" data-number="08087654321" data-network="glo">
-                    <div class="flex items-center justify-between">
-                    <div>
-                        <div class="text-sm text-gray-200 font-medium">
-                        0808-765-4321
-                        </div>
-                    </div>
-                    <div class="text-xs text-white font-bold">
-                        Glo
-                        </div>
-                    </div>
-                    </div>
-                    <div class="dataPurchase__saved-number rounded-xl p-4 cursor-pointer hover:shadow-lg transition-all" data-number="07011223344" data-network="airtel" >
-                    <div class="flex items-center justify-between">
-                    <div>
-                        <div class="text-sm text-gray-200 font-medium">
-                        0701-122-3344
-                        </div>
-                    </div>
-                    <div class="text-xs text-white font-bold">
-                        Airtel
-                        </div>
-                    </div>
-                    </div>
-                    </div>
-                </div>
-                </div>
-                <!-- Network Selection -->
-                <div>
-                <h3 id="dataPurchase__networkSelectionTitle" class="text-lg font-semibold text-gray-300 text-center mb-2">Select Network</h3>
-                <div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
-                    <div class="dataPurchase__network-card rounded-2xl p-4 text-center relative" data-network="mtn">
-                    <h3 class="font-bold text-gray-200 text-lg mb-2">MTN</h3>
-                    <p class="text-sm text-gray-300 mb-3">Nigeria's largest network</p>
-                    <div class="mt-3 text-xs text-black font-bold"><span class="bg-yellow-500 px-2 py-1 rounded-full">Most Popular</span></div>
-                    </div>
-                    <div class="dataPurchase__network-card rounded-2xl p-4 text-center relative" data-network="airtel">
-                    <h3 class="font-bold text-gray-200 text-lg mb-2">Airtel</h3>
-                    <p class="text-sm text-gray-300 mb-3">Smart choice network</p>
-                    <div class="mt-3 text-xs text-gray-100 font-bold"><span class="bg-red-700 px-2 py-1 rounded-full">Fast Service</span></div>
-                    </div>
-                    <div class="dataPurchase__network-card rounded-2xl p-4 text-center relative" data-network="glo">
-                    <h3 class="font-bold text-gray-200 text-lg mb-2">Glo</h3>
-                    <p class="text-sm text-gray-300 mb-3">Unlimited possibilities</p>
-                        <div class="mt-3 text-xs text-white font-bold"><span class="bg-green-700 px-2 py-1 rounded-full">Great Value</span></div>
-                    </div>
-                    <div class="dataPurchase__network-card rounded-2xl p-4 text-center relative" data-network="9mobile">
-                    <h3 class="font-bold text-gray-200 text-lg mb-2">9mobile</h3>
-                    <p class="text-sm text-gray-300 mb-3">More than mobile</p>
-                    <div class="mt-3 text-xs text-white font-bold"><span class="bg-emerald-700 px-2 py-1 rounded-full">Reliable</span></div>
-                    </div>
-                </div>
-                </div>
-                </div><!-- Step 2: Plan Selection -->
-                <div id="dataPurchase__step2" class="dataPurchase__step dataPurchase__step--hidden">
-                <div class="mb-8">
-                <h2 class="text-2xl md:text-3xl font-bold text-gray- 200 mb-2 text-center">Select Data Plan</h2>
-                <div class="mb-8">
-                    
-                    <div class="mb-4">
-                        <div class="relative max-w-md mx-auto">
-                            <input type="tel" id="dataPurchase__phoneNumber" class="custom-input w-full p-4 lightdark rounded-2xl text-lg text-center text-white font-mono tracking-wider" placeholder=" " maxlength="11"> 
-                            <label class="floating-label-airtime">Phone Number</label>
-                        </div>
-                    </div>
-                </div><!-- Plan Duration Tabs -->
-                <div class="flex flex-wrap justify-center gap-3 mb-8">
-                    <button class="dataPurchase__duration-tab text-white py-1 px-2 md:px-6 md:py-3 text-[13px] md:text-3x1 rounded-full font-semibold shadow-lg dataPurchase__glow" data-duration="hot"> Hot Deals </button> 
-                    <button class="dataPurchase__duration-tab text-gray-200 py-1 px-2 md:px-6 md:py-3 text-[13px] md:text-3x1 rounded-full font-semibold transition-all" data-duration="daily"> Daily </button> 
-                    <button class="dataPurchase__duration-tab text-gray-200 py-1 px-2 md:px-6 md:py-3 text-[13px] md:text-3x1 rounded-full font-semibold transition-all" data-duration="weekly"> Weekly </button> 
-                    <button class="dataPurchase__duration-tab text-gray-200 py-1 px-2 md:px-6 md:py-3 text-[13px] md:text-3x1 rounded-full font-semibold transition-all" data-duration="monthly"> Monthly </button>
-                </div><!-- Plans Container -->
-                <div id="dataPurchase__plansContainer" class="dataPurchase__grid-responsive mb-8 grid grid-cols-2 md:grid-cols-3 gap-3"><!-- Plans will be populated by JavaScript -->
-                </div><!-- Navigation Buttons -->
-                 <div id="dataPurchase__continueSection" class="flex sm:flex-row justify-center items-center gap-4 !flex px-0 md:px-6">
-                    <button id="dataPurchase__backBtn1" class="flex-1 verydark text-gray-200 py-4 bckbtn rounded-2xl font-semibold transition-colors"> ← Back </button> 
-                    <button id="dataPurchase__continueBtn" class="flex-1 bg-gradient-to-r from-purple-500 to-pink-500 text-white py-4 rounded-2xl font-semibold hover:from-purple-600 hover:to-pink-600 transition-all disabled:opacity-50 disabled:cursor-not-allowed" disabled> Continue → </button>
-                </div>
-                </div>
-                </div><!-- Step 3: Payment -->
-                <div id="dataPurchase__step3" class="dataPurchase__step dataPurchase__step--hidden">
-                <div class="mb-8">
-                <h2 class="text-2xl font-bold text-gray-200 mb-6 text-center">Purchase Confirmation</h2><!-- Purchase Summary -->
-                <div class="lightdark rounded-xl p-6 mb-6">
-                    <div class="space-y-3">
-                    <div class="flex justify-between"><span class="text-gray-300">Network:</span> <span id="dataPurchase__summaryNetwork" class="font-medium">-</span>
-                    </div>
-                    <div class="flex justify-between"><span class="text-gray-300">Phone Number:</span> <span id="dataPurchase__summaryNumber" class="font-medium">-</span>
-                    </div>
-                    <div class="flex justify-between"><span class="text-gray-300">Data Plan:</span> <span id="dataPurchase__summaryPlan" class="font-bold text-orange-600">-</span>
-                    </div>
-                    <div class="flex justify-between"><span class="text-gray-300">Validity:</span> <span id="dataPurchase__summaryValidity" class="font-medium">-</span>
-                    </div>
-                    <div class="flex justify-between hidden"><span class="text-gray-300">Date:</span> <span id="dataPurchase__summaryDate" class="font-medium">-</span>
-                    </div>
-                    <hr class="my-3">
-                    <div class="flex justify-between text-lg font-semibold"><span>Total Amount:</span> <span id="dataPurchase__summaryTotal" class="font-bold text-orange-600">-</span>
-                    </div>
-                    </div>
-                </div><!-- Payment Method -->
-                <div class="mb-6">
-                    <h3 class="text-lg font-semibold text-gray-200 mb-4 text-center">Payment Method</h3>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <label class="flex items-center p-4 rounded-2xl cursor-pointer lightdark justify-between">
-                    <div class="flex items-center space-x-3">
-                    <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center"><span class="text-2xl">💳</span>
-                    </div>
-                    <div>
-                        <div class="font-medium">
-                        Debit Card
-                        </div>
-                        <div class="text-sm text-gray-200">
-                        Pay with your debit card
-                        </div>
-                    </div>
-                    </div>
-                    <input type="radio" name="paymentMethod" value="card" class="mr-3">
-                    </label>    
-                    <label class="flex items-center p-4 rounded-2xl cursor-pointer lightdark justify-between"> 
-                    <div class="flex items-center space-x-3">
-                    <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center"><span class="text-2xl">💰</span>
-                    </div>
-                    <div>
-                        <div class="font-medium">
-                        Wallet Balance
-                        </div>
-                        <div class="text-sm text-gray-200">
-                        Pay from wallet balance
-                        </div>
-                        <div class="mt-1"><span class="bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs font-bold"> Balance: ₦350,000 </span>
-                        </div>
-                    </div>
-                    </div>
-                    <input type="radio" name="paymentMethod" value="wallet" class="mr-3" checked>
-                    </label> 
-                    </div>
-                </div>
-                </div>
-                <!-- Navigation Buttons -->
-                <div class="flex sm:flex-row justify-center items-center gap-4 !flex">
-                    <button id="dataPurchase__backBtn2" class="flex-1 flex items-center justify-center verydark text-gray-200 py-4 bckbtn rounded-2xl font-semibold transition-colors px-6 py-3 rounded-xl">
-                     Back
-                    </button> 
-                    <button id="dataPurchase__purchaseBtn" class="flex flex-1 items-center justify-center bg-gradient-to-r from-purple-600 to-purple-700 text-white px-8 py-4 rounded-xl font-semibold hover:from-purple-700 hover:to-purple-800 transition-all shadow-lg dataPurchase__pulse"> Continue  </button>
-                </div>
-                </div>
-                </div>
-            </div>
-            </div><!-- Loading Modal -->
-            <div id="dataPurchase__loadingModal" class="fixed inset-0 dataPurchase__modal flex items-center justify-center z-50" style="display: none;">
-            <div class="lightdark rounded-2xl p-8 text-center dataPurchase__slide-up w-[90%] md:w-[30%]">
-                <div class="dataPurchase__spinner w-16 h-16 border-4 border-white-200 border-t-orange-600 rounded-full mx-auto mb-4"></div>
-                <h3 class="text-xl font-semibold text-gray-200 mb-2">Processing Payment</h3>
-                <p class="text-gray-300">Please wait while we process your transaction...</p>
-            </div>
-            </div><!-- Success Modal -->
-            <div id="dataPurchase__successModal" class="fixed inset-0 dataPurchase__modal flex items-center justify-center z-50" style="display: none;">
-            <div class="lightdark rounded-2xl p-2 md:p-8 text-center dataPurchase__slide-up mx-4 w-[90%] md:w-[40%]">
-                <div class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4 dataPurchase__success-check">
-                <svg class="w-10 h-10 text-green-600" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                </svg>
-                </div>
-                <h3 class="text-2xl font-bold text-gray-200 mb-2">Payment Successful!</h3>
-                <p class="text-gray-300 mb-6">Your data has been sent successfully</p><!-- Receipt Summary -->
-                <div class="verydark rounded-lg p-4 mb-6 text-left">
-                <div class="text-sm space-y-2">
-                <div class="flex justify-between"><span class="text-gray-300">Transaction ID:</span> <span id="dataPurchase__transactionId" class="font-mono">TXN123456789</span>
-                </div>
-                <div class="flex justify-between"><span class="text-gray-300">Network:</span> <span id="dataPurchase__receiptNetwork" class="text-green-600 font-semibold">-</span>
-                </div>
-                <div class="flex justify-between"><span class="text-gray-300">Number:</span> <span class="text-green-600 font-semibold">09018654747</span>
-                </div>
-                <div class="flex justify-between"><span class="text-gray-300">Amount:</span> <span id="dataPurchase__receiptAmount" class="text-green-600 font-semibold">-</span>
-                </div>
-                 <div class="flex justify-between"><span class="text-gray-300">Plan:</span> <span class="text-green-600 font-semibold">2 GB</span>
-                </div>
-                <div class="flex justify-between"><span class="text-gray-300">Valid:</span> <span class="text-green-600 font-semibold">2 days</span>
-                </div>
-                <div class="flex justify-between"><span class="text-gray-300">Date:</span> <span id="dataPurchase__receiptDate">-</span>
-                </div>
-                </div>
-                </div>
-                <div class="flex gap-3">
-                    <button id="dataPurchase__viewReceiptBtn" class="w-full flex-1 verydark text-gray-200 py-4 bckbtn rounded-2xl font-semibold transition-colors"> Receipt </button> 
-                    <button id="dataPurchase__doneBtn" class="w-full flex-1 bg-gradient-to-r from-purple-500 to-pink-500 text-white py-4 rounded-2xl font-semibold hover:from-purple-600 hover:to-pink-600 transition-all"> Done </button>
-                </div>
-            </div>
-            </div>
-
-        </section>
-
-    <section id="content-recentactivities" class="page-content-section transition-opacity duration-300 min-h-full relative overflow-auto">
-        <!-- Back button and gradient from original request -->
-             <button class="backbtn nav-btn flex top-[12px] left-[12px] md:top-[25px] md:left-[25px] " data-route="home"><i class="fa-regular fa-circle-left"></i></button>
-        <div class="inset-0 gradient-bg"></div><!-- Floating shapes for visual appeal -->
-
-        <!-- MAIN CONTENT CONTAINER -->
-        <div class="relative z-10 p-4 md:p-8 max-w-4xl mx-auto pt-16 md:pt-24">
-            <h1 class="text-3xl md:text-4xl font-bold text-white mb-8 text-center">Recent Activity</h1>
-
-            <!-- Transaction List Container -->
-            <div id="transactions-list" class="space-y-6">
-                <!-- Transactions will be rendered here -->
-                <div class="text-white text-center p-8 bg-slate-800 rounded-xl shadow-lg">Loading transactions...</div>
-            </div>
-        </div>
-
-    </section>
-
-    <section id="content-profile" class="page-content-section transition-opacity duration-300 min-h-full relative overflow-auto">
-        <!-- Back button and gradient from original request -->
-        <button class="backbtn nav-btn flex top-[12px] left-[12px] md:top-[25px] md:left-[25px] " data-route="home"><i class="fa-regular fa-circle-left"></i></button>
-        <div class="inset-0 gradient-bg"></div><!-- Floating shapes for visual appeal -->
-
-        <!-- Main Dashboard Content (The original div container, now padded for the back button) -->
-        <div class="p-4 md:p-8 lg:p-12 pt-16 relative z-10">
-            <header class="flex justify-between items-center mb-8" style=" padding: 0 40px;">
-                <h1 class="text-3xl font-extrabold text-white tracking-tight mr-4>
-                     <span class="text-indigo-500">Profile</span>
-                </h1>
-                <div class="flex items-center space-x-4">
-                    <button onclick="openNotifications()" class="p-3 rounded-full fintech-card text-gray-400 hover:text-white hover:ring-2 ring-indigo-500 transition duration-200 relative">
-                        <span class="" data-lucide="bell"></span>
-                        <!-- Notification indicator bubble -->
-                        <span class="absolute top-0 right-0 w-3 h-3 bg-red-500 rounded-full animate-pulse border-2 border-[#0d111c]"></span>
-                    </button>
-                </div>
-            </header>
-
-            <!-- Profile Grid Layout -->
-            <main class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-
-                <!-- Left Column: Profile Info & Security (1/3 width on desktop) -->
-                <div class="lg:col-span-1 space-y-8">
-
-                    <!-- Profile Card (Dynamic Content) -->
-                    <section class="fintech-card payment-card p-6 rounded-xl text-center">
-                        <img src="https://placehold.co/128x128/374151/ffffff?text=JL" alt="User Avatar" class="w-28 h-28 rounded-full mx-auto mb-4 border-4 border-indigo-600 p-0.5 transform transition duration-500">
-                        <h2 id="profile-name" class="text-2xl font-bold text-white transition duration-200">Jerry Luis</h2>
-                        <p id="profile-title" class="hidden text-sm text-indigo-400 font-medium transition duration-200">Head of Investments</p>
-                        <div class="mt-4 flex justify-center items-center space-x-2">
-                            <div class="w-3 h-3 rounded-full fintech-accent-bg animate-pulse"></div>
-                            <span class="text-xs text-gray-400">Online & Active</span>
-                        </div>
-                        <button onclick="openEditModal()" class="mt-6 w-full py-3 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-medium transition duration-200 transform hover:translate-y-[-2px]">
-                            <span class="flex items-center justify-center space-x-2">
-                                <span class="" data-lucide="pencil"></span>
-                                <span>Edit Profile Details</span>
-                            </span>
-                        </button>
-                    </section>
-
-                    <!-- Quick Settings & Security -->
-                    <section class="fintech-card payment-card p-6 rounded-xl space-y-4">
-                        <h3 class="text-xl font-semibold text-white mb-4 flex items-center space-x-2">
-                            <span class=" text-yellow-500" data-lucide="shield"></span>
-                            <span>Security & Settings</span>
-                        </h3>
-
-                        <!-- Setting 1: Two-Factor Auth -->
-                        <div class="flex items-center justify-between p-2 rounded-lg transition duration-150">
-                            <div class="flex items-center space-x-3 text-gray-300">
-                                <span class=" text-green-500" data-lucide="lock"></span>
-                                <span class="text-sm">Two-Factor Authentication</span>
-                            </div>
-                            <label class="switch">
-                                <input type="checkbox" id="tfa-toggle" checked>
-                                <div class="slider round"></div>
-                            </label>
-                        </div>
-
-                        <!-- Setting 2: Biometric Login -->
-                        <div class="flex items-center justify-between p-2 rounded-lg transition duration-150">
-                            <div class="flex items-center space-x-3 text-gray-300">
-                                <span class=" text-blue-500" data-lucide="fingerprint"></span>
-                                <span class="text-sm">Biometric Login</span>
-                            </div>
-                            <label class="switch">
-                                <input type="checkbox" id="bio-toggle">
-                                <div class="slider round"></div>
-                            </label>
-                        </div>
-
-                        <!-- Action Button -->
-                        <button onclick="showMessage('Password Reset', 'A secure link has been sent to your registered email to reset your password.')" class="w-full mt-4 py-2 rounded-lg bg-red-700/20 text-red-400 hover:bg-red-700/30 font-medium transition duration-150 text-sm">
-                            Request Password Reset
-                        </button>
-                    </section>
-                </div>
-
-                <!-- Right Column: Financial Summary & Activity (2/3 width on desktop) -->
-                <div class="lg:col-span-2 space-y-8">
-
-                    <!-- Financial Summary Card - Updated -->
-                    <section class="fintech-card payment-card p-6 rounded-xl ">
-                        <h3 class="text-xl font-semibold text-white mb-4">6-Month Financial Flow</h3>
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                            
-                            <!-- Metric 1: Income (Money In) -->
-                            <div class="p-6 rounded-xl border border-lime-500/30 bg-gradient-to-br from-lime-900/40 to-gray-800/20 hover:ring-2 ring-lime-500/50 transition duration-300">
-                                <div class="flex items-center space-x-3 mb-2">
-                                    <span class=" text-lime-400" data-lucide="arrow-down-left"></span>
-                                    <p class="text-sm text-gray-300 uppercase font-semibold tracking-wider">Money In (Income)</p>
-                                </div>
-                                <p class="text-4xl font-extrabold text-lime-400">₦35,200.00</p>
-                                <p class="text-sm text-gray-400 mt-2">Total income generated in the last 6 months.</p>
-                            </div>
-                            
-                            <!-- Metric 2: Expenditure (Money Out) -->
-                            <div class="p-6 rounded-xl border border-red-500/30 bg-gradient-to-br from-red-900/40 to-gray-800/20 hover:ring-2 ring-red-500/50 transition duration-300">
-                                <div class="flex items-center space-x-3 mb-2">
-                                    <span class=" text-red-400" data-lucide="arrow-up-right"></span>
-                                    <p class="text-sm text-gray-300 uppercase font-semibold tracking-wider">Money Out (Expenditure)</p>
-                                </div>
-                                <p class="text-4xl font-extrabold text-red-400">₦12,850.50</p>
-                                <p class="text-sm text-gray-400 mt-2">Total expenditure incurred in the last 6 months.</p>
-                            </div>
-                        </div>
-                    </section>
-
-                    <!-- Recent Activity Action -->
-                    <section class="fintech-card payment-card p-6 rounded-xl">
-                        <h3 class="text-xl font-semibold text-white mb-4">View Full Account History</h3>
-                        <p class="text-gray-400 mb-6">Access your detailed statement, filter transactions, and download financial reports for the current fiscal year.</p>
-                        
-                        <button class="nav-btn w-full py-3 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-semibold transition duration-200 transform hover:scale-[1.01] flex items-center justify-center space-x-2" data-route="recentactivities">
-                            <span>View Recent Activity</span>
-                        </button>
-                    </section>
-                    
-                    <!-- Logout Button (Stretched) -->
-                    <button id="logout-button" onclick="showMessage('Logout Successful', 'You have been securely logged out..')" class="w-full py-3 rounded-xl bg-gray-700 hover:bg-gray-600 text-white font-semibold transition duration-150 flex items-center justify-center space-x-2 shadow-xl hover:shadow-gray-900/50">
-                        <span class="" data-lucide="log-out"></span>
-                        <span>Secure Logout</span>
-                    </button>
-                </div>
-            </main>
-        </div>
-    </section>
-
-    <section id="content-aichat" class="page-content-section transition-opacity duration-300 h-[100vh] relative overflow-hidden">
-       <!-- IMPORTANT: Added overflow-x-hidden to prevent horizontal scrolling on mobile when sidebar is closed. -->
-        <div id="ac-container" class="relative min-h-screen overflow-hidden z-[101]">
-            
-            <!-- WRAPPER: This container includes both the sidebar and main content. -->
-            <div id="ac-content-wrapper" class="flex w-[calc(100vw+256px)] md:w-auto md:flex-row transition-transform duration-300 ease-in-outh-[100vh] overflow-hidden">
-
-                <!-- 1. Conversation Sidebar (w-64 = 256px) -->
-                <aside id="ac-sidebar" class="flex-shrink-0 w-64  text-white p-4 flex flex-col shadow-2xl h-full">
-                    
-                    <!-- Sidebar Header/New Chat Button -->
-                    <div class="mb-6 flex justify-between items-center border-b border-gray-400 pb-6">
-                        <h2 class="text-xl font-bold flex items-center">
-                            <i class="fa-brands fa-slack fa-spin text-orange-500 mr-2"></i>
-                            AI Chat
-                        </h2>
-                        <button class="backbtn nav-btn flex md:hidden relative" style="top: auto;" data-route="home"><i class="fa-regular fa-circle-left"></i></button>
-
-                    </div>
-
-                    <!-- Recent Conversations List -->
-                    <div class="space-y-2 flex-grow overflow-y-auto ac-custom-scrollbar pr-2">
-                         <div id="search-div" 
-                            class="flex items-center w-full p-[10px] md:p-12px rounded-full 
-                                    shadow-2xl hover:shadow-primary-light/50 transition duration-300 
-                                    transform">                           
-                         <!-- Optional Search Button (Hidden on Mobile, or you can adjust padding) -->
-                            <button class="block bg-primary hover:bg-primary-light 
-                                        text-white font-medium 
-                                        transition duration-150 ease-in-out shrink-0">
-                                 <svg class="w-4 h-4 md:w-6 md:h-6 text-primary shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                            </svg>
-                            </button>
-
-                                
-                            <!-- Search Input Field -->
-                            <input type="text"
-                                placeholder="Search conversations..."
-                                class="flex-grow scchinp text-gray-200 text-[13px] md:text-sm 
-                                        bg-transparent outline-none focus:ring-0"
-                            />
-                            
-
-                        </div>
-                        <!-- Conversation Item -->
-                        <a href="#" class="ac-conversation-item flex items-center p-3 rounded-xl text-gray-400 chatsrect">
-                            <i class="fa-solid fa-up-right-from-square mr-3"></i>
-                            <span class="truncate">New chat</span>
-                        </a>
-                        <!-- Active Conversation -->
-                        <a href="#" class="flex items-center p-3 rounded-xl text-gray-200 font-medium chatsrect chathis-active">
-                            <i class="fa-solid fa-comments mr-3"></i>
-                            <span class="truncate">Today's Transfers & Bills</span>
-                        </a>
-                        <!-- Conversation Item -->
-                        <a href="#" class="ac-conversation-item flex items-center p-3 rounded-xl text-gray-400 chatsrect">
-                            <i class="fa-solid fa-comments mr-3"></i>
-                            <span class="truncate">Last Week's Spending Analysis</span>
-                        </a>
-                        <!-- Conversation Item -->
-                        <a href="#" class="ac-conversation-item flex items-center p-3 rounded-xl text-gray-400 chatsrect">
-                            <i class="fa-solid fa-comments mr-3"></i>
-                            <span class="truncate">Budget planning for October</span>
-                        </a>
-                    </div>
-
-                    <!-- Settings/User Area -->
-                    <div class="pt-[0.2rem] border-t border-gray-400 mt-4">
-                        <button class="w-full text-left p-3 rounded-xl text-gray-400 hover:bg-gray-800 hover:text-white transition flex items-center">
-                            <i class="fa-solid fa-gear mr-3 text-lg"></i>
-                            AI Chat Settings
-                        </button>
-                    </div>
-                </aside>
-
-                <!-- 2. Main Chat Area -->
-                <main id="ac-main-content" class="flex-grow flex flex-col relative w-full h-full bg-gray-50 overflow-hidden">
-                    
-                    <!-- Mobile Sidebar Toggle Button (Moves with the main content) -->
-                    <button id="ac-sidebar-toggle-btn" class="absolute top-4 left-4 md:hidden z-20 backbtn transition">
-                        <i class="fa-regular fa-circle-right"></i>
-                    </button>
-                    
-                    <!-- Chat History Area and Initial Prompt -->
-                    <div id="ac-history-container" class="flex-grow overflow-y-auto p-4 md:p-8 space-y-6 pt-[55px] h-[100vh] md:pt-16 ac-custom-scrollbar overflow-hidden">
-
-                        <div class="ai_header absolute top-0 left-0 w-full items-center justify-end p-4 pt-[23px] z-[1]">
-                            <div class="ai_logo flex items-center justify-end gap-2" style="padding-right: 12px;"><i class="fa-brands fa-slack fa-spin text-2xl text-orange-500"></i> <h3 class="font-bold text-2xl"><span class="text-orange-500">C</span>oggito</h3></div>
-                        </div>
-                        <!-- Initial Prompt/Welcome Message (Centered) -->
-                        <div id="ac-initial-prompt" class="flex flex-col h-full min-h-[calc(100vh-450px)] text-center text-gray-400 transition-opacity duration-300">
-                            <i class="fa-brands fa-slack fa-spin text-5xl mb-2 md:mb-6 text-orange-500"></i>
-                            <h1 class="text-2xl md:text-3x1 font-extrabold text-gray-200 mb-2">Welcome to your AI Assistant</h1>
-                            <p class="text-[12px] text-gray-200">How can I assist with your financial or general queries today?</p>
-
-                            <!-- Quick Actions Area -->
-                            <div id="ac-quick-actions" class="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-4xl mx-auto mt-12 w-full px-4">
-                                <button class="ac-quick-action-btn ac-action-btn group rounded-2xl p-4 text-left transition shadow-lg hover:shadow-xl">
-                                    <p class="font-bold text-gray-200 flex items-center quickaiact">
-                                        <i class="fa-solid fa-arrow-right-arrow-left text-gray-200 group-hover:text-cyan-600 mr-3"></i>
-                                        Transfer ₦5,000 to Melvin
-                                    </p>
-                                    <p class="text-[12px] md:text-sm text-gray-300 mt-1">Initiate a quick fund transfer securely.</p>
-                                </button>
-                                <button class="ac-quick-action-btn ac-action-btn group rounded-2xl p-4 text-left transition shadow-lg hover:shadow-xl">
-                                    <p class="font-bold text-gray-200 flex items-center quickaiact">
-                                        <i class="fa-solid fa-wifi text-gray-200 group-hover:text-cyan-600 mr-3"></i>
-                                        Recharge 2GB data to 09018654747
-                                    </p>
-                                    <p class="text-[12px] md:text-sm text-gray-300 mt-1">Top up mobile data instantly.</p>
-                                </button>
-                                <button class="ac-quick-action-btn ac-action-btn group rounded-2xl p-4 text-left transition shadow-lg hover:shadow-xl">
-                                    <p class="font-bold text-gray-200 flex items-center quickaiact">
-                                        <i class="fa-solid fa-lightbulb text-gray-200 group-hover:text-cyan-600 mr-3"></i>
-                                        Pay Electricity Bill (AEDC)
-                                    </p>
-                                    <p class="text-[12px] md:text-sm text-gray-300 mt-1">Settle your utility bill efficiently.</p>
-                                </button>
-                                <button class="ac-quick-action-btn ac-action-btn group rounded-2xl p-4 text-left transition shadow-lg hover:shadow-xl">
-                                    <p class="font-bold text-gray-200 flex items-center quickaiact">
-                                        <i class="fa-solid fa-chart-line text-gray-200 group-hover:text-cyan-600 mr-3"></i>
-                                        Show my spending trends
-                                    </p>
-                                    <p class="text-[12px] md:text-sm text-gray-300 mt-1">Analyze and visualize your financial habits.</p>
-                                </button>
-                            </div>
-                        </div>
-
-                        <!-- Chat Messages (Initially Empty) -->
-                        <div id="ac-messages" class="space-y-6 max-w-3xl mx-auto hidden">
-                            
-                            <!-- Example: AI Typing Indicator (Will be shown/hidden by JS) -->
-                            <div id="ac-typing-indicator" class="flex justify-start !hidden">
-                                <div class=" p-3 rounded-xl rounded-tl-none shadow-lg border border-gray-100">
-                                    <div class="flex space-x-1">
-                                        <span class="ac-typing-animation w-2 h-2 bg-cyan-600 rounded-full"></span>
-                                        <span class="ac-typing-animation w-2 h-2 bg-cyan-600 rounded-full"></span>
-                                        <span class="ac-typing-animation w-2 h-2 bg-cyan-600 rounded-full"></span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                    </div>
-
-                    <!-- Input Box Area -->
-                    <div class="flex-shrink-0  p-2 md:p-8 ac-chat-send">
-                        <div class="max-w-3xl mx-auto flex items-end  rounded-3xl shadow-2xl lightdark p-2 md:p-3">
-                            
-                            <!-- Text Input -->
-                            <textarea id="ac-input-textarea" 
-                                    class="flex-grow resize-none p-2 md:p-3 outline-none text-gray-200 placeholder-gray-400 h-10 min-h-[40px] max-h-[150px] overflow-y-auto ac-custom-scrollbar-textar-send bg-transparent" 
-                                    placeholder="Message AI Assistant..." 
-                                    rows="1"></textarea>
-                            
-                            <!-- Voice Chat Button -->
-                            <button class="text-[18px] text-white transition btnbacks nav-btn p-2 rounded-full !flex items-center justify-center w-10 h-10 flex-shrink-0 mr-1 activate-mic" data-route="voicechat">
-                                <i class="fa-solid fa-microphone-lines"></i>
-                            </button>
-                            
-                            <!-- Send Button -->
-                            <button id="ac-send-btn" class="text-[18px] text-white transition p-2 rounded-full btnbacks flex items-center justify-center w-10 h-10 flex-shrink-0">
-                                <i class="fa-solid fa-share-from-square"></i>
-                            </button>
-                        </div>
-                        <p class="text-center text-[10px] md:text-xs text-gray-400 mt-2">AI Assistant may make mistakes. Always verify important information.</p>
-                    </div>
-                </main>
-            </div>
-        </div>
-
-    </section>
-
-<section id="content-voicechat" class="page-content-section transition-opacity duration-300 min-h-full relative overflow-auto flex items-center justify-center">
-    
-    <video autoplay muted loop id="video-background">
-        <source src="vid/172156-846731269_smallnyh.mp4" type="video/mp4">
-        Your browser does not support the video tag.
-    </video>
-
-    
-    <div id="interface-wrapper">
-
-
-        <div id="transcription-div">
-            <div class="tpdv">
-                <button class="backbtn nav-btn flex !relative backBtns" style="top: auto;"><i class="fa-regular fa-circle-left"></i></button>
-                <h2>Listening</h2>
-            </div>
-            <span id="system-response"></span>
-        </div>
-            <span style="display: none;" id="final-text">Ready for command...</span>
-
-        
-        <div class="botomaichat w-full text-center">
-            <span id="interim-text" >...</span>
-            <div id="visualizer-container">
-                <canvas id="audio-visualizer"></canvas>
-            </div>
-        </div>
+       </div>
+      </div>
+     </div>
     </div>
-</section>
-
-
- 
+    <!-- About Page -->
+    <div class="page" id="about">
+     <div class="page-content">
+      <div class="about-hero">
+       <div class="about-text">
+        <h1 class="section-title typewriter animate-slide-left">About Me</h1>
+        <p class="about-description animate-slide-left stagger-1">I'm a self-taught frontend developer who enjoys turning messy ideas into clear, usable interfaces. I love building UI that loads fast, scales well, and makes sense instantly. Working with clients taught me how to translate vague requirements into actual products that solve real problems.</p>
+        <p class="about-description animate-slide-left stagger-2">I'm the "explain it once, I'll handle the rest" type of dev. I've worn all the hats — coder, problem-solver, optimizer, bug therapist, and sometimes unplanned project manager. My goals? Build interfaces that feel good, workflows that feel natural, products people depend on, and code future devs won't curse at.</p>
+       </div>
+       <div class="about-image">
+        <div class="profile-card animate-scale" style="animation: float 3s ease-in-out infinite;">
+         <div class="profile-avatar animate-scale stagger-1">
+          J
+         </div>
+         <h3 class="animate-on-scroll stagger-2" style="color: #ffffff; margin-bottom: 0.5rem;">JERRY</h3>
+         <p class="animate-on-scroll stagger-3" style="color: #64748b; margin-bottom: 1rem;">Frontend Developer</p>
+         <div class="animate-on-scroll stagger-4" style="display: flex; justify-content: center; gap: 1rem;">
+          <div class="animate-scale stagger-1" style="text-align: center;">
+           <div style="font-size: 1.5rem; font-weight: 700; color: #00d4ff;">
+            50+
+           </div>
+           <div style="font-size: 0.8rem; color: #64748b;">
+            Projects
+           </div>
+          </div>
+          <div class="animate-scale stagger-2" style="text-align: center;">
+           <div style="font-size: 1.5rem; font-weight: 700; color: #4ecdc4;">
+            3+
+           </div>
+           <div style="font-size: 0.8rem; color: #64748b;">
+            Years
+           </div>
+          </div>
+          <div class="animate-scale stagger-3" style="text-align: center;">
+           <div style="font-size: 1.5rem; font-weight: 700; color: #ff6b6b;">
+            100%
+           </div>
+           <div style="font-size: 0.8rem; color: #64748b;">
+            Satisfaction
+           </div>
+          </div>
+         </div>
         </div>
-
-
+       </div>
+      </div>
+     </div>
     </div>
-
-
-     <!-- Receipt Modal -->
-            <div id="dataPurchase__receiptModal" class="fixed inset-0 dataPurchase__modal flex items-center justify-center z-50" style="display: none;">
-            <div class="lightdark rounded-2xl p-4 md:p-8 w-[85%] md:w-[800px] mx-4 dataPurchase__slide-up">
-                <div class="text-center mb-6">
-                <h3 class="text-xl font-bold text-gray-200 mb-2">Transaction Receipt</h3>
-                <div class="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <svg class="w-8 h-8 text-purple-600" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                </svg>
-                </div>
-                </div>
-                <div id="dataPurchase__fullReceipt" class="verydark receipt_details rounded-lg p-4 mb-6 text-sm"><!-- Full receipt details will be populated here -->
-                </div>
-                <div class="flex gap-3"><button id="dataPurchase__shareReceiptBtn" class="flex-1 bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors"> Share Receipt </button> <button id="dataPurchase__closeReceiptBtn" class="flex-1 bg-gray-200 text-gray-800 py-3 rounded-lg font-semibold hover:bg-gray-300 transition-colors"> Close </button>
-                </div>
-            </div>
-            </div>
-
-
-  <!-- 2. The AI Modal/Overlay (z-50) -->
-    <div id="aiModal" 
-         class="fixed inset-0 z-[100] hidden bg-opacity-50  backdrop-blur-sm justify-center items-end"
-         onclick="closeModalIfClickedOutside(event)">
-        
-        <!-- The Sliding Container for the two boxes -->
-        <div id="aiPanel" 
-             class="w-full max-w-lg  absolute bottom-24 rounded-t-2xl shadow-2xl p-6 transform translate-y-full transition-transform duration-500 ease-out">
-            
-            <h3 class="text-white text-center text-xl font-semibold mb-6">Interact with AI</h3>
-            
-            <!-- The 2 Boxes -->
-            <div class="flex space-x-4 aibox">
-                <!-- Box 1: Chat with AI -->
-                <div class="nav-btn flex-1 p-6  rounded-xl text-center text-white cursor-pointer hover:bg-gray-700 transition-colors shadow-lg active:scale-[0.98] transform" data-route="aichat">
-                    <i class="fa-solid fa-comments"></i>
-                    <p class="font-extrabold text-lg">CHAT</p>
-                    <!-- <p class="text-xs text-gray-400 mt-1">Type your questions and tasks.</p> -->
-                </div>
-                
-                <!-- Box 2: Talk with AI -->
-                <div class="nav-btn flex-1 p-6 activate-mic  rounded-xl text-center text-white cursor-pointer hover:bg-gray-700 transition-colors shadow-lg active:scale-[0.98] transform" data-route="voicechat">
-                   <i class="fa-solid fa-microphone-lines"></i>
-                    <p class="font-extrabold text-lg">TALK</p>
-                    <!-- <p class="text-xs text-gray-400 mt-1">Use voice commands and speech.</p> -->
-                </div>
-            </div>
-            
-        </div>
+    <!-- Gallery/Portfolio Page -->
+    <div class="page" id="gallery">
+     <div class="page-content">
+      <h1 class="section-title typewriter animate-slide-left">My Portfolio</h1>
+      <p class="animate-on-scroll stagger-1" style="font-size: 1.2rem; color: #94a3b8; margin-bottom: 2rem; text-align: center;">A showcase of projects I've built with passion and precision</p>
+      <div class="gallery-container animate-on-scroll stagger-2">
+       <div class="gallery-grid" id="galleryGrid">
+        <!-- Projects will be dynamically inserted here -->
+       </div>
+      </div>
+     </div>
     </div>
-
-
-        <!-- OVERLAY (used for notifications and modals) -->
-    <div id="overlayprof" class="hidden fixed inset-0 bg-black z-[900] transition-opacity duration-300"></div>
-
-    <!-- 1. CUSTOM MESSAGE BOX (for alerts/confirmations) -->
-    <div id="message-box" class="custom-modal fintech-card rounded-xl p-6 w-11/12 max-w-md">
-        <h3 id="message-title" class="text-xl font-bold mb-3 text-white">Action Executed</h3>
-        <p id="message-content" class="text-gray-300 mb-4"></p>
-        <button onclick="closeMessage()" class="w-full py-2 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white font-medium transition duration-150">
-            Acknowledge
-        </button>
+    <!-- Contact Page -->
+    <div class="page" id="contact">
+     <div class="page-content">
+      <h1 class="section-title typewriter animate-slide-left">Let's Work Together</h1>
+      <div class="contact-container">
+       <div class="contact-info">
+        <p class="contact-message animate-slide-left stagger-1" id="contactMessage">Need a developer who actually delivers and doesn't ghost? Hit me up. I'm open to freelance, collaborations, and long-term work.</p>
+        <div class="contact-methods animate-slide-left stagger-2">
+         <div class="contact-method animate-on-scroll stagger-1" onclick="window.open('mailto:Jeremiahluis4life@gmail.com', '_blank')">
+          <div class="contact-icon">
+           <i class="fa-solid fa-envelope-circle-check"></i>
+          </div>
+          <div class="contact-details">
+           <div class="contact-title">
+            Email Me
+           </div>
+           <div class="contact-desc">
+            Jeremiahluis4life@gmail.com
+           </div>
+          </div>
+         </div>
+         <div class="contact-method animate-on-scroll stagger-2" id="whatsappContact">
+          <div class="contact-icon">
+           <i class="fa-brands fa-whatsapp"></i>
+          </div>
+          <div class="contact-details">
+           <div class="contact-title">
+            WhatsApp
+           </div>
+           <div class="contact-desc">
+            Quick chat and instant responses
+           </div>
+          </div>
+         </div>
+         <div class="contact-method animate-on-scroll stagger-3" id="linkedinContact">
+          <div class="contact-icon">
+           <i class="fa-brands fa-linkedin"></i>
+          </div>
+          <div class="contact-details">
+           <div class="contact-title">
+            LinkedIn
+           </div>
+           <div class="contact-desc">
+            Professional networking
+           </div>
+          </div>
+         </div>
+        </div>
+       </div>
+       <div class="contact-form animate-slide-right stagger-3">
+        <form id="contactForm">
+         <div class="form-group"><label for="name" class="form-label">Name</label> <input type="text" id="name" name="name" class="form-input" placeholder="Your full name" required>
+         </div>
+         <div class="form-group"><label for="email" class="form-label">Email</label> <input type="email" id="email" name="email" class="form-input" placeholder="your.email@example.com" required>
+         </div>
+         <div class="form-group"><label for="project" class="form-label">Project Type</label> <input type="text" id="project" name="project" class="form-input" placeholder="e.g., Website redesign, React app, E-commerce site">
+         </div>
+         <div class="form-group"><label for="message" class="form-label">Project Details</label> <textarea id="message" name="message" class="form-textarea" placeholder="Tell me about your project..." required></textarea>
+         </div><button type="submit" class="btn btn-primary" style="width: 100%; padding: 1.2rem;">Send Message 🚀</button>
+        </form>
+       </div>
+      </div>
+     </div>
     </div>
-    
-    <!-- 2. PROFILE EDIT MODAL (for profile updates) -->
-    <div id="edit-modal" class="custom-modal fintech-card rounded-xl p-8 w-11/12 max-w-lg">
-        <h3 class="text-2xl font-bold mb-6 text-white border-b border-gray-600 pb-2">Edit Profile</h3>
-        
-        <div class="space-y-4">
-            <div>
-                <label for="edit-name" class="block text-sm font-medium text-gray-400 mb-1">Full Name</label>
-                <input type="text" id="edit-name" class="w-full p-3 rounded-lg bg-gray-800 border border-gray-700 text-white focus:ring-indigo-500 focus:border-indigo-500 transition duration-150" placeholder="Enter full name">
-            </div>
-            <div class="hidden">
-                <label for="edit-title" class="block text-sm font-medium text-gray-400 mb-1">Job Title / Role</label>
-                <input type="text" id="edit-title" class="w-full p-3 rounded-lg bg-gray-800 border border-gray-700 text-white focus:ring-indigo-500 focus:border-indigo-500 transition duration-150" placeholder="e.g., Senior Analyst">
-            </div>
-        </div>
-        
-        <div class="mt-8 flex justify-end space-x-3">
-            <button onclick="closeEditModal()" class="px-4 py-2 rounded-lg bg-gray-700 hover:bg-gray-600 text-white font-medium transition duration-150">
-                Cancel
-            </button>
-            <button onclick="saveProfile()" class="px-4 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white font-medium transition duration-150">
-                Save Changes
-            </button>
-        </div>
-    </div>
-    
-    <!-- 3. NOTIFICATION SIDE PANEL (slide-out menu) -->
-    <div id="notification-panel" class="p-6 md:p-8 flex flex-col">
-        <div class="flex justify-between items-center mb-6  pb-4">
-            <h2 class="text-2xl font-bold text-white">Notifications (3)</h2>
-            <button onclick="closeNotifications()" class="p-2 rounded-full text-gray-400 hover:text-white transition duration-150">
-               <i class="fa-regular fa-circle-right"></i>
-            </button>
-        </div>
-        
-        <div class="flex-grow space-y-4">
-            <!-- Notification 1 -->
-            <div class="p-4 rounded-xl verydark transition duration-150 cursor-pointer ">
-                <div class="flex items-start space-x-3">
-                    <div class="p-2 rounded-full bg-indigo-700/30 text-indigo-400">
-                        <span class="" data-lucide="activity"></span>
-                    </div>
-                    <div>
-                        <p class="text-sm font-semibold text-white">Market Alert: Tech Index UP</p>
-                        <p class="text-xs text-gray-400 mt-1">Your Watchlist's core tech investments surged +3.1% today.</p>
-                        <p class="text-xs text-indigo-400 mt-1">2 hours ago</p>
-                    </div>
-                </div>
-            </div>
-            <!-- Notification 2 -->
-            <div class="p-4 rounded-xl verydark transition duration-150 cursor-pointer ">
-                <div class="flex items-start space-x-3">
-                    <div class="p-2 rounded-full bg-lime-700/30 text-lime-400">
-                        <span class="" data-lucide="check-check"></span>
-                    </div>
-                    <div>
-                        <p class="text-sm font-semibold text-white">Savings Goal Achieved</p>
-                        <p class="text-xs text-gray-400 mt-1">You reached $25,000 in your Emergency Fund!</p>
-                        <p class="text-xs text-lime-400 mt-1">Yesterday</p>
-                    </div>
-                </div>
-            </div>
-            <!-- Notification 3 -->
-            <div class="p-4 rounded-xl verydark transition duration-150 cursor-pointer ">
-                <div class="flex items-start space-x-3">
-                    <div class="p-2 rounded-full bg-red-700/30 text-red-400">
-                        <span class="" data-lucide="credit-card"></span>
-                    </div>
-                    <div>
-                        <p class="text-sm font-semibold text-white">Large Transaction Alert</p>
-                        <p class="text-xs text-gray-400 mt-1">A $5,000 transfer was initiated to external account #4567.</p>
-                        <p class="text-xs text-red-400 mt-1">1 week ago</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <button class="mt-6 w-full py-2 rounded-lg bg-gray-700/50 hover:bg-gray-700/70 text-gray-300 font-medium transition duration-150 text-sm">
-            Notification Settings
-        </button>
-    </div>
+   </main>
+  </div><!-- Project Detail Slider -->
+  <div class="project-slider" id="projectSlider">
+   <div class="slider-header">
+    <h2 class="slider-title" id="sliderTitle">Project Title</h2><button class="slider-close" id="sliderClose"><i class="fa-regular fa-circle-down"></i></button>
+   </div>
+   <div class="slider-content" id="sliderContent"><!-- Project details will be dynamically inserted here -->
+   </div>
+  </div>
 
-
-
-    <script src="script.js"></script>
-        <script src="airtime.js"></script>  
-
-</body>
+  <div id="successPopup">
+    Message sent successfully! Thank you. ✅
+</div>
+  <script src="script.js"></script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9a033810d20616c3',t:'MTc2MzQyNDM1Ni4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
