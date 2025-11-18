@@ -1135,6 +1135,10 @@
                 display: block;
             }
 
+
+            .sidebar-nav-item i{
+                margin-right: 10px;
+            }
             .hero-section {
                 grid-template-columns: 1fr;
                 text-align: center;
